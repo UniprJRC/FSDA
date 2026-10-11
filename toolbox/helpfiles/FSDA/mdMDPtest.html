@@ -1,28 +1,38 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>mdMDPtest</title><meta content="refpage" name="chunktype"><meta content="function:mdMDPtest" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="mdMDPtest Mahalanobis Distance Perturbation test for MCAR." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/x-mathjax-config">MathJax.Hub.Config({jax: ["input/TeX", "output/HTML-CSS"],extensions: ["tex2jax.js", "TeX/AMSeqnum.js"],tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},TeX: {extensions: ["AMSsymbols.js"],equationNumbers: { autoNumber: "AMS" }}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">mdMDPtest</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Example 1: Classical MDP-U with default options.</a></li><li><a class="intrnllnk" href="#Example_2">Example 2: Recommended robust MDP-I analysis.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example 3: Simulated data under MCAR.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example 4: Comparison of several trimming levels.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Example 5: Different rescaling method.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Example 6: MM estimator for the complete cases.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">Example 7: Standard FSM envelope-resuperimposition rule.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">Example 8: Explicit estimator-defined inlier mean (MDP-I).</a></li><li><a class="intrnllnk" href="#ExtraExample_7">Example 9: Fixed robust-distance sensitivity diagnostic (MDP-F).</a></li><li><a class="intrnllnk" href="#ExtraExample_8">Example 10: Coupled complete-case outlier trimming in TEM.</a></li><li><a class="intrnllnk" href="#ExtraExample_9">Example 11: Distribution-adaptive pooled TEM correction.</a></li><li><a class="intrnllnk" href="#ExtraExample_10">Example 12: General-F analytical calibration for untrimmed MDP-U.</a></li><li><a class="intrnllnk" href="#ExtraExample_11">Example 13: Display a commented summary and the results table.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_alpha">alpha</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_method">method</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_consistencyfactor">consistencyfactor</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_adaptivepool">adaptivepool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_adaptiveminref">adaptiveminref</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bootstrap">bootstrap</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsimul">nsimul</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_eps0">eps0</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_aggregation">aggregation</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_filterlev">filterlev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_coupledtrim">coupledtrim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_robust">robust</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_tol">tol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_dispresults">dispresults</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">mdMDPtest</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">mdMDPtest Mahalanobis Distance Perturbation test for MCAR</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=mdMDPtest(Y)</code><span class="syntax_example"><a class="intrnllnk" href="mdMDPtest.html#Example_1">example</a></span></li><li><code class="synopsis">out=mdMDPtest(Y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="mdMDPtest.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>mdMDPtest implements the Mahalanobis Distance Perturbation (MDP) test
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>mdMDPtest</title><meta content="refpage" name="chunktype"><meta content="function:mdMDPtest" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="mdMDPtest Mahalanobis Distance Perturbation test for MCAR." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/x-mathjax-config">MathJax.Hub.Config({jax: ["input/TeX", "output/HTML-CSS"],extensions: ["tex2jax.js", "TeX/AMSeqnum.js"],tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},TeX: {extensions: ["AMSsymbols.js"],equationNumbers: { autoNumber: "AMS" }}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">mdMDPtest</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Example 1: Classical MDP-U with default options.</a></li><li><a class="intrnllnk" href="#Example_2">Example 2: Recommended robust MDP-I analysis.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example 3: Simulated data under MCAR.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example 4: Comparison of several trimming levels.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Example 5: Different rescaling method.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Example 6: MM estimator for the complete cases.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">Example 7: Standard FSM envelope-resuperimposition rule.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">Example 8: Explicit estimator-defined inlier mean (MDP-I).</a></li><li><a class="intrnllnk" href="#ExtraExample_7">Example 9: Fixed robust-distance sensitivity diagnostic (MDP-F).</a></li><li><a class="intrnllnk" href="#ExtraExample_8">Example 10: Coupled complete-case outlier trimming in TEM.</a></li><li><a class="intrnllnk" href="#ExtraExample_9">Example 11: Hausman-type omnibus scatter-discrepancy diagnostic.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_alpha">alpha</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_method">method</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_consistencyfactor">consistencyfactor</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_adaptivepool">adaptivepool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_adaptiveminref">adaptiveminref</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_omnibusrankexp">omnibusrankexp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_omnibusneff">omnibusneff</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bootstrap">bootstrap</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bootstraptype">bootstraptype</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_entropyref">entropyref</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsimul">nsimul</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_eps0">eps0</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_aggregation">aggregation</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_filterlev">filterlev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_coupledtrim">coupledtrim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_robust">robust</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_tol">tol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_dispresults">dispresults</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">mdMDPtest</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">mdMDPtest Mahalanobis Distance Perturbation test for MCAR</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=mdMDPtest(Y)</code><span class="syntax_example"><a class="intrnllnk" href="mdMDPtest.html#Example_1">example</a></span></li><li><code class="synopsis">out=mdMDPtest(Y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="mdMDPtest.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>mdMDPtest implements the Mahalanobis Distance Perturbation (MDP) test
   for assessing the Missing Completely At Random (MCAR) assumption. The
   test is based on the change in Mahalanobis distances for the units
   without missing values when location and scatter are estimated:</p> <p>
 
     1) using only the complete rows;</p> <p></p> <p>
-    2) using all rows through EM/TEM in the presence of missing values.</p> <p></p> <p>
+    2) using all rows through EM/TEM in the presence of missing values.</p> <p></p><p>
 
   Mean-statistic inference is based on the analytical asymptotic reference
   whenever the corresponding analytical branch is defined. If bootstrap=true,
-  an additional mask-preserving parametric bootstrap calibration is computed.</p> <p></p><p>
-  Its null distribution is generated from a Gaussian model fitted on the
-  complete rows and the observed missingness mask is imposed on each generated
-  sample.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mdMDPtest.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=mdMDPtest(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>)</code></span>Example 1: Classical MDP-U with default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mdMDPtest.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=mdMDPtest(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example 2: Recommended robust MDP-I analysis.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 1: Classical MDP-U with default options.</li></span></a></span></h3><div class="collapse"><p>
+  an additional full-pipeline bootstrap calibration under MCAR is
+  computed. The same bootstrap samples also calibrate the Hausman-type omnibus
+  statistic whenever its scatter-discrepancy covariance is available; the
+  discrepancy sandwich and statistical spectral rank are recomputed inside
+  every retained replicate. The null generator is selected through
+  bootstraptype: the backward-compatible default is a Gaussian model fitted
+  on the complete rows, 'empiricalradial' uses a null-enforcing
+  empirical-radial elliptical generator, and 'entropy' uses the
+  null-enforcing entropy-projected nonelliptical clean generator. Gaussian
+  and empirical-radial bootstraps preserve the observed mask. The entropy
+  bootstrap instead resamples values and missingness patterns independently
+  from their fitted product law, reproducing first-order pattern-frequency
+  randomness while enforcing MCAR. In every case the complete MDP pipeline
+  is rerun.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mdMDPtest.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=mdMDPtest(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>)</code></span>Example 1: Classical MDP-U with default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mdMDPtest.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=mdMDPtest(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example 2: Recommended robust MDP-I analysis.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 1: Classical MDP-U with default options.</li></span></a></span></h3><div class="collapse"><p>
      The numerical default alpha=0 is unchanged. With the default
      aggregation='auto', alpha=0 resolves to aggregation='ordinary'.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cows2026
 X = cows2026{:,:};
 out = mdMDPtest(X);
 % Display the two statistics TLmean and TDmean 
 % together with their asymptotic p-values.
-disp(out.results(["TLmean" "TDmean"],{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))</pre></div></div><pre class="codeoutput">                Tobs       SEasym      zAsym     pvalueAsym             Calibration          
-              ________    ________    _______    __________    ______________________________
+disp(out.results(["TLmean" "TDmean"],{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))</pre></div></div><pre class="codeoutput">                Tobs      SEasym      zAsym     pvalueAsym             Calibration          
+              ________    _______    _______    __________    ______________________________
 
-    TLmean    -0.16656    0.026601    -6.2617    3.8089e-10    {'elliptical radial sandwich'}
-    TDmean     -1.1423     0.18548    -6.1583    7.3519e-10    {'general-F sandwich'        }
+    TLmean    -0.16631     0.0266    -6.2522    4.0478e-10    {'elliptical radial sandwich'}
+    TDmean     -1.1409    0.18548     -6.151    7.6981e-10    {'general-F sandwich'        }
 
 </pre>
             </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2: Recommended robust MDP-I analysis.</li></span></a></span></h3><div class="collapse"><p>
@@ -35,13 +45,57 @@ disp(out.results(["TLmean" "TDmean"],{'Tobs','SEasym','zAsym','pvalueAsym','Cali
 X = cows2026{:,:};
 out = mdMDPtest(X,'alpha',0.25);
 % Display the observed statistics and asymptotic p-values with row names.
-disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))</pre></div></div><pre class="codeoutput">                  Tobs        SEasym      zAsym      pvalueAsym              Calibration           
-                _________    ________    ________    __________    ________________________________
+disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
+% Display the generic retained-moment directions and radial special-case diagnostics.
+disp(out.asympt.inlierScaling)</pre></div></div><pre class="codeoutput">                  Tobs        SEasym      zAsym      pvalueAsym                     Calibration                 
+                _________    ________    ________    __________    _____________________________________________
 
-    TLmedian    -0.052738         NaN         NaN         NaN      {'not available'               }
-    TLmean      -0.063063    0.059312     -1.0632     0.28767      {'adaptive elliptical sandwich'}
-    TDmedian     -0.32404         NaN         NaN         NaN      {'not available'               }
-    TDmean        -0.3999     0.41357    -0.96695     0.33357      {'adaptive elliptical sandwich'}
+    TLmedian    -0.052738         NaN         NaN         NaN      {'not available'                            }
+    TLmean      -0.063063    0.059346     -1.0626     0.28795      {'adaptive generic retained-moment sandwich'}
+    TDmedian     -0.32404         NaN         NaN         NaN      {'not available'                            }
+    TDmean        -0.3999     0.41357    -0.96695     0.33357      {'adaptive generic retained-moment sandwich'}
+
+                       available: 1
+                genericAvailable: 1
+                          reason: ''
+                       nComplete: 258
+                       nSelected: 258
+                fractionSelected: 1
+                fractionExcluded: 0
+                              rI: 1
+                             rLI: 0.1434
+                     TLtoTDRatio: 0.1434
+                        meanQAll: 6.9729
+                     meanQInlier: 6.9729
+           meanStabilizedQInlier: 1.0000
+                          kappa0: 0.9961
+                          kappaI: 0.9961
+                         lambdaI: 0.1429
+                              mI: [7&times;1 double]
+                              MI: [7&times;7 double]
+                              bI: [7&times;1 double]
+                              aI: [28&times;1 double]
+                             mLI: [7&times;1 double]
+                             MLI: [7&times;7 double]
+                             bLI: [7&times;1 double]
+                             aLI: [28&times;1 double]
+                        a0Radial: [28&times;1 double]
+                        aIRadial: [28&times;1 double]
+                       aLIRadial: [28&times;1 double]
+                          bINorm: 5.5079e-13
+                         bLINorm: 2.4280
+        aIRadialRelativeResidual: 3.5612e-16
+       aLIRadialRelativeResidual: 0.0895
+          firstMomentMahalanobis: 3.5961e-15
+       logFirstMomentMahalanobis: 0.0243
+       secondMomentShapeResidual: 2.0257e-16
+    logSecondMomentShapeResidual: 0.0821
+                  radialSigma2TD: 86.5474
+                  radialSigma2TL: 1.7800
+                 genericSigma2TD: 86.5474
+                 genericSigma2TL: 1.7821
+              primaryCalibration: 'generic retained moments'
+                    theoryStatus: 'Generic retained-moment MDP-I calibration. The scalar rI and rLI multipliers are retained only as the proportional-moment special case.'
 
 </pre>
             </p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3: Simulated data under MCAR.</li></span></a></span></h3><div class="collapse"><p>
@@ -62,13 +116,13 @@ out = mdMDPtest(Y,'bootstrap',true,'nsimul',199,'plots',true);
 disp(out.results)</pre></div></div><pre class="codeoutput">                  Tobs        SEasym      zAsym     pvalueAsym    pvalueBoot             Calibration          
                 _________    ________    _______    __________    __________    ______________________________
 
-    TLmedian      0.01349         NaN        NaN         NaN         0.54       {'not available'             }
-    TLmean      0.0089195    0.027064    0.32957     0.74172         0.71       {'elliptical radial sandwich'}
+    TLmedian     0.013487         NaN        NaN         NaN         0.54       {'not available'             }
+    TLmean      0.0089195    0.027064    0.32958     0.74172         0.71       {'elliptical radial sandwich'}
     TDmedian     0.037871         NaN        NaN         NaN        0.655       {'not available'             }
     TDmean       0.059397     0.13462    0.44123     0.65905        0.615       {'general-F sandwich'        }
 
 </pre>
-            <a href='http://rosa.unipr.it/fsda/mdMDPtest.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\mdMDPtest_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 4: Comparison of several trimming levels.</li></span></a></span></h3><div class="collapse"><p>
+            <a href='http://rosa.unipr.it/fsda/mdMDPtest.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\mdMDPtest_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\mdMDPtest_02.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 4: Comparison of several trimming levels.</li></span></a></span></h3><div class="collapse"><p>
      Compare bootstrap p-values for the four named MDP statistics.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
 n = 300;
 p = 5;
@@ -89,31 +143,13 @@ end
 pvalTable = table(Alpha,pval(:,1),pval(:,2),pval(:,3),pval(:,4), ...
 'VariableNames',{'alpha','pBoot_TLmedian','pBoot_TLmean', ...
 'pBoot_TDmedian','pBoot_TDmean'});
-disp(pvalTable)</pre></div></div><pre class="codeoutput">    alpha    pBoot_TLmedian    pBoot_TLmean    pBoot_TDmedian    pBoot_TDmean
-    _____    ______________    ____________    ______________    ____________
-
-       0          0.54             0.71            0.655            0.615    
-     0.1         0.425            0.395            0.475            0.365    
-    0.25         0.055            0.065            0.045            0.075    
-     0.5         0.395             0.46             0.39            0.515    
-
-</pre>
-            </p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 5: Different rescaling method.</li></span></a></span></h3><div class="collapse"><p>
+disp(pvalTable)</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 5: Different rescaling method.</li></span></a></span></h3><div class="collapse"><p>
      Use method betaMap instead of the default pri.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cows2026
 X = cows2026{:,:};
 out = mdMDPtest(X,'alpha',0.25,'method','betaMap', ...
 'bootstrap',true,'nsimul',199);
 % Display statistics, asymptotic p-values and bootstrap p-values together.
-disp(out.results)</pre></div></div><pre class="codeoutput">                  Tobs        SEasym      zAsym     pvalueAsym    pvalueBoot              Calibration           
-                _________    ________    _______    __________    __________    ________________________________
-
-    TLmedian    -0.095717         NaN        NaN         NaN        0.185       {'not available'               }
-    TLmean        -0.1034    0.065614    -1.5758     0.11506        0.165       {'adaptive elliptical sandwich'}
-    TDmedian     -0.58016         NaN        NaN         NaN        0.155       {'not available'               }
-    TDmean       -0.64741     0.45752    -1.4151     0.15705        0.325       {'adaptive elliptical sandwich'}
-
-</pre>
-            </p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 6: MM estimator for the complete cases.</li></span></a></span></h3><div class="collapse"><p>
+disp(out.results)</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 6: MM estimator for the complete cases.</li></span></a></span></h3><div class="collapse"><p>
      Use an MM estimator with 95 percent nominal efficiency. The
      preliminary S estimator has breakdown point alpha=0.25. Outliers are
      declared using the fixed Bonferronized simultaneous level 0.99.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cows2026
@@ -139,7 +175,9 @@ X = cows2026{:,:};
 out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
 'aggregation','inlier');
 fprintf('Complete cases entering the mean statistics: %d\n',out.nMeanCC)
-disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 9: Fixed robust-distance sensitivity diagnostic (MDP-F).</li></span></a></span></h3><div class="collapse"><p>
+disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
+% rI and rLI allow the excluded fraction to remain nonvanishing.
+disp(out.asympt.inlierScaling)</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 9: Fixed robust-distance sensitivity diagnostic (MDP-F).</li></span></a></span></h3><div class="collapse"><p>
      Use the chi-square 0.99 cutoff on the complete-case robust distances.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cows2026
 X = cows2026{:,:};
 out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
@@ -167,84 +205,41 @@ fprintf('Complete cases forced to zero TEM weight: %d\n',out.nCoupledCC)
 disp('Rows forced to zero TEM weight:')
 disp(out.coupledRows)
 % Display statistics and both p-value calibrations with explicit row names.
-disp(out.results)</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 11: Distribution-adaptive pooled TEM correction.</li></span></a></span></h3><div class="collapse"><p>
-     Use the MCD complete-case fit as the reference geometry for empirical
-     radial consistency factors. With adaptivepool=true (default), projected
-     reference radii are pooled across patterns of the same observed
-     dimension. The same pipeline is rerun independently inside every
-     bootstrap sample.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cows2026
+disp(out.results)</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 11: Hausman-type omnibus scatter-discrepancy diagnostic.</li></span></a></span></h3><div class="collapse"><p>
+     Compare the complete-case and all-available scatter estimators through
+     the full quadratic estimator discrepancy rather than through only the
+     one-dimensional MDP projection. With alpha&gt;0 the default mean
+     aggregation is MDP-I, but the final inlier aggregation does not alter
+     the omnibus statistic because the latter acts directly on the fitted
+     scatter-estimator discrepancy.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cows2026
 X = cows2026{:,:};
-out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
-'consistencyfactor','adaptive');
-disp(out.TEMkinfo)
-disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
-disp(out.asympt.TDmean)
-disp(out.asympt.TEM.patternDiagnostics)</pre></div></div></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 12: General-F analytical calibration for untrimmed MDP-U.</li></span></a></span></h3><div class="collapse"><p>
-     For alpha=0 and ordinary aggregation, TDmean uses the feasible
-     general-F sandwich as the primary analytical calibration. The
-     Gaussian-information specialization is retained as a diagnostic.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cows2026
-X = cows2026{:,:};
-out = mdMDPtest(X,'alpha',0,'aggregation','ordinary');
-% Display the primary analytical results. TLmean uses the elliptical
-% radial extension of the general-F sandwich; TDmean uses general-F.
-disp(out.results)
-% Display separately the Gaussian-information benchmark.
-disp(out.resultsGaussian)</pre></div></div><pre class="codeoutput">                  Tobs       SEasym      zAsym     pvalueAsym    pvalueBoot             Calibration          
-                ________    ________    _______    __________    __________    ______________________________
+out = mdMDPtest(X,'alpha',0.25,'bootstrap',true,'nsimul',199);
+disp(out.resultsOmnibus)
+% Detailed observed and bootstrap rank diagnostics are stored in out.omnibus.
+disp(out.omnibus.rankSensitivity)
+if out.omnibus.bootstrapAvailable
+disp(out.omnibus.rankBootFrequency)
+end</pre></div></div><pre class="codeoutput">                       Stat     df    pvalue     pvalueBoot                               Calibration                            
+                      ______    __    _______    __________    __________________________________________________________________
 
-    TLmedian    -0.12674         NaN        NaN           NaN       NaN        {'not available'             }
-    TLmean      -0.16656    0.026601    -6.2617    3.8089e-10       NaN        {'elliptical radial sandwich'}
-    TDmedian    -0.79321         NaN        NaN           NaN       NaN        {'not available'             }
-    TDmean       -1.1423     0.18548    -6.1583    7.3519e-10       NaN        {'general-F sandwich'        }
+    HausmanOmnibus    11.614    7     0.11399       0.05       {'rank-selected adaptive elliptical scatter-discrepancy sandwich'}
 
-                Tobs         SE          z         pvalue  
-              ________    ________    _______    __________
+    Exponent      Eta       Threshold     Rank
+    ________    ________    __________    ____
 
-    TLmean    -0.16656    0.018681    -8.9163    4.8205e-19
-    TDmean     -1.1423     0.13077    -8.7352    2.4327e-18
+       0.25      0.21084    6.7148e-07      5 
+    0.33333      0.12549    3.9966e-07      7 
+        0.4     0.082859    2.6388e-07     10 
 
-</pre>
-            </p></div></div><div id="Extraexample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 13: Display a commented summary and the results table.</li></span></a></span></h3><div class="collapse"><p>
-     With dispresults=true, the procedure, fitting options, sample sizes,
-     and the named results table are displayed automatically.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load cows2026
-X = cows2026{:,:};
-out = mdMDPtest(X,'dispresults',true,'bootstrap',true);
-% out.results contains the primary calibration and out.resultsGaussian
-% contains the distinct Gaussian benchmark when alpha=0 and MDP-U is used.</pre></div></div><pre class="codeoutput">*****************************************************************
-Mahalanobis Distance Perturbation test for MCAR
-Procedure                    : MDP-U
-Mean aggregation             : ordinary
-Trimming level alpha         : 0
-Complete cases               : 258 out of 506
-Complete cases used in means : 258
-Complete-case fit             : classical
-All-data fit                  : EM
-Distance rescaling method     : pri
-Primary analytical reference  : statistic-specific; see Calibration column
-Bootstrap replications kept   : 499
- 
-Primary analytical results
- 
-                  Tobs       SEasym      zAsym     pvalueAsym    pvalueBoot             Calibration          
-                ________    ________    _______    __________    __________    ______________________________
+    Rank    Count    Fraction
+    ____    _____    ________
 
-    TLmedian    -0.12674         NaN        NaN           NaN      0.002       {'not available'             }
-    TLmean      -0.16656    0.026601    -6.2617    3.8089e-10      0.002       {'elliptical radial sandwich'}
-    TDmedian    -0.79321         NaN        NaN           NaN      0.002       {'not available'             }
-    TDmean       -1.1423     0.18548    -6.1583    7.3519e-10      0.002       {'general-F sandwich'        }
+     4       21      0.10553 
+     5       83      0.41709 
+     6       69      0.34673 
+     7       24       0.1206 
+     8        2      0.01005 
 
-Asymptotic inference is not available for the median statistics.
- 
-Gaussian-information benchmark (normality assumed)
- 
-                Tobs         SE          z         pvalue  
-              ________    ________    _______    __________
-
-    TLmean    -0.16656    0.018681    -8.9163    4.8205e-19
-    TDmean     -1.1423     0.13077    -8.7352    2.4327e-18
-
-Small p-values indicate evidence against MCAR for the corresponding calibration.
-*****************************************************************
 </pre>
             </p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x p data matrix possibly containing NaNs.</p> <p></p> <p>
         Rows of Y represent observations and columns represent variables.</p> <p></p><p>
@@ -253,7 +248,11 @@ Small p-values indicate evidence against MCAR for the corresponding calibration.
 </code>,<code> 'consistencyfactor','adaptive'
 </code>,<code> 'adaptivepool',false
 </code>,<code> 'adaptiveminref',10
+</code>,<code> 'omnibusrankexp',0.4
+</code>,<code> 'omnibusneff','complete'
 </code>,<code> 'bootstrap',true
+</code>,<code> 'bootstraptype','entropy','adaptivepool',false
+</code>,<code> 'entropyref','all'
 </code>,<code> 'nsimul',999
 </code>,<code> 'conflev',0.99
 </code>,<code> 'eps0',1e-10
@@ -337,14 +336,106 @@ Small p-values indicate evidence against MCAR for the corresponding calibration.
             a pattern cutoff required by the adaptive correction.</span></a><span class="example_desc">positive            integer.</span></span></h3><div class="collapse">	<p><p>The default is 20. This option is used only when
             alpha&gt;0 and consistencyfactor='adaptive'.</p> <p></p><p>
             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'adaptiveminref',10
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bootstrap" class="clearfix"></div><h3 id="input_argument_namevalue_bootstrap" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bootstrap</code> &#8212;Add mask-preserving parametric bootstrap calibration.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>The default is false. The analytical p-values for the two mean
-            statistics are evaluated independently of this option whenever
-            the corresponding analytical branch is defined. If bootstrap=true,
-            bootstrap p-values for all four statistics and bootstrap confidence
-            intervals are additionally computed.</p> <p></p><p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_omnibusrankexp" class="clearfix"></div><h3 id="input_argument_namevalue_omnibusrankexp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>omnibusrankexp</code> &#8212;Exponent used by the statistical spectral rank rule for
+            the Hausman-type omnibus statistic.</span></a><span class="example_desc">scalar in the open interval            (0,0.</span></span></h3><div class="collapse">	<p><p>5). The default is 1/3. If lambda_1 is the largest estimated
+            eigenvalue of the scatter-discrepancy covariance, the relative
+            threshold is
+
+                eta_n = nEff^(-omnibusrankexp)
+
+            and eigenvalue j is retained when lambda_j/lambda_1 &gt; eta_n.</p> <p></p> <p>
+            The values 1/4, 1/3 and 2/5 are also reported as sensitivity
+            diagnostics in out.omnibus.rankSensitivity.</p> <p></p><p>
+            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'omnibusrankexp',0.4
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_omnibusneff" class="clearfix"></div><h3 id="input_argument_namevalue_omnibusneff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>omnibusneff</code> &#8212;Effective sample size used by the statistical spectral rank
+            threshold.</span></a><span class="example_desc">character vector, string scalar | numeric scalar.</span></span></h3><div class="collapse">	<p><p>The default is 'n'. Possible character values are 'n' and
+            'complete'. With 'n', nEff is the total number of observations.</p> <p></p> <p>
+            With 'complete', nEff is the number of complete cases. A numeric
+            scalar greater than one can be supplied directly. The option
+            affects only omnibus spectral rank selection; it does not change
+            fitting, scalar MDP statistics or the discrepancy covariance.</p> <p></p><p>
+            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'omnibusneff','complete'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char | string | double</code></p></div></div><div class="expandableContent"><div id="inputarg_bootstrap" class="clearfix"></div><h3 id="input_argument_namevalue_bootstrap" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bootstrap</code> &#8212;Add full-pipeline bootstrap calibration under MCAR.</span></a><span class="example_desc">logical scalar.</span></span></h3><div class="collapse">	<p><p>The default is false. The analytical p-values
+            for the two mean statistics are evaluated independently of this
+            option whenever the corresponding analytical branch is defined.</p> <p></p> <p>
+            If bootstrap=true, bootstrap p-values for all four scalar
+            statistics and bootstrap confidence intervals are additionally
+            computed. Gaussian and empirical-radial generators condition on
+            the observed mask; the entropy generator samples values and masks
+            independently from its fitted MCAR product law. When the Hausman-
+            type omnibus covariance is available,
+            a full-pipeline bootstrap p-value is also computed. In every
+            replicate the complete-case fit, the all-data EM/TEM fit, the
+            adaptive radial correction when requested, the selected mean
+            aggregation rule, the scatter-discrepancy covariance and the
+            omnibus spectral rank are recomputed.</p> <p></p><p>
             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bootstrap',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_nsimul" class="clearfix"></div><h3 id="input_argument_namevalue_nsimul" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsimul</code> &#8212;Number of bootstrap simulations.</span></a><span class="example_desc">scalar integer.</span></span></h3><div class="collapse">	<p><p>The default value is 499. This option is used only when
-            bootstrap=true.</p> <p></p><p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_bootstraptype" class="clearfix"></div><h3 id="input_argument_namevalue_bootstraptype" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bootstraptype</code> &#8212;Bootstrap null generator.</span></a><span class="example_desc">character vector | string scalar.</span></span></h3><div class="collapse">	<p><p>Possible values are 'gaussian', 'empiricalradial' and 'entropy'.</p> <p></p> <p>
+            The default is 'gaussian' for backward compatibility. This option
+            is used only when bootstrap=true.</p> <p></p> <p>
+
+            'gaussian' generates full p-dimensional observations from the
+            Gaussian model fitted to the complete cases and then imposes the
+            observed missingness mask.</p> <p></p> <p>
+
+            'empiricalradial' is a null-enforcing semiparametric elliptical
+            generator. Complete-case squared Mahalanobis radii are computed
+            in the fitted complete-case geometry and resampled with
+            replacement. Independent spherical directions are generated and
+            the observed missingness mask is imposed. This preserves the
+            empirical radial law but deliberately imposes elliptical angular
+            structure.</p> <p></p> <p>
+
+            'entropy' implements the null-enforcing entropy-projected clean
+            bootstrap. A clean complete-data empirical reference law is first
+            constructed according to entropyref. Its support points are left
+            unchanged and only their probabilities are changed by a minimum-
+            KL projection. In finite samples, the robust-functional and
+            patternwise retained-location restrictions are imposed exactly,
+            the common retained fraction is imposed exactly at a jointly
+            selected projected TEM cutoff, and the trace-free retained-shape
+            restrictions are imposed within a shrinking RMS-normalized
+            tolerance. The base tolerance is log(n)/n and is enlarged only
+            by the minimum amount required for finite-support feasibility and
+            a strict relative-interior solution. Population trace-free shape
+            isotropy remains the null condition. Full observations are
+            resampled from the projected nonelliptical law and missingness
+            patterns are independently resampled from their empirical pattern
+            probabilities. Thus radius-direction and angular structure in the
+            clean support are preserved rather than sphericalized. This branch
+            requires alpha&gt;0, consistencyfactor='adaptive',
+            adaptivepool=false, coupledtrim=false, one of the parameter-
+            free mappings 'pri', 'expScale', 'zMap', 'chiMap' or 'betaMap',
+            and Optimization Toolbox (linprog and fmincon) for the finite-
+            support feasibility and minimum-KL programs. In the rare case
+            where the exact finite-support target is feasible only on a
+            proper convex-hull face, the minimum-KL projection is performed
+            on the maximal feasible active support; only support points that
+            are numerically forced to zero by the exact calibration system
+            receive zero projected probability. Projection diagnostics are
+            returned in out.entropyProjection.</p> <p></p><p>
+            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bootstraptype','entropy','adaptivepool',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char | string</code></p></div></div><div class="expandableContent"><div id="inputarg_entropyref" class="clearfix"></div><h3 id="input_argument_namevalue_entropyref" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>entropyref</code> &#8212;Clean complete-data reference support for bootstraptype='entropy'.</span></a><span class="example_desc">the default is 'robust'.</span></span></h3><div class="collapse">	<p><p>With 'robust', complete cases declared
+            as outliers by the selected robust complete-case estimator are
+            removed before entropy projection. With 'all', all observed
+            complete cases are retained. A logical vector of length n or
+            nComplete may instead be supplied to define a custom clean
+            support. The selected support is given uniform base probability.</p> <p></p> <p>
+            The automatic robust support is a practical construction of the
+            clean law; if the robust rule deliberately removes a nonvanishing
+            fraction of genuine clean observations, a scientifically justified
+            custom support should be supplied instead. This option is used
+            only by the entropy bootstrap.</p> <p></p><p>
+            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'entropyref','all'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char | string | logical</code></p></div></div><div class="expandableContent"><div id="inputarg_nsimul" class="clearfix"></div><h3 id="input_argument_namevalue_nsimul" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsimul</code> &#8212;Number of successful bootstrap simulations.</span></a><span class="example_desc">scalar integer.</span></span></h3><div class="collapse">	<p><p>The default value is 499. This option is used only when
+            bootstrap=true. If an individual bootstrap draw fails only
+            because mdTEM reports too few adaptive reference points, that
+            draw is discarded and regenerated. Other errors are rethrown.</p> <p></p> <p>
+            Draws yielding nonfinite scalar statistics are also regenerated.</p> <p></p> <p>
+            When omnibus calibration is active, a draw whose replicate-
+            specific discrepancy covariance or rank-selected Hausman
+            statistic is unavailable is likewise regenerated and counted in
+            out.nInvalidBootstrapOmnibus.</p> <p></p><p>
             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsimul',999
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence level used to compute bootstrap confidence intervals.</span></a><span class="example_desc">scalar in the interval (0,1).</span></span></h3><div class="collapse">	<p><p>The default value is 0.95. This
             option is used only when bootstrap=true.</p> <p></p><p>
@@ -357,32 +448,41 @@ Small p-values indicate evidence against MCAR for the corresponding calibration.
            'auto', 'ordinary', 'inlier' or 'fixed'. The default is 'auto'.</p> <p></p> <p>
 
            'auto' selects 'ordinary' when alpha=0 and 'inlier' when
-           alpha&gt;0. Thus the default call remains the classical MDP-U
-           procedure, whereas any explicitly requested positive robustness
-           level automatically uses the recommended robust MDP-I
-           aggregation.</p> <p></p> <p>
+           alpha&gt;0. The analysis is deliberately kept coherent: alpha=0
+           defines the fully nonrobust MDP-U procedure, whereas alpha&gt;0
+           defines a robust procedure throughout.</p> <p></p> <p>
 
            'ordinary' computes the two mean statistics using all complete
-           cases (MDP-U). This is the classical/theoretical aggregation
-           rule and can also be requested explicitly when alpha&gt;0.</p> <p></p> <p>
+           cases (MDP-U). It is available only when alpha=0. A robust fit
+           (alpha&gt;0) cannot be combined with ordinary aggregation.</p> <p></p> <p>
 
            'inlier' computes the two mean statistics using only complete
            cases not declared as outliers by the selected robust
            complete-case estimator (MDP-I). This is the recommended robust
-           aggregation rule and requires alpha&gt;0.</p> <p></p> <p>
+           aggregation rule and requires alpha&gt;0. Its primary analytical
+           calibration uses generic retained-moment directions bI,aI for
+           TDmean and their weighted analogues bLI,aLI for TLmean, propagated
+           through the joint location--scatter estimator-discrepancy sandwich.</p> <p></p> <p>
+           The excluded fraction may converge to a positive constant under
+           the stable-inlier conditions. The scalar radial multipliers rI
+           and rLI are retained in out.asympt.inlierScaling only as the
+           retained-moment proportionality special case.</p> <p></p> <p>
 
            'fixed' computes the two mean statistics using only complete
-           cases whose complete-case squared Mahalanobis distance is not
-           larger than chi2inv(filterlev,p) (MDP-F). This rule is intended
-           primarily as a robust sensitivity diagnostic.</p> <p></p> <p>
+           cases whose robust complete-case squared Mahalanobis distance is
+           not larger than chi2inv(filterlev,p) (MDP-F). It requires
+           alpha&gt;0 and is intended primarily as a robust sensitivity
+           diagnostic.</p> <p></p> <p>
 
-           The median statistics are not affected by this option. With
-           coupledtrim=false (default), the aggregation rule acts only on
-           the final two means and does not alter the EM/TEM fit. The
-           selected mean aggregation rule is reconstructed independently
-           in every bootstrap sample.</p> <p></p><p>
+           Mixed robust/nonrobust configurations are not allowed:</p> <p>
+           alpha=0 requires aggregation='ordinary', while alpha&gt;0 requires
+           aggregation='inlier' or 'fixed'. The median statistics are not
+           affected by this option. With coupledtrim=false (default), the
+           aggregation rule acts only on the final two means and does not
+           alter the EM/TEM fit. The selected mean aggregation rule is
+           reconstructed independently in every bootstrap sample.</p> <p></p><p>
            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'aggregation','inlier'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char | string</code></p></div></div><div class="expandableContent"><div id="inputarg_filterlev" class="clearfix"></div><h3 id="input_argument_namevalue_filterlev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>filterlev</code> &#8212;Probability level defining the fixed robust-distance gate for
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char | string</code></p></div></div><div class="expandableContent"><div id="inputarg_filterlev" class="clearfix"></div><h3 id="input_argument_namevalue_filterlev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>filterlev</code> &#8212;Probability level defining the fixed robust-distance cutoff for
            aggregation='fixed'.</span></a><span class="example_desc">scalar in the interval (0,1).</span></span></h3><div class="collapse">	<p><p>The cutoff
            is c=chi2inv(filterlev,p). The default value is 0.99.</p> <p></p> <p>
            This option is ignored for the other aggregation rules.</p> <p></p><p>
@@ -411,21 +511,46 @@ Small p-values indicate evidence against MCAR for the corresponding calibration.
                              field is used only if robust.class='MM'. The
                              default value is 0.95.</p></td></tr><tr valign="top"><td><code>bonflev</code></td><td><p><p>Forward Search signal/stopping rule. This
                              field is used only if robust.class='FS'.</p> <p></p> <p>
-                             Use [] (default) for the standard FSM
+                             Use [] for the standard FSM
                              signal-detection, validation and envelope-
-                             resuperimposition rules, or 0.99 for the
+                             resuperimposition rules, or 0.99 (default) for the
                              direct 99 percent Bonferroni-bound rule.</p> <p></p><p>
             The robustness level is controlled by alpha. In the FS case,
             floor(nComplete*(1-alpha)) is used as the FSM initial
-            monitoring step; in the MCD case alpha is passed as bdp; in
-            the MM case alpha is passed as Sbdp. For all three estimators,
-            the confidence level used to declare outliers is fixed at the
-            Bonferronized simultaneous level 0.99. In the FS case the user
-            can choose between the direct Bonferroni rule and the standard
-            envelope-resuperimposition rule through robust.bonflev.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'robust','MCD' | r=struct; r.class='FS'; r.bonflev=[]; 'robust',r
+            monitoring step; in the MCD case alpha is passed as bdp and the
+            reweighted MCD location/scatter are used; in the MM case alpha
+            is passed as Sbdp. For all three estimators, the confidence level
+            used to declare outliers is fixed at the Bonferronized simultaneous
+            level 0.99. In the FS case the user can choose between the direct
+            Bonferroni rule and the standard envelope-resuperimposition rule
+            through robust.bonflev. For MCD, the observations retained by the
+            reweighting step define the final complete-case fit and the frozen
+            classification used by the analytical sandwich.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'robust','MCD' | r=struct; r.class='FS'; r.bonflev=[]; 'robust',r
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char | string | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_tol" class="clearfix"></div><h3 id="input_argument_namevalue_tol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tol</code> &#8212;Convergence tolerance passed to mdTEM.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default value is 1e-10.</p> <p></p><p>
             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tol',1e-8
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Flag to produce the output plot.</span></a><span class="example_desc">the default value is false.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Flag to produce graphical output.</span></a><span class="example_desc">logical scalar.</span></span></h3><div class="collapse">	<p><p>The default value is false. In addition to the distance and,
+            when requested, bootstrap displays, mdMDPtest produces a
+            pattern-localization plot whenever the omnibus pattern
+            decomposition is available. The latter is deliberately styled
+            like the corresponding mdLittletest display: at most the ten
+            most important informative missingness patterns are shown as
+            horizontal bars. Bar color distinguishes patterns that reinforce
+            the global scatter discrepancy (C_r&gt;0) from patterns that offset
+            it (C_r&lt;0). If the omnibus test is significant at the conventional
+            0.05 level, bar length is 100*w_r, where
+            w_r=|C_r|/sum_h|C_h|, so the display localizes the rejection. If
+            the omnibus test is not significant, the title explicitly labels
+            the display as a residual decomposition and bar length is the
+            frequency-adjusted residual magnitude |C_r|/sqrt(FitWeight_r).</p> <p></p> <p>
+            The sign of C_r is retained through bar color. This descriptive
+            adjustment removes the leading pattern-size effect; it is not a
+            studentized pattern statistic or an additional test. For robust
+            MDP-I and MDP-F, a
+            narrow aligned panel also shows the share of all observations
+            trimmed by TEM that belongs to each displayed pattern. Pattern
+            labels use 1 for observed and 0 for missing coordinates, as in
+            mdLittletest.</p> <p></p><p>
+            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_dispresults" class="clearfix"></div><h3 id="input_argument_namevalue_dispresults" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispresults</code> &#8212;Display commented test results.</span></a><span class="example_desc">logical scalar.</span></span></h3><div class="collapse">	<p><p>The default value is false. If true, mdMDPtest displays
             the MDP procedure actually used, the principal fitting
             options, the number of complete cases, the number entering
@@ -461,12 +586,106 @@ Small p-values indicate evidence against MCAR for the corresponding calibration.
                             information benchmark. It is returned for the
                             classical ordinary MDP-U configuration
                             (alpha=0, aggregation='ordinary') and is empty
-                            otherwise.</p></td></tr><tr valign="top"><td><code>bootstrap</code></td><td><p>Value of input option bootstrap.</p></td></tr><tr valign="top"><td><code>dispresults</code></td><td><p>Value of input option dispresults.</p></td></tr><tr valign="top"><td><code>pvalueBoot</code></td><td><p>1 x 4 vector containing bootstrap p-values for
-                            the four statistics. This field is present only
-                            when bootstrap=true.</p></td></tr><tr valign="top"><td><code>Tboot</code></td><td><p>nsimul x 4 matrix containing the bootstrap values
+                            otherwise.</p></td></tr><tr valign="top"><td><code>omnibus</code></td><td><p><p>Structure containing the Hausman-type omnibus
+                            scatter-discrepancy test. Let
+                              delta=vech(out.cov-out.covCC)
+                            and let OmegaDelta estimate the asymptotic
+                            covariance of sqrt(n)*delta. The statistic is
+                              H=n*delta'*OmegaDelta^+*delta,
+                            where ^+ denotes the Moore-Penrose inverse. Under
+                            the corresponding analytical MCAR reference,
+                            H is asymptotically chi-square with degrees of
+                            freedom equal to the statistically selected
+                            spectral rank. The rank rule retains eigenvalue j
+                            when lambda_j/lambda_1 exceeds
+                            eta_n=nEff^(-omnibusrankexp). Fields include
+                            available, stat, df, pvalue, delta, OmegaDelta,
+                            OmegaDeltaPlus, eigenvalues, relativeEigenvalues,
+                            largestEigenvalue, numericalTolerance,
+                            rankThreshold, relativeRankThreshold, rankExponent,
+                            effectiveSampleSize, effectiveSampleSizeSource,
+                            rhoLastKept, rhoFirstDiscarded, spectralGapRatio,
+                            lowerThresholdMargin, upperThresholdMargin,
+                            rankSensitivity, nullSpaceResidual, calibration
+                            and reason. The numerical tolerance is used only
+                            to diagnose roundoff-level negative eigenvalues;</p> <p></p> <p>
+                            it does not determine the statistical rank. When
+                            bootstrap=true and the observed omnibus statistic
+                            is available, the same full fitting and covariance
+                            pipeline is rerun in every bootstrap replicate and
+                            the same spectral rank rule is recomputed. Further
+                            fields then include bootstrapAvailable,
+                            bootstrapReason, pvalueBoot, statBoot, rankBoot,
+                            relativeEigenvaluesBoot, largestEigenvalueBoot,
+                            rankThresholdBoot, relativeRankThresholdBoot,
+                            rhoLastKeptBoot, rhoFirstDiscardedBoot and
+                            rankBootFrequency.</p> <p></p> <p>
+
+                            When the observed omnibus statistic is available,
+                            out.omnibus.patternContributions gives a pattern-
+                            localization decomposition of H.  The all-data
+                            fitted scatter is reconstructed as a weighted sum
+                            of pattern-specific conditional scatter terms and
+                            the global discrepancy is split accordingly.  For
+                            pattern r, Contribution is the signed quantity C_r
+                            satisfying sum_r C_r=H up to numerical tolerance;</p> <p></p> <p>
+                            SignedShare=C_r/H, AbsWeight=|C_r|/sum_h|C_h| and
+                            Sign=sign(C_r). FrequencyAdjustedContribution is
+                            C_r/sqrt(FitWeight_r) when FitWeight_r&gt;0 and is a
+                            descriptive leading-order pattern-size adjustment.</p> <p></p><p>
+                            The table also reports pattern size, retained size
+                            and fitted pattern weight. For alpha&gt;0 it additionally
+                            reports nTEMTrimmed, TEMTrimmedFractionWithinPattern
+                            and ShareOfAllTEMTrimmed, based on TEM's own final
+                            concentration indicator (before any externally forced
+                            coupled exclusions). PatternLabel uses the same binary
+                            observed-data encoding as mdLittletest (1=observed,
+                            0=missing). SignedShare may be negative or exceed one
+                            when pattern effects cancel. AbsWeight is nonnegative
+                            and sums to one, making it suitable for measuring
+                            concentration of a global rejection.</p></p></td></tr><tr valign="top"><td><code>resultsOmnibus</code></td><td><p>1 x 5 table containing Stat, df, pvalue,
+                            pvalueBoot and Calibration for the Hausman-type
+                            omnibus test. The column pvalue is the analytical
+                            chi-square p-value; pvalueBoot is the full-pipeline
+                            bootstrap p-value. NaNs are returned when the
+                            corresponding calibration is unavailable.</p></td></tr><tr valign="top"><td><code>bootstrap</code></td><td><p>Value of input option bootstrap.</p></td></tr><tr valign="top"><td><code>bootstraptype</code></td><td><p><p>Bootstrap null generator actually requested:</p> <p>
+                            'gaussian', 'empiricalradial' or 'entropy'.</p></p></td></tr><tr valign="top"><td><code>entropyref</code></td><td><p>Entropy clean-reference specification supplied by
+                            the user. It is relevant only to bootstraptype
+                            'entropy'.</p></td></tr><tr valign="top"><td><code>entropyProjection</code></td><td><p><p>Diagnostics for the entropy projection.</p> <p></p><p>
+                            Fields include clean-reference counts, projected
+                            probabilities, raw and nonredundant constraint
+                            dimensions, pre/post calibration residuals, the
+                            calibration-covariance eigenvalue diagnostics,
+                            exponential-tilt multiplier norm, maximum weight
+                            ratio, effective sample size, L2 probability-ratio
+                            change, relative entropy, an exact finite-support
+                            relative-interior LP diagnostic, solver diagnostics,
+                            activeSupport diagnostics for the rare boundary
+                            I-projection fallback, patternDiagnostics and
+                            nPatterns. Empty unless
+                            the entropy bootstrap is requested.</p></p></td></tr><tr valign="top"><td><code>dispresults</code></td><td><p>Value of input option dispresults.</p></td></tr><tr valign="top"><td><code>pvalueBoot</code></td><td><p>1 x 4 vector containing the backward-compatible
+                            absolute-value two-sided bootstrap p-values. This
+                            field is present only when bootstrap=true.</p></td></tr><tr valign="top"><td><code>pvalueBootEqualTail</code></td><td><p>1 x 4 vector containing equal-tail
+                            two-sided bootstrap p-values. This is especially
+                            informative for the finite-sample nonelliptical
+                            entropy bootstrap, whose distribution need not be
+                            exactly symmetric.</p></td></tr><tr valign="top"><td><code>resultsBootstrap</code></td><td><p>Table with observed statistic, lower
+                            bootstrap confidence limit, bootstrap median,
+                            upper bootstrap confidence limit, absolute-value
+                            p-value and equal-tail p-value. Empty when
+                            bootstrap=false.</p></td></tr><tr valign="top"><td><code>bootstrapDiagnostics</code></td><td><p>Structure documenting bootstrap mask
+                            mode, lower/upper one-sided probabilities, both
+                            two-sided p-value definitions and the complete-
+                            case counts across retained replicates. For the
+                            entropy generator it also contains patternCountBoot,
+                            patternFractionBoot, targetPatternProbabilities and
+                            meanPatternFractions, documenting random-mask
+                            reproduction of the empirical pattern law.</p></td></tr><tr valign="top"><td><code>Tboot</code></td><td><p>nsimul x 4 matrix containing the bootstrap values
                             of the four statistics. This field is present only
                             when bootstrap=true.</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>Value of input option alpha.</p></td></tr><tr valign="top"><td><code>method</code></td><td><p>Value of input option method.</p></td></tr><tr valign="top"><td><code>consistencyfactor</code></td><td><p>TEM consistency-factor option actually
-                            requested. It is relevant only when alpha&gt;0.</p></td></tr><tr valign="top"><td><code>adaptivepool</code></td><td><p>Logical adaptive pooling option.</p></td></tr><tr valign="top"><td><code>adaptiveminref</code></td><td><p>Minimum adaptive reference count.</p></td></tr><tr valign="top"><td><code>TEMkfactor</code></td><td><p>Scalar summary of the final TEM consistency
+                            requested. It is relevant only when alpha&gt;0.</p></td></tr><tr valign="top"><td><code>adaptivepool</code></td><td><p>Logical adaptive pooling option.</p></td></tr><tr valign="top"><td><code>adaptiveminref</code></td><td><p>Minimum adaptive reference count.</p></td></tr><tr valign="top"><td><code>omnibusrankexp</code></td><td><p>Exponent used by the omnibus spectral rank
+                            rule. The default is 1/3.</p></td></tr><tr valign="top"><td><code>omnibusneff</code></td><td><p>Effective-sample-size specification used by the
+                            omnibus spectral rank rule.</p></td></tr><tr valign="top"><td><code>TEMkfactor</code></td><td><p>Scalar summary of the final TEM consistency
                             correction. NaN for alpha=0.</p></td></tr><tr valign="top"><td><code>TEMkinfo</code></td><td><p>Final pattern-wise TEM consistency-factor
                             diagnostics. Empty for alpha=0 or whenever the
                             selected mdTEM correction does not return them.</p></td></tr><tr valign="top"><td><code>aggregation</code></td><td><p><p>Mean aggregation rule actually used:</p> <p>
@@ -483,9 +702,28 @@ Small p-values indicate evidence against MCAR for the corresponding calibration.
                             entries identify complete cases entering the
                             two mean statistics.</p></td></tr><tr valign="top"><td><code>meanRows</code></td><td><p>Original row numbers entering the two mean
                             statistics.</p></td></tr><tr valign="top"><td><code>nMeanCC</code></td><td><p>Number of complete cases entering the two mean
-                            statistics.</p></td></tr><tr valign="top"><td><code>nMeanBoot</code></td><td><p>Number of complete cases entering the two mean
-                            statistics in each retained bootstrap sample. This
-                            field is present only when bootstrap=true.</p></td></tr><tr valign="top"><td><code>nComplete</code></td><td><p>Number of complete rows.</p></td></tr><tr valign="top"><td><code>completeIdx</code></td><td><p>Logical index of complete rows.</p></td></tr><tr valign="top"><td><code>locCC</code></td><td><p>Complete-case estimate of location.</p></td></tr><tr valign="top"><td><code>covCC</code></td><td><p>Complete-case estimate of scatter.</p></td></tr><tr valign="top"><td><code>robust</code></td><td><p>Value of input option robust.</p></td></tr><tr valign="top"><td><code>robustClass</code></td><td><p>Robust estimator actually used for complete
+                            statistics.</p></td></tr><tr valign="top"><td><code>nMeanBoot</code></td><td><p><p>Number of complete cases entering the two mean
+                            statistics in each successful bootstrap sample.</p> <p></p><p>
+                            This field is present only when bootstrap=true.</p></p></td></tr><tr valign="top"><td><code>nCompleteBoot</code></td><td><p>Number of complete cases in each successful
+                            bootstrap sample. It is constant for fixed-mask
+                            Gaussian/empirical-radial calibration and random
+                            for the entropy product-law bootstrap.</p></td></tr><tr valign="top"><td><code>nInvalidBootstrapMasks</code></td><td><p>Number of entropy bootstrap attempts
+                            regenerated because the independently sampled mask
+                            contained too few complete observations for the
+                            requested robust fit.</p></td></tr><tr valign="top"><td><code>nBootstrapAttempts</code></td><td><p><p>Total number of bootstrap draws attempted
+                            to obtain the requested nsimul successful draws.</p> <p></p><p>
+                            This field is present only when bootstrap=true.</p></p></td></tr><tr valign="top"><td><code>nFailedBootstrapFits</code></td><td><p><p>Number of attempted bootstrap draws
+                            discarded because mdTEM returned the specific
+                            error FSDA:mdTEM:FewAdaptiveReferencePoints.</p> <p></p><p>
+                            Other fitting errors are not suppressed. This
+                            field is present only when bootstrap=true.</p></p></td></tr><tr valign="top"><td><code>nInvalidBootstrapStats</code></td><td><p>Number of attempted bootstrap draws
+                            discarded because at least one of the four test
+                            statistics was nonfinite. This field is present
+                            only when bootstrap=true.</p></td></tr><tr valign="top"><td><code>nInvalidBootstrapOmnibus</code></td><td><p>Number of attempted bootstrap draws
+                            regenerated because the replicate-specific
+                            scatter-discrepancy covariance or rank-selected
+                            omnibus statistic was unavailable. This field is
+                            present only when bootstrap=true.</p></td></tr><tr valign="top"><td><code>nComplete</code></td><td><p>Number of complete rows.</p></td></tr><tr valign="top"><td><code>completeIdx</code></td><td><p>Logical index of complete rows.</p></td></tr><tr valign="top"><td><code>locCC</code></td><td><p>Complete-case estimate of location.</p></td></tr><tr valign="top"><td><code>covCC</code></td><td><p>Complete-case estimate of scatter.</p></td></tr><tr valign="top"><td><code>robust</code></td><td><p>Value of input option robust.</p></td></tr><tr valign="top"><td><code>robustClass</code></td><td><p>Robust estimator actually used for complete
                             cases: 'FS', 'MCD' or 'MM'.</p></td></tr><tr valign="top"><td><code>robustEff</code></td><td><p>MM nominal efficiency. This field is relevant
                             only when out.robustClass='MM'.</p></td></tr><tr valign="top"><td><code>robustBonflev</code></td><td><p>Value actually used for the FS
                             signal/stopping rule. It is 0.99 for the
@@ -501,8 +739,17 @@ Small p-values indicate evidence against MCAR for the corresponding calibration.
                             rows when parameters are estimated from all
                             the data through EM/TEM.</p></td></tr><tr valign="top"><td><code>ciBoot</code></td><td><p>2 x 4 matrix containing the bootstrap confidence
                             intervals for the four statistics. This field is
-                            present only when bootstrap=true.</p></td></tr><tr valign="top"><td><code>loc</code></td><td><p>Estimated location from EM/TEM fit on all data.</p></td></tr><tr valign="top"><td><code>cov</code></td><td><p>Estimated scatter from EM/TEM fit on all data.</p></td></tr><tr valign="top"><td><code>eps0</code></td><td><p>Numerical stabilizer used in the log-distance
-                            ratio.</p></td></tr><tr valign="top"><td><code>asympt</code></td><td><p><p>Structure containing the analytical
+                            present only when bootstrap=true.</p></td></tr><tr valign="top"><td><code>loc</code></td><td><p>Estimated location from EM/TEM fit on all data.</p></td></tr><tr valign="top"><td><code>cov</code></td><td><p>Estimated scatter from EM/TEM fit on all data.</p></td></tr><tr valign="top"><td><code>eps0</code></td><td><p><p>Numerical stabilizer used in the log-distance
+                            ratio.</p> <p></p> <p>
+          out.asympt.inlierScaling = Stable-inlier retained-moment diagnostics
+                            when aggregation='inlier'. The primary generic
+                            directions bI,aI and bLI,aLI, together with the
+                            retained moments mI,MI,mLI,MLI, are returned.</p> <p></p><p>
+                            The fields rI, rLI and TLtoTDRatio remain as the
+                            proportional-moment radial special case. Additional
+                            fields quantify empirical departures from zero
+                            retained first moments and proportional retained
+                            second moments.</p></p></td></tr><tr valign="top"><td><code>asympt</code></td><td><p><p>Structure containing the analytical
                             benchmark for the two selected mean statistics.</p> <p></p> <p>
                             For alpha=0 and aggregation='ordinary', TDmean
                             uses the feasible general-F sandwich calibration
@@ -519,26 +766,31 @@ Small p-values indicate evidence against MCAR for the corresponding calibration.
                             not assume Gaussianity. The distinct Gaussian-
                             information results are retained in
                             out.asympt.gaussian and out.resultsGaussian.</p> <p></p> <p>
-                            For alpha=0 and aggregation='fixed', the current
-                            analytical benchmark remains Gaussian because a
-                            general-F fixed-gate law has not been derived;</p> <p></p> <p>
-                            the untrimmed general-F result is nevertheless
-                            returned in out.asympt.generalF for diagnostics.</p> <p></p> <p>
                             For MDP-U the ordinary first-order coefficients
-                            are used. MDP-I inherits the same coefficients
-                            under the condition that the complete-case rule
-                            excludes only O_p(1) clean observations. For
-                            MDP-F the base estimator-discrepancy variance is
-                            multiplied by kc^2 for the mean distance
-                            difference and by lambda^2 for the stabilized
-                            mean log-ratio. For the Gaussian pattern branch,
-                              kc=F_{p+2}(c)/F_p(c).</p> <p></p> <p>
-                            For the adaptive elliptical branch, kc and
-                            lambda are estimated from the robust complete-
-                            case radial distribution. Fields aggregation,
-                            filterCutoff,
-                            gammaFilter, kc, lambda, baseSigmaD2 and
-                            baseKappa document the applied scaling. For
+                            are used. For MDP-I, a stable estimator-induced
+                            inlier rule may exclude a nonvanishing fraction
+                            of complete cases. The primary variance uses the
+                            generic retained-moment directions bI,aI (and
+                            bLI,aLI for TLmean) with the joint location--scatter
+                            estimator-discrepancy covariance. The former rI^2
+                            and rLI^2 scalar rescalings are still returned as
+                            the proportional-moment special case, but are not
+                            used for the primary MDP-I p-values. For MDP-F the base
+                            variance is multiplied by kc^2 for TDmean and by
+                            lambda^2 for TLmean. For the Gaussian pattern
+                            branch, kc=F_{p+2}(c)/F_p(c). For the adaptive
+                            elliptical branch, kc and lambda are estimated
+                            from the robust complete-case radial distribution.</p> <p></p> <p>
+                            Fields aggregation, filterCutoff, gammaFilter,
+                            kc, lambda, baseSigmaD2 and baseKappa document the
+                            applied scaling.</p> <p></p> <p>
+                            out.asympt.inlierScaling is a structure with
+                            fields available, genericAvailable, nComplete,
+                            nSelected, fractionSelected, fractionExcluded,
+                            mI, MI, bI, aI, mLI, MLI, bLI, aLI, together with
+                            rI, rLI, TLtoTDRatio and radial/proportionality
+                            diagnostics. It is relevant when
+                            aggregation='inlier'. For
                             alpha&gt;0 and method equal to 'pri',
                             'expScale', 'zMap', 'chiMap' or 'betaMap', the
                             Gaussian pattern-wise TEM influence function is
@@ -555,17 +807,34 @@ Small p-values indicate evidence against MCAR for the corresponding calibration.
                             pooled case, the influence function is formed at
                             the complete-observation level, preserving the
                             dependence among projections of the same row.</p> <p></p> <p>
-                            For FS, the
-                            complete-case scatter influence is evaluated
+                            For FS, the complete-case influence is evaluated
                             analytically conditional on the final full-sample
-                            FS classification. For MCD and MM it is currently
-                            evaluated by a delete-one jackknife. The resulting
-                            contribution is combined with the TEM influence in
-                            the end-to-end sandwich variance. With adaptive
+                            FS classification. For MCD, the reweighted MCD
+                            location/scatter are used and the influence is
+                            evaluated analytically conditional on the final
+                            reweighted inlier set, with the fitted scalar
+                            scatter correction held fixed. MM retains the
+                            delete-one jackknife. The resulting contribution
+                            is combined with the TEM influence in the end-to-end
+                            sandwich variance. With adaptive
                             pooling, out.asympt.TEM.factorDiagnostics reports
                             one row per pooled observed dimension, while
                             patternDiagnostics reports the corresponding
                             poolSize and factorGroup for each pattern.</p> <p></p> <p>
+                            For alpha&gt;0, out.asympt.TEM.truncatedMoments is
+                            an exploratory diagnostic of the patternwise
+                            truncated-moment isotropy conditions underlying
+                            scalar TEM Fisher consistency. It projects the
+                            complete-case reference sample onto every observed
+                            pattern, applies the raw cutoff implied by the
+                            fitted TEM threshold, and reports standardized
+                            retained-location and retained-shape residuals.</p> <p></p> <p>
+                            The retained first moments, retained second moments
+                            and normalized second-moment matrices are also kept
+                            pattern by pattern for direct inspection.</p> <p></p> <p>
+                            The diagnostics are descriptive only and are not
+                            used to modify fitting, standard errors, p-values
+                            or the omnibus statistic.</p> <p></p> <p>
                             The fields TDmean and TLmean contain the
                             asymptotic variance of sqrt(n)T (sigma2), the
                             standard error of T (se), the studentized value
@@ -573,11 +842,13 @@ Small p-values indicate evidence against MCAR for the corresponding calibration.
                             alpha&gt;0, out.asympt.TEM contains diagnostics for
                             the analytical TEM contribution and
                             out.asympt.completeCase documents the influence
-                            evaluation, including influenceMethod and, for FS,
-                            nReferenceInliers and nReferenceOutliers. The
-                            adaptive FS branch conditions on the selected set;</p> <p></p> <p>
-                            its data-dependent stopping/classification rule is
-                            outside the fixed-fraction FS asymptotic theorem.</p> <p></p> <p>
+                            evaluation, including influenceMethod,
+                            nReferenceInliers and nReferenceOutliers. The FS
+                            and MCD analytical branches condition on their final
+                            selected sets; the data-dependent selection rules
+                            themselves are not differentiated. For MCD,
+                            mcdScatterScaleFactor and mcdScatterScaleResidual
+                            document the frozen reweighted-scatter correction.</p> <p></p> <p>
                             For alpha&gt;0 and consistencyfactor='adaptive',
                             out.asympt.secondOrderBenchmark contains the
                             complete-Gaussian adaptive-TEM O(n^{-1})
@@ -597,11 +868,11 @@ Small p-values indicate evidence against MCAR for the corresponding calibration.
     4) selected mean of d2_all - d2_cc.</p> <p></p> <p>
 
   With aggregation='auto', the selected mean aggregation resolves to
-  'ordinary' for alpha=0 and to 'inlier' for alpha&gt;0. The selected means
-  use all complete cases for aggregation='ordinary', the estimator-defined
-  complete-case inliers for aggregation='inlier', and the fixed robust-
-  distance gate for aggregation='fixed'. The same resolved rule is
-  re-estimated in every bootstrap sample. With coupledtrim=true,
+  'ordinary' for alpha=0 and to 'inlier' for alpha&gt;0. Mixed robust/nonrobust
+  analyses are deliberately excluded: ordinary aggregation is available only
+  with alpha=0, while inlier and fixed aggregation require alpha&gt;0. The same
+  resolved robust rule is re-estimated in every bootstrap sample. With
+  coupledtrim=true,
   estimator-declared complete-case outliers are additionally forced to zero
   weight in every TEM concentration step.</p> <p></p> <p>
 
@@ -610,9 +881,75 @@ Small p-values indicate evidence against MCAR for the corresponding calibration.
   reference location and scatter are the same complete-case estimates used
   to compute d2_cc. Consequently the adaptive TEM correction targets the
   complete-case scatter functional under an elliptical MCAR model. The
-  optional mask-preserving parametric bootstrap remains Gaussian-model based;</p> <p></p> <p>
-  when requested it reruns both the robust complete-case fit and adaptive
-  radial correction in every bootstrap sample.</p> <p></p> <p>
+  optional full-pipeline bootstrap can use the fitted Gaussian generator, the
+  null-enforcing empirical-radial elliptical generator, or the entropy-
+  projected nonelliptical clean generator selected by bootstraptype. The
+  entropy generator changes only probabilities on observed clean support
+  points and therefore preserves their angular and radius-direction structure.</p> <p></p> <p>
+  Its finite-sample calibration keeps robust/location/fraction restrictions
+  exact, allows a shrinking tolerance for trace-free shape moments and jointly
+  selects a nearby TEM cutoff to avoid artificial fixed-support infeasibility;</p> <p></p> <p>
+  an exhaustive empirical-breakpoint search is used only if the local cutoff
+  window contains no strictly interior exact calibration.</p> <p></p> <p>
+  It resamples missingness patterns independently from their empirical law,
+  imposing MCAR exactly while reproducing pattern-frequency randomness. The
+  robust complete-case fit, adaptive correction and final aggregation rule
+  are reconstructed in every bootstrap sample.</p> <p></p> <p>
+
+  The scalar MDP statistics are directional projections of the estimator
+  discrepancy. A complementary Hausman-type omnibus diagnostic is therefore
+  also reported whenever the full scatter-discrepancy influence covariance
+  is available. With delta=vech(Sigma_all-Sigma_CC), it uses
+
+      H = n*delta'*OmegaDelta^+*delta.</p> <p></p> <p>
+
+  Under MCAR, H has an asymptotic chi-square reference with degrees of
+  freedom equal to the statistically selected spectral rank. The relative
+  threshold is eta_n=nEff^(-omnibusrankexp), and the thresholded inverse keeps
+  only eigenvalues satisfying lambda_j/lambda_1&gt;eta_n. Unlike the
+  one-dimensional MDP projection, this quadratic statistic is sensitive to
+  all retained first-order scatter-discrepancy directions, including
+  trace-free shape/correlation changes. With bootstrap=true, the complete
+  fitting pipeline, the discrepancy sandwich and this same rank rule are
+  recomputed independently in every retained bootstrap replicate; the
+  omnibus bootstrap p-value uses the resulting nonnegative H* statistics.</p> <p></p> <p>
+
+  For diagnostic localization, the observed all-data scatter can be written
+  as a weighted sum of pattern-specific conditional scatter contributions,
+  using the final EM/TEM weights and, for TEM, the fitted pattern consistency
+  factors.  If Delta_r denotes pattern r's weighted contribution to
+  vech(Sigma_all-Sigma_CC), then sum_r Delta_r=delta.  mdMDPtest reports
+
+      C_r = n*Delta_r'*OmegaDelta_eta^+*delta,
+
+  so that sum_r C_r=H.  The signed share C_r/H describes reinforcement or
+  cancellation of the global discrepancy, while
+
+      w_r = |C_r| / sum_h |C_h|
+
+  is a nonnegative localization weight summing to one.  Conditional on a
+  significant omnibus test, a large w_r indicates that the rejection is
+  concentrated in a small number of missingness patterns rather than being
+  diffuse across the pattern structure. Because C_r is signed, patterns can
+  reinforce (C_r&gt;0) or partly offset (C_r&lt;0) the global scatter discrepancy.</p> <p></p> <p>
+  When the omnibus test is not significant, w_r should not be interpreted as
+  evidence of an influential pattern because it contains no information about
+  the absolute magnitude of the residual discrepancy. For graphical residual
+  inspection mdMDPtest therefore uses C_r/sqrt(FitWeight_r), which removes the
+  leading pattern-size effect but is descriptive rather than studentized. For
+  robust MDP-I/MDP-F the localization display also reports graphically the
+  share of all TEM-trimmed observations associated with each displayed pattern.</p> <p></p> <p>
+
+  Under adaptive positive trimming, OmegaDelta is the end-to-end
+  scatter-discrepancy covariance including the adaptive radial-factor
+  influence and the robust complete-case scatter influence. Under the
+  elliptical common-target model, the same omnibus construction applies
+  to MDP-I and MDP-F: the final inlier or fixed-cutoff aggregation changes
+  the scalar MDP projection but not the underlying fitted scatter-estimator
+  discrepancy. This statement refers to the default coupledtrim=false;</p> <p></p> <p>
+  with coupledtrim=true the eligibility rule also modifies the TEM fit and
+  the reported omnibus calibration uses the corresponding frozen-eligibility
+  working sandwich.</p> <p></p> <p>
 
   Small asymptotic or bootstrap p-values indicate that the change in distances
   is larger than expected under MCAR for the corresponding calibration.</p> <p></p> <p>
@@ -639,17 +976,21 @@ Small p-values indicate evidence against MCAR for the corresponding calibration.
   estimator-discrepancy variance multiplied by an empirical radial
   coefficient estimated from the complete-case Mahalanobis distances.</p> <p></p> <p>
   This elliptical TLmean calibration is distinct from the separate Gaussian-
-  information benchmark. For alpha=0 and aggregation='fixed', the existing
-  Gaussian Tallis benchmark is retained because a general-F fixed-gate law
-  has not yet been derived.</p> <p></p> <p>
+  information benchmark.</p> <p></p> <p>
 
   For alpha&gt;0 the analytical benchmark follows the selected mean aggregation.</p> <p></p> <p>
   The Gaussian pattern branch uses Tallis coefficients, whereas the adaptive
-  branch uses empirical elliptical radial coefficients. MDP-I uses the same
-  first-order variance as MDP-U under O_p(1) clean exclusions. MDP-F
-  multiplies the base mean-difference variance by kc^2 and the base
-  stabilized-log-ratio variance by the appropriate truncated radial
-  coefficient lambda^2. When coupledtrim=true, mdMDPtest still reports an
+  branch uses empirical elliptical radial coefficients. Under an elliptical
+  stable estimator-induced inlier rule, MDP-I permits a nonvanishing
+  excluded fraction. The generic calibration uses retained first and second
+  moments directly, so a non-centrally-symmetric retained distribution may
+  contribute a first-order location term. When retained first moments vanish
+  and retained second moments are proportional to the common target, this
+  reduces to the scalar rI^2 and rLI^2 radial rescalings. MDP-F
+  multiplies the base
+  mean-difference variance by kc^2 and the base stabilized-log-ratio variance
+  by the appropriate truncated radial coefficient lambda^2. When
+  coupledtrim=true, mdMDPtest still reports an
   analytical p-value based on a frozen-eligibility working sandwich: the
   realized complete-case eligibility mask is treated as fixed, and its
   data-dependent construction is not differentiated. A warning documents

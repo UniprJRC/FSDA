@@ -359,8 +359,29 @@ function out = mdMDPtest(Y, varargin)
 %            Example - 'tol',1e-8
 %            Data Types - double
 %
-%    plots : Flag to produce the output plot.
-%            The default value is false.
+%    plots : Flag to produce graphical output. Logical scalar.
+%            The default value is false. In addition to the distance and,
+%            when requested, bootstrap displays, mdMDPtest produces a
+%            pattern-localization plot whenever the omnibus pattern
+%            decomposition is available. The latter is deliberately styled
+%            like the corresponding mdLittletest display: at most the ten
+%            most important informative missingness patterns are shown as
+%            horizontal bars. Bar color distinguishes patterns that reinforce
+%            the global scatter discrepancy (C_r>0) from patterns that offset
+%            it (C_r<0). If the omnibus test is significant at the conventional
+%            0.05 level, bar length is 100*w_r, where
+%            w_r=|C_r|/sum_h|C_h|, so the display localizes the rejection. If
+%            the omnibus test is not significant, the title explicitly labels
+%            the display as a residual decomposition and bar length is the
+%            frequency-adjusted residual magnitude |C_r|/sqrt(FitWeight_r).
+%            The sign of C_r is retained through bar color. This descriptive
+%            adjustment removes the leading pattern-size effect; it is not a
+%            studentized pattern statistic or an additional test. For robust
+%            MDP-I and MDP-F, a
+%            narrow aligned panel also shows the share of all observations
+%            trimmed by TEM that belongs to each displayed pattern. Pattern
+%            labels use 1 for observed and 0 for missing coordinates, as in
+%            mdLittletest.
 %            Example - 'plots',true
 %            Data Types - logical
 %
@@ -443,6 +464,30 @@ function out = mdMDPtest(Y, varargin)
 %                            rankThresholdBoot, relativeRankThresholdBoot,
 %                            rhoLastKeptBoot, rhoFirstDiscardedBoot and
 %                            rankBootFrequency.
+%
+%                            When the observed omnibus statistic is available,
+%                            out.omnibus.patternContributions gives a pattern-
+%                            localization decomposition of H.  The all-data
+%                            fitted scatter is reconstructed as a weighted sum
+%                            of pattern-specific conditional scatter terms and
+%                            the global discrepancy is split accordingly.  For
+%                            pattern r, Contribution is the signed quantity C_r
+%                            satisfying sum_r C_r=H up to numerical tolerance;
+%                            SignedShare=C_r/H, AbsWeight=|C_r|/sum_h|C_h| and
+%                            Sign=sign(C_r). FrequencyAdjustedContribution is
+%                            C_r/sqrt(FitWeight_r) when FitWeight_r>0 and is a
+%                            descriptive leading-order pattern-size adjustment.
+%                            The table also reports pattern size, retained size
+%                            and fitted pattern weight. For alpha>0 it additionally
+%                            reports nTEMTrimmed, TEMTrimmedFractionWithinPattern
+%                            and ShareOfAllTEMTrimmed, based on TEM's own final
+%                            concentration indicator (before any externally forced
+%                            coupled exclusions). PatternLabel uses the same binary
+%                            observed-data encoding as mdLittletest (1=observed,
+%                            0=missing). SignedShare may be negative or exceed one
+%                            when pattern effects cancel. AbsWeight is nonnegative
+%                            and sums to one, making it suitable for measuring
+%                            concentration of a global rejection.
 %          out.resultsOmnibus = 1 x 5 table containing Stat, df, pvalue,
 %                            pvalueBoot and Calibration for the Hausman-type
 %                            omnibus test. The column pvalue is the analytical
@@ -775,6 +820,32 @@ function out = mdMDPtest(Y, varargin)
 %  recomputed independently in every retained bootstrap replicate; the
 %  omnibus bootstrap p-value uses the resulting nonnegative H* statistics.
 %
+%  For diagnostic localization, the observed all-data scatter can be written
+%  as a weighted sum of pattern-specific conditional scatter contributions,
+%  using the final EM/TEM weights and, for TEM, the fitted pattern consistency
+%  factors.  If Delta_r denotes pattern r's weighted contribution to
+%  vech(Sigma_all-Sigma_CC), then sum_r Delta_r=delta.  mdMDPtest reports
+%
+%      C_r = n*Delta_r'*OmegaDelta_eta^+*delta,
+%
+%  so that sum_r C_r=H.  The signed share C_r/H describes reinforcement or
+%  cancellation of the global discrepancy, while
+%
+%      w_r = |C_r| / sum_h |C_h|
+%
+%  is a nonnegative localization weight summing to one.  Conditional on a
+%  significant omnibus test, a large w_r indicates that the rejection is
+%  concentrated in a small number of missingness patterns rather than being
+%  diffuse across the pattern structure. Because C_r is signed, patterns can
+%  reinforce (C_r>0) or partly offset (C_r<0) the global scatter discrepancy.
+%  When the omnibus test is not significant, w_r should not be interpreted as
+%  evidence of an influential pattern because it contains no information about
+%  the absolute magnitude of the residual discrepancy. For graphical residual
+%  inspection mdMDPtest therefore uses C_r/sqrt(FitWeight_r), which removes the
+%  leading pattern-size effect but is descriptive rather than studentized. For
+%  robust MDP-I/MDP-F the localization display also reports graphically the
+%  share of all TEM-trimmed observations associated with each displayed pattern.
+%
 %  Under adaptive positive trimming, OmegaDelta is the end-to-end
 %  scatter-discrepancy covariance including the adaptive radial-factor
 %  influence and the robust complete-case scatter influence. Under the
@@ -909,7 +980,7 @@ function out = mdMDPtest(Y, varargin)
 
 
 %{
-    %% Example 4: Comparison of several trimming levels.
+    % Example 4: Comparison of several trimming levels.
     % Compare bootstrap p-values for the four named MDP statistics.
     rng(1)
     n = 300;
@@ -935,7 +1006,7 @@ function out = mdMDPtest(Y, varargin)
 %}
 
 %{
-    %% Example 5: Different rescaling method.
+    % Example 5: Different rescaling method.
     % Use method betaMap instead of the default pri.
     load cows2026
     X = cows2026{:,:};
@@ -1028,67 +1099,9 @@ function out = mdMDPtest(Y, varargin)
     disp(out.results)
 %}
 
-%{
-    % Example 11: Distribution-adaptive pooled TEM correction.
-    % Use the MCD complete-case fit as the reference geometry for empirical
-    % radial consistency factors. With adaptivepool=true (default), projected
-    % reference radii are pooled across patterns of the same observed
-    % dimension. The same pipeline is rerun independently inside every
-    % bootstrap sample.
-    load cows2026
-    X = cows2026{:,:};
-    out = mdMDPtest(X,'alpha',0.25,'robust','MCD', ...
-        'consistencyfactor','adaptive');
-    disp(out.TEMkinfo)
-    disp(out.results(:,{'Tobs','SEasym','zAsym','pvalueAsym','Calibration'}))
-    disp(out.asympt.TDmean)
-    disp(out.asympt.TEM.patternDiagnostics)
-    disp(out.asympt.TEM.truncatedMoments.table)
-%}
-
 
 %{
-    %% Example 12: General-F analytical calibration for untrimmed MDP-U.
-    % For alpha=0 and ordinary aggregation, TDmean uses the feasible
-    % general-F sandwich as the primary analytical calibration. The
-    % Gaussian-information specialization is retained as a diagnostic.
-    load cows2026
-    X = cows2026{:,:};
-    out = mdMDPtest(X,'alpha',0,'aggregation','ordinary');
-    % Display the primary analytical results. TLmean uses the elliptical
-    % radial extension of the general-F sandwich; TDmean uses general-F.
-    disp(out.results)
-    % Display separately the Gaussian-information benchmark.
-    disp(out.resultsGaussian)
-%}
-
-%{
-    %% Example 13: Display a commented summary and the results table.
-    % With dispresults=true, the procedure, fitting options, sample sizes,
-    % and the named results table are displayed automatically.
-    load cows2026
-    X = cows2026{:,:};
-    out = mdMDPtest(X,'dispresults',true,'bootstrap',true);
-    % out.results contains the primary calibration and out.resultsGaussian
-    % contains the distinct Gaussian benchmark when alpha=0 and MDP-U is used.
-%}
-
-%{
-    %% Example 14: Empirical-radial elliptical bootstrap.
-    % Calibrate robust MDP-I by resampling the empirical complete-case radial
-    % law rather than imposing a Gaussian radial distribution. The observed
-    % missingness mask is preserved and the full robust MDP pipeline is rerun
-    % independently in every bootstrap replicate.
-    load cows2026
-    X = cows2026{:,:};
-    out = mdMDPtest(X,'alpha',0.25,'bootstrap',true, ...
-        'bootstraptype','empiricalradial','nsimul',999);
-    fprintf('Bootstrap generator: %s\n',out.bootstraptype)
-    disp(out.results)
-%}
-
-%{
-    %% Example 15: Hausman-type omnibus scatter-discrepancy diagnostic.
+    %% Example 11: Hausman-type omnibus scatter-discrepancy diagnostic.
     % Compare the complete-case and all-available scatter estimators through
     % the full quadratic estimator discrepancy rather than through only the
     % one-dimensional MDP projection. With alpha>0 the default mean
@@ -1106,21 +1119,7 @@ function out = mdMDPtest(Y, varargin)
     end
 %}
 
-%{
-    %% Example 16: Entropy-projected nonelliptical bootstrap.
-    % Preserve the angular and radius-direction structure of a clean empirical
-    % complete-data reference law while enforcing exact robust/location/fraction
-    % restrictions and shrinking-tolerance trace-free shape restrictions at a
-    % jointly selected projected TEM cutoff. Missingness
-    % patterns are resampled independently from their empirical probabilities.
-    load cows2026
-    X = cows2026{:,:};
-    out = mdMDPtest(X,'alpha',0.25,'bootstrap',true, ...
-        'bootstraptype','entropy','adaptivepool',false,'nsimul',499);
-    disp(out.results)
-    disp(out.pvalueBootEqualTail)
-    disp(out.entropyProjection.patternDiagnostics)
-%}
+
 
 %% Beginning of code
 
@@ -1531,6 +1530,14 @@ end
 omnibus = local_omnibus_test(asympt,SigHat,SigCC,n,alpha, ...
     consistencyfactor,coupledtrim,omnibusrankexp,nEffOmnibus, ...
     nEffOmnibusSource);
+
+% Patternwise localization of the observed omnibus discrepancy.  This is a
+% descriptive decomposition of the fitted scatter discrepancy, not a new
+% test and not a separate calibration.  The signed contributions C_r add to
+% H; absolute weights w_r quantify how concentrated the rejection is across
+% missingness patterns.
+omnibus = local_pattern_omnibus_contributions(omnibus,Y,maskMiss,outFit, ...
+    muHat,SigHat,SigCC,alpha,method,consistencyfactor,asympt);
 
 % Bootstrap-specific omnibus fields are initialized even when bootstrap is
 % not requested so that the omnibus output has a stable structure.
@@ -2249,6 +2256,25 @@ if dispresults
             fprintf('Omnibus bootstrap unavailable : %s\n', ...
                 out.omnibus.bootstrapReason);
         end
+        if isfield(out.omnibus,'patternContributionAvailable') && ...
+                out.omnibus.patternContributionAvailable
+            fprintf('Dominant pattern by |C_r|     : %d\n', ...
+                out.omnibus.patternContributionDominantPattern);
+            fprintf('Largest absolute weight w_r   : %.6g\n', ...
+                out.omnibus.patternContributionMaxWeight);
+            if isfield(out.omnibus,'patternTrimmingAvailable') && ...
+                    out.omnibus.patternTrimmingAvailable
+                fprintf('Observations trimmed by TEM   : %d\n', ...
+                    out.omnibus.nTEMTrimmedTotal);
+            end
+            fprintf('Pattern H reconstruction resid: %.6g\n', ...
+                out.omnibus.patternContributionSumResidual);
+            disp('Pattern localization table: out.omnibus.patternContributions')
+        elseif isfield(out.omnibus,'patternContributionReason') && ...
+                ~isempty(out.omnibus.patternContributionReason)
+            fprintf('Pattern localization unavailable: %s\n', ...
+                out.omnibus.patternContributionReason);
+        end
     else
         disp('Omnibus analytical calibration unavailable.')
         if ~isempty(out.omnibus.reason)
@@ -2390,6 +2416,262 @@ if plots
         title(['\alpha=' num2str(alpha) ', aggregation=' aggregation])
         box on
     end
+
+    % ---------------------------------------------------------------------
+    % Graphical localization of the missingness patterns that contribute most
+    % strongly to the observed omnibus discrepancy. The style deliberately
+    % follows mdLittletest: horizontal bars, decreasing importance, binary
+    % observed-data pattern labels and at most ten informative patterns.
+    % Unlike Little's nonnegative pattern terms, C_r is signed. Bar color
+    % therefore distinguishes reinforcement from cancellation. For robust
+    % MDP-I/MDP-F an aligned secondary panel shows where TEM trimming occurs.
+    if omnibus.patternContributionAvailable
+        pc = omnibus.patternContributions;
+
+        switch aggregation
+            case 'ordinary'
+                procedurePlot = 'MDP-U';
+            case 'inlier'
+                procedurePlot = 'MDP-I';
+            case 'fixed'
+                procedurePlot = 'MDP-F';
+            otherwise
+                procedurePlot = 'MDP';
+        end
+
+        if bootstrap && omnibus.bootstrapAvailable && ...
+                isfinite(omnibus.pvalueBoot)
+            pPlot = omnibus.pvalueBoot;
+            pLabel = 'bootstrap p-value';
+        else
+            pPlot = omnibus.pvalue;
+            pLabel = 'p-value';
+        end
+
+        % Conditional graphical interpretation:
+        %   significant H     -> 100*w_r localizes the rejection;
+        %   nonsignificant H  -> |C_r|/sqrt(FitWeight_r) displays the
+        %                        frequency-adjusted residual magnitude after
+        %                        removing the leading pattern-size effect.
+        % In both cases bars extend to the right; color preserves the sign of
+        % C_r, distinguishing reinforcing from offsetting contributions. The
+        % second quantity is descriptive and is not a studentized
+        % pattern-specific statistic.
+        plotSigLevel = 0.05;
+        omnibusSignificant = isfinite(pPlot) && pPlot <= plotSigLevel;
+        baseInformative = pc.pObserved > 0 & isfinite(pc.Contribution);
+
+        if omnibusSignificant
+            informative = baseInformative & isfinite(pc.AbsWeight);
+            plotQuantityAll = 100*pc.AbsWeight(informative);
+            sortQuantityAll = plotQuantityAll;
+            xLabelPlot = ...
+                'Percentage absolute pattern weight in MDP omnibus discrepancy';
+            mainTitle = 'Most important missingness patterns';
+            annotationMode = 'percentage';
+        else
+            informative = baseInformative & ...
+                isfinite(pc.FrequencyAdjustedContribution);
+            plotQuantityAll = abs(pc.FrequencyAdjustedContribution(informative));
+            sortQuantityAll = plotQuantityAll;
+            xLabelPlot = ...
+                'Frequency-adjusted residual magnitude  |C_r| / sqrt(FitWeight_r)';
+            mainTitle = ...
+                'Residual pattern decomposition -- omnibus test not significant';
+            annotationMode = 'adjusted';
+        end
+
+        if any(informative)
+            nPatternPlotAll = pc.nPattern(informative);
+            pObservedPlotAll = pc.pObserved(informative);
+            signPlotAll = pc.Sign(informative);
+            patternNames = string(pc.PatternLabel(informative));
+
+            % Robust MDP-I/MDP-F: show the share of TEM's own trimming in a
+            % narrow aligned panel. The panel is deliberately absent for MDP-U.
+            showTrimPanel = alpha > 0 && ...
+                any(strcmp(aggregation,{'inlier','fixed'})) && ...
+                ismember('ShareOfAllTEMTrimmed',pc.Properties.VariableNames);
+            if showTrimPanel
+                trimShareAll = 100*pc.ShareOfAllTEMTrimmed(informative);
+                trimWithinAll = 100*pc.TEMTrimmedFractionWithinPattern(informative);
+                nTrimmedAll = pc.nTEMTrimmed(informative);
+            end
+
+            [~,ord] = sort(sortQuantityAll,'descend');
+            nToPlot = min(10,numel(ord));
+            ord = ord(1:nToPlot);
+
+            quantityPlot = plotQuantityAll(ord);
+            patternPlot = patternNames(ord);
+            nPatternPlot = nPatternPlotAll(ord);
+            pObservedPlot = pObservedPlotAll(ord);
+            signPlot = signPlotAll(ord);
+
+            if showTrimPanel
+                trimSharePlot = trimShareAll(ord);
+                trimWithinPlot = trimWithinAll(ord); %#ok<NASGU>
+                nTrimmedPlot = nTrimmedAll(ord); %#ok<NASGU>
+            end
+
+            figPat = figure('Name','mdMDPtest: pattern contributions','Color','w');
+            if showTrimPanel
+                tlPat = tiledlayout(figPat,1,4,'TileSpacing','compact','Padding','compact');
+                axMain = nexttile(tlPat,[1 3]);
+            else
+                axMain = axes(figPat);
+            end
+
+            % Use the first two colors of the current MATLAB axes color order
+            % rather than hard-coding a palette. Positive C_r reinforces the
+            % global discrepancy; negative C_r offsets it.
+            colorOrder = get(groot,'defaultAxesColorOrder');
+            posColor = colorOrder(1,:);
+            if size(colorOrder,1) >= 2
+                negColor = colorOrder(2,:);
+            else
+                negColor = 1-posColor;
+            end
+            barColors = repmat(posColor,nToPlot,1);
+            barColors(signPlot<0,:) = repmat(negColor,sum(signPlot<0),1);
+
+            bMain = barh(axMain,quantityPlot,'FaceColor','flat');
+            bMain.CData = barColors;
+            axMain.YTick = 1:nToPlot;
+            axMain.YTickLabel = patternPlot;
+            axMain.YDir = 'reverse';
+            xlabel(axMain,xLabelPlot)
+            ylabel(axMain,'Missingness pattern')
+            title(axMain,{ ...
+                mainTitle, ...
+                sprintf('%s omnibus H = %.4g; %s = %.4g', ...
+                procedurePlot,omnibus.stat,pLabel,pPlot)})
+            grid(axMain,'on')
+            box(axMain,'on')
+            fs=14;
+
+            % Legend for the sign of the exact additive contribution C_r.
+            hold(axMain,'on')
+            hPos = plot(axMain,nan,nan,'s','LineStyle','none', ...
+                'MarkerFaceColor',posColor,'MarkerEdgeColor',posColor);
+            hNeg = plot(axMain,nan,nan,'s','LineStyle','none', ...
+                'MarkerFaceColor',negColor,'MarkerEdgeColor',negColor);
+            lgdPat = legend(axMain,[hPos hNeg], ...
+                {'Reinforcing (C_r>0)','Offsetting (C_r<0)'}, ...
+                'Location','best','FontSize',fs);
+            % Prevent subsequently added graphical objects from creating
+            % automatic extra legend entries (for example MATLAB's 'data1').
+            lgdPat.AutoUpdate = 'off';
+
+            xExtent = max(quantityPlot);
+            if ~isfinite(xExtent) || xExtent <= 0
+                xExtent = 1;
+            end
+            dx = 0.015*xExtent;
+            if strcmp(annotationMode,'percentage')
+                patternDescription = compose( ...
+                    '%.1f%%   n = %d, p_{obs} = %d', ...
+                    quantityPlot,nPatternPlot,pObservedPlot);
+                for jj=1:nToPlot
+                    text(axMain,quantityPlot(jj)+dx,jj,patternDescription(jj), ...
+                        'VerticalAlignment','middle','HorizontalAlignment','left','FontSize',fs)
+                end
+                xlim(axMain,[0 max(quantityPlot)+0.55*xExtent])
+            else
+                patternDescription = compose( ...
+                    '%.4g   n = %d, p_{obs} = %d', ...
+                    quantityPlot,nPatternPlot,pObservedPlot);
+                for jj=1:nToPlot
+                    text(axMain,quantityPlot(jj)+dx,jj,patternDescription(jj), ...
+                        'VerticalAlignment','middle','HorizontalAlignment','left','FontSize',fs)
+                end
+                xlim(axMain,[0 max(quantityPlot)+0.55*xExtent])
+            end
+            hold(axMain,'off')
+
+            if showTrimPanel
+                axTrim = nexttile(tlPat);
+                validTrim = isfinite(trimSharePlot);
+                trimSharePlot(~validTrim) = 0;
+                bTrim = barh(axTrim,trimSharePlot,'FaceColor',[0.70 0.70 0.70], ...
+                    'EdgeColor','none'); %#ok<NASGU>
+                axTrim.YTick = 1:nToPlot;
+                axTrim.YTickLabel = repmat({''},nToPlot,1);
+                axTrim.YDir = 'reverse';
+                xlabel(axTrim,'% of all TEM-trimmed rows')
+                title(axTrim,'Share of TEM trimming')
+                grid(axTrim,'on')
+                box(axTrim,'on')
+                xlim(axTrim,[0 100])
+                linkaxes([axMain axTrim],'y')
+
+                if isfield(omnibus,'nTEMTrimmedTotal') && ...
+                        omnibus.nTEMTrimmedTotal > 0
+                    for jj=1:nToPlot
+                        if validTrim(jj) && trimSharePlot(jj)>0
+                            if trimSharePlot(jj) >= 85
+                                xText = trimSharePlot(jj)-2;
+                                hAlign = 'right';
+                            else
+                                xText = trimSharePlot(jj)+2;
+                                hAlign = 'left';
+                            end
+                            text(axTrim,xText,jj,sprintf('%.1f%%',trimSharePlot(jj)), ...
+                                'VerticalAlignment','middle', ...
+                                'HorizontalAlignment',hAlign,'FontSize',fs)
+                        end
+                    end
+                else
+                    text(axTrim,50,(nToPlot+1)/2,'No TEM-trimmed rows', ...
+                        'HorizontalAlignment','center','VerticalAlignment','middle')
+                end
+            end
+        end
+    end
+
+    % ---------------------------------------------------------------------
+    % ALTERNATIVE PATTERN-LOCALIZATION DISPLAYS -- DELIBERATELY COMMENTED.
+    % The plot above is the closest analogue of mdLittletest and is therefore
+    % the current default candidate. The alternatives below preserve more of
+    % the signed information when cancellation among patterns is of interest.
+    %
+    % Alternative 1: signed shares C_r/H in the same horizontal-bar style.
+    % Bars can be negative or exceed 100 percent because contributions from
+    % different patterns can cancel.
+    %
+    % if omnibus.patternContributionAvailable
+    %     pc = omnibus.patternContributions;
+    %     informative = pc.pObserved>0 & isfinite(pc.SignedShare);
+    %     ss = 100*pc.SignedShare(informative);
+    %     labs = string(pc.PatternLabel(informative));
+    %     [~,ord] = sort(abs(ss),'descend');
+    %     ord = ord(1:min(10,numel(ord)));
+    %     figure('Name','mdMDPtest: signed pattern contributions','Color','w')
+    %     barh(ss(ord))
+    %     yline(0,'--')
+    %     ax=gca; ax.YTick=1:numel(ord); ax.YTickLabel=labs(ord); ax.YDir='reverse';
+    %     xlabel('Signed percentage share 100 C_r/H')
+    %     ylabel('Missingness pattern')
+    %     title('Signed pattern contributions to the MDP omnibus statistic')
+    %     grid on; box on
+    % end
+    %
+    % Alternative 2: frequency versus absolute localization weight. This is
+    % useful for distinguishing a genuinely influential sparse pattern from a
+    % pattern that is important mainly because it is frequent.
+    %
+    % if omnibus.patternContributionAvailable
+    %     pc = omnibus.patternContributions;
+    %     informative = pc.pObserved>0 & isfinite(pc.AbsWeight);
+    %     figure('Name','mdMDPtest: frequency versus localization','Color','w')
+    %     scatter(100*pc.PatternFraction(informative),100*pc.AbsWeight(informative),50,'filled')
+    %     xlabel('Pattern frequency (%)')
+    %     ylabel('Absolute pattern weight (%)')
+    %     text(100*pc.PatternFraction(informative),100*pc.AbsWeight(informative), ...
+    %         string(pc.PatternLabel(informative)), ...
+    %         'VerticalAlignment','bottom','HorizontalAlignment','left')
+    %     grid on; box on
+    % end
 end
 
 end
@@ -2582,7 +2864,10 @@ if alpha == 0
         error('FSDA:mdMDPtest:CoupledNeedsRobust', ...
             'Coupled TEM is available only when alpha>0.');
     end
-    outFit = mdEM(Y);
+    % Pass the mdMDPtest convergence tolerance also to the classical EM fit.
+    % This is useful for the patternwise omnibus reconstruction, which
+    % evaluates the fitted EM estimating equation at the returned solution.
+    outFit = mdEM(Y,'tol',tol);
 elseif any(forcedZero)
     outFit = local_coupled_tem(Y,forcedZero,alpha,method,tol);
 else
@@ -5528,6 +5813,405 @@ else
     asymptStar.reason = ['Bootstrap omnibus covariance is unavailable for ' ...
         'the selected TEM consistency-factor option.'];
 end
+end
+
+% -------------------------------------------------------------------------
+function omnibus = local_pattern_omnibus_contributions(omnibus,Y,maskMiss, ...
+    outFit,muA,SigA,SigC,alpha,method,consistencyfactor,asympt)
+%local_pattern_omnibus_contributions Localize the observed omnibus statistic.
+%
+% The fitted all-data scatter is reconstructed as
+%
+%      SigA = sum_r omega_r S_r,
+%
+% where omega_r is the final EM/TEM fitting weight of missingness pattern r
+% and S_r is that pattern's mean conditional scatter contribution evaluated
+% in the fitted all-data geometry.  For ordinary EM all rows have unit weight
+% and kappa_r=1.  For TEM the final concentration weights are used and the
+% retained outer-product term is divided by the fitted pattern consistency
+% factor kappa_r, matching the TEM estimating equation.
+%
+% Define
+%
+%      Delta_r = omega_r * vech(S_r-SigC),
+%
+% after a numerically negligible proportional correction when necessary to
+% make the reconstructed fitted scatter equal SigA exactly. Then
+%
+%      sum_r Delta_r = delta = vech(SigA-SigC),
+%
+% and the rank-selected Hausman statistic admits the additive decomposition
+%
+%      C_r = n * Delta_r' * OmegaDeltaPlus * delta,
+%      sum_r C_r = H.
+%
+% C_r is signed. Positive values reinforce the observed global discrepancy;
+% negative values offset it. The nonnegative localization weight
+%
+%      w_r = |C_r| / sum_h |C_h|
+%
+% sums to one and measures concentration across missingness patterns. This is
+% a descriptive decomposition of the observed fitted discrepancy, not a new
+% hypothesis test and not a pattern-specific p-value.
+
+% Stable public fields, also when localization is unavailable.
+omnibus.patternContributionAvailable = false;
+omnibus.patternContributionReason = '';
+omnibus.patternContributions = table();
+omnibus.patternMasks = false(0,size(Y,2));
+omnibus.patternDelta = [];
+omnibus.patternLocalScatter = {};
+omnibus.patternScatterReconstructionResidual = NaN;
+omnibus.patternScatterReconstructionRelativeResidual = NaN;
+omnibus.patternContributionSumResidual = NaN;
+omnibus.patternContributionMaxWeight = NaN;
+omnibus.patternContributionDominantPattern = NaN;
+omnibus.patternContributionHHI = NaN;
+omnibus.patternContributionEffectivePatterns = NaN;
+omnibus.patternTrimmingAvailable = false;
+omnibus.nTEMTrimmedTotal = NaN;
+
+if ~isstruct(omnibus) || ~isfield(omnibus,'available') || ~omnibus.available
+    omnibus.patternContributionReason = ...
+        'The observed omnibus statistic is unavailable.';
+    return
+end
+if ~isfield(omnibus,'OmegaDeltaPlus') || ...
+        any(~isfinite(omnibus.OmegaDeltaPlus(:))) || ...
+        ~isfield(omnibus,'delta') || any(~isfinite(omnibus.delta(:)))
+    omnibus.patternContributionReason = ...
+        'The omnibus inverse covariance or observed discrepancy is unavailable.';
+    return
+end
+
+[n,p] = size(Y);
+SigA = (SigA+SigA')/2;
+SigC = (SigC+SigC')/2;
+muA = muA(:);
+if numel(muA)~=p || ~isequal(size(SigA),[p p]) || ...
+        ~isequal(size(SigC),[p p]) || any(~isfinite(muA)) || ...
+        any(~isfinite(SigA(:))) || any(~isfinite(SigC(:)))
+    omnibus.patternContributionReason = ...
+        'The fitted location/scatter geometry is invalid.';
+    return
+end
+
+[patt,~,ic] = unique(maskMiss,'rows');
+G = size(patt,1);
+omnibus.patternMasks = patt;
+
+% Final fitting weights.
+if alpha==0
+    w = true(n,1);
+else
+    if isempty(outFit) || ~isstruct(outFit) || ...
+            ~isfield(outFit,'weights') || numel(outFit.weights)~=n
+        omnibus.patternContributionReason = ...
+            'Final TEM weights are unavailable for pattern localization.';
+        return
+    end
+    w = outFit.weights(:)>0;
+end
+h = sum(w);
+if h<=0
+    omnibus.patternContributionReason = ...
+        'No observation has positive final EM/TEM fitting weight.';
+    return
+end
+
+% TEM's own final concentration indicator is kept separately from the final
+% fitting weight. They coincide in the default uncoupled fit. In the coupled
+% sensitivity mode internalWeights excludes externally forced complete-case
+% eligibility zeros, so the graphical trimming panel continues to mean TEM's
+% own robust trimming rather than a mixture of two exclusion mechanisms.
+if alpha>0
+    omnibus.patternTrimmingAvailable = true;
+    if isstruct(outFit) && isfield(outFit,'internalWeights') && ...
+            numel(outFit.internalWeights)==n
+        wTEM = outFit.internalWeights(:)>0;
+    else
+        wTEM = w;
+    end
+    omnibus.nTEMTrimmedTotal = sum(~wTEM);
+else
+    wTEM = true(n,1);
+    omnibus.nTEMTrimmedTotal = 0;
+end
+
+% Pattern-specific consistency factors entering the TEM scatter equation.
+kappa = ones(G,1);
+if alpha>0
+    switch lower(consistencyfactor)
+        case 'adaptive'
+            if ~isstruct(asympt) || ~isfield(asympt,'TEM') || ...
+                    ~isstruct(asympt.TEM) || ...
+                    ~isfield(asympt.TEM,'patternDiagnostics') || ...
+                    height(asympt.TEM.patternDiagnostics)~=G || ...
+                    ~ismember('kappa',asympt.TEM.patternDiagnostics.Properties.VariableNames)
+                omnibus.patternContributionReason = ...
+                    ['Adaptive pattern consistency factors are unavailable; ' ...
+                    'pattern localization cannot reconstruct the TEM scatter.'];
+                return
+            end
+            kappa = asympt.TEM.patternDiagnostics.kappa;
+
+        case 'pattern'
+            cthr = NaN;
+            if isfield(outFit,'cthr') && isscalar(outFit.cthr) && ...
+                    isfinite(outFit.cthr)
+                cthr = outFit.cthr;
+            elseif isfield(outFit,'adjustedD2') && numel(outFit.adjustedD2)==n
+                dd = outFit.adjustedD2(:);
+                ok = w & isfinite(dd);
+                if any(ok)
+                    cthr = max(dd(ok));
+                end
+            end
+            if ~isfinite(cthr)
+                omnibus.patternContributionReason = ...
+                    'Unable to reconstruct the final TEM trimming threshold.';
+                return
+            end
+            for g=1:G
+                if ~any(w & ic==g)
+                    continue
+                end
+                pg = sum(~patt(g,:));
+                if pg==0
+                    kappa(g) = 1;
+                    continue
+                end
+                ag = local_tem_inv_adjust(cthr,pg,p,n,method);
+                Hg = chi2cdf(ag,pg);
+                if ~isfinite(ag) || ag<=0 || ~isfinite(Hg) || Hg<=0
+                    omnibus.patternContributionReason = sprintf( ...
+                        'Unable to reconstruct the TEM factor for pattern %d.',g);
+                    return
+                end
+                kappa(g) = chi2cdf(ag,pg+2)/Hg;
+            end
+
+        otherwise
+            omnibus.patternContributionReason = ...
+                ['Pattern localization is currently implemented for ordinary EM ' ...
+                'and for TEM with consistencyfactor=''adaptive'' or ''pattern''.'];
+            return
+    end
+end
+
+Pattern = (1:G)';
+PatternLabel = strings(G,1);
+nPattern = zeros(G,1);
+PatternFraction = zeros(G,1);
+nRetained = zeros(G,1);
+RetainedFractionWithinPattern = zeros(G,1);
+nTEMTrimmed = zeros(G,1);
+TEMTrimmedFractionWithinPattern = NaN(G,1);
+ShareOfAllTEMTrimmed = NaN(G,1);
+FitWeight = zeros(G,1);
+pObserved = zeros(G,1);
+Kappa = NaN(G,1);
+localScatter = cell(G,1);
+Srecon = zeros(p,p);
+
+for g=1:G
+    rowsAll = (ic==g);
+    rows = rowsAll & w;
+    ng = sum(rowsAll);
+    hg = sum(rows);
+    obs = find(~patt(g,:));
+    mis = find(patt(g,:));
+    pg = numel(obs);
+
+    nPattern(g) = ng;
+    PatternFraction(g) = ng/n;
+    nRetained(g) = hg;
+    if ng>0
+        RetainedFractionWithinPattern(g) = hg/ng;
+    else
+        RetainedFractionWithinPattern(g) = NaN;
+    end
+
+    % Patternwise location of TEM's own robust trimming. These quantities are
+    % relevant only for alpha>0 and are descriptive, not patternwise tests.
+    if alpha>0
+        hTEMg = sum(rowsAll & wTEM);
+        nTEMTrimmed(g) = ng-hTEMg;
+        if ng>0
+            TEMTrimmedFractionWithinPattern(g) = nTEMTrimmed(g)/ng;
+        end
+    end
+
+    FitWeight(g) = hg/h;
+    pObserved(g) = pg;
+    Kappa(g) = kappa(g);
+
+    % Use exactly the same pattern convention as mdLittletest: a 1 denotes
+    % an observed coordinate and a 0 denotes a missing coordinate. This makes
+    % the graphical localization output directly comparable across the two
+    % procedures.
+    PatternLabel(g) = string(sprintf('%d',double(~patt(g,:))));
+
+    if hg==0
+        localScatter{g} = NaN(p,p);
+        continue
+    end
+
+    if pg==0
+        % With no observed coordinate, the conditional centered second moment
+        % equals the fitted scatter itself; such a row carries no new data
+        % information but may appear in the formal EM reconstruction.
+        Slocal = SigA;
+    else
+        Sobs = SigA(obs,obs);
+        Sobs = (Sobs+Sobs')/2;
+        if rcond(Sobs)<=1e-12
+            omnibus.patternContributionReason = sprintf( ...
+                'Observed scatter block is numerically singular for pattern %d.',g);
+            return
+        end
+
+        Lg = zeros(p,pg);
+        Lg(obs,:) = eye(pg);
+        Vg = zeros(p,p);
+        if ~isempty(mis)
+            Ag = SigA(mis,obs)/Sobs;
+            Cg = SigA(mis,mis)-Ag*SigA(obs,mis);
+            Cg = (Cg+Cg')/2;
+            Lg(mis,:) = Ag;
+            Vg(mis,mis) = Cg;
+        end
+
+        Zg = Y(rows,obs)-muA(obs)';
+        Xhat = Zg*Lg';
+        kg = kappa(g);
+        if ~isfinite(kg) || kg<=0
+            omnibus.patternContributionReason = sprintf( ...
+                'The fitted consistency factor is invalid for pattern %d.',g);
+            return
+        end
+        Slocal = (Xhat'*Xhat)/(hg*kg) + Vg;
+        Slocal = (Slocal+Slocal')/2;
+    end
+
+    % Classical mdEM and robust mdTEM use slightly different finite-sample
+    % scatter normalizations.  In the alpha=0 branch mdEM calls
+    % aux.NAmaximization_step, whose covariance update multiplies the
+    % centered expected second moment by h/(h-1).  The corrected TEM step
+    % used for alpha>0 instead divides by h with no Bessel factor.  Apply
+    % the classical factor here only for MDP-U, so that the weighted sum of
+    % the pattern-local scatters reconstructs exactly the scatter actually
+    % returned by mdEM (up to the EM convergence tolerance).
+    if alpha==0 && h>1
+        Slocal = (h/(h-1))*Slocal;
+    end
+
+    localScatter{g} = Slocal;
+    Srecon = Srecon + FitWeight(g)*Slocal;
+end
+
+if alpha>0 && omnibus.nTEMTrimmedTotal>0
+    ShareOfAllTEMTrimmed = nTEMTrimmed/omnibus.nTEMTrimmedTotal;
+end
+
+% The reconstruction should agree with the fitted all-data scatter up to the
+% EM/TEM convergence tolerance.  A small residual is distributed in proportion
+% to FitWeight solely to make the additive H identity exact.  A material
+% residual instead signals that the current fit is not represented by the
+% reconstruction formula, in which case localization is not reported.
+Rfit = SigA-Srecon;
+absRecon = norm(Rfit,'fro');
+relRecon = absRecon/max(norm(SigA,'fro'),eps);
+omnibus.patternScatterReconstructionResidual = absRecon;
+omnibus.patternScatterReconstructionRelativeResidual = relRecon;
+if ~isfinite(relRecon) || relRecon>1e-4
+    omnibus.patternContributionReason = sprintf( ...
+        ['Pattern scatter reconstruction residual is too large (relative %.6g); ' ...
+        'localization is suppressed rather than forcing an invalid decomposition.'], ...
+        relRecon);
+    return
+end
+
+s = p*(p+1)/2;
+DeltaPattern = zeros(s,G);
+DeltaNorm = zeros(G,1);
+for g=1:G
+    if FitWeight(g)<=0
+        continue
+    end
+    Slocal = localScatter{g};
+    % Add the same tiny fitted-scatter residual to each local scatter. Since
+    % the FitWeight values sum to one, this preserves exact additivity.
+    Dg = FitWeight(g)*(Slocal + Rfit - SigC);
+    dg = local_vech((Dg+Dg')/2);
+    DeltaPattern(:,g) = dg;
+    DeltaNorm(g) = norm(dg);
+end
+
+% Additive contribution to the observed rank-selected quadratic form.
+qdir = omnibus.OmegaDeltaPlus*omnibus.delta;
+Contribution = n*(DeltaPattern'*qdir);
+Hrecon = sum(Contribution);
+sumResidual = Hrecon-omnibus.stat;
+
+SignedShare = NaN(G,1);
+if isfinite(omnibus.stat) && abs(omnibus.stat)>eps
+    SignedShare = Contribution/omnibus.stat;
+end
+absDen = sum(abs(Contribution));
+if isfinite(absDen) && absDen>0
+    AbsWeight = abs(Contribution)/absDen;
+else
+    AbsWeight = NaN(G,1);
+end
+Sign = sign(Contribution);
+
+% Descriptive residual contribution after removal of the leading pattern-size
+% effect. Under MCAR a pattern-local empirical discrepancy is O_p(n_r^{-1/2})
+% and enters the global fit with a weight of order n_r/n, so its first-order
+% random contribution is of order sqrt(FitWeight_r). This is a graphical
+% adjustment only, not a studentized pattern statistic.
+FrequencyAdjustedContribution = NaN(G,1);
+posFit = FitWeight>0;
+FrequencyAdjustedContribution(posFit) = ...
+    Contribution(posFit)./sqrt(FitWeight(posFit));
+zeroFit = ~posFit & abs(Contribution)<=sqrt(eps);
+FrequencyAdjustedContribution(zeroFit) = 0;
+
+omnibus.patternDelta = DeltaPattern;
+omnibus.patternLocalScatter = localScatter;
+omnibus.patternContributionSumResidual = sumResidual;
+omnibus.patternContributions = table(Pattern,PatternLabel,pObserved,nPattern, ...
+    PatternFraction,nRetained,RetainedFractionWithinPattern,nTEMTrimmed, ...
+    TEMTrimmedFractionWithinPattern,ShareOfAllTEMTrimmed,FitWeight,Kappa, ...
+    DeltaNorm,Contribution,FrequencyAdjustedContribution,SignedShare,AbsWeight,Sign);
+
+if all(isfinite(AbsWeight)) && ~isempty(AbsWeight)
+    [omnibus.patternContributionMaxWeight,idxMax] = max(AbsWeight);
+    omnibus.patternContributionDominantPattern = Pattern(idxMax);
+    omnibus.patternContributionHHI = sum(AbsWeight.^2);
+    if omnibus.patternContributionHHI>0
+        omnibus.patternContributionEffectivePatterns = ...
+            1/omnibus.patternContributionHHI;
+    end
+end
+
+% Final numerical check of the exact additive identity after the tiny fit
+% residual correction.  Use a scale-aware tolerance because H itself may be
+% very large under strong alternatives or contamination.
+tolH = 1e-8*max(1,abs(omnibus.stat));
+if ~isfinite(sumResidual) || abs(sumResidual)>tolH
+    omnibus.patternContributionReason = sprintf( ...
+        'Pattern contributions do not reconstruct H within tolerance (residual %.6g).', ...
+        sumResidual);
+    omnibus.patternContributions = table();
+    omnibus.patternDelta = [];
+    omnibus.patternLocalScatter = {};
+    return
+end
+
+omnibus.patternContributionAvailable = true;
+omnibus.patternContributionReason = '';
 end
 
 % -------------------------------------------------------------------------
