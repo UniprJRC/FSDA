@@ -34,7 +34,8 @@ function out = hpfilterFS(y, varargin)
 %
 %   and hpfilterFS solves the joint penalized least-squares problem
 %
-%   $\min_{m,\beta} ||S(y-m-X\beta)||^2 + \lambda ||D m||^2$.
+%   $\min_{m,\beta} ||S(y-m-X\beta)||^2 + \lambda ||D m||^2
+%   + \beta' P_\beta \beta$.
 %
 %   The joint fit is computed exactly by profiling the HP trend. When X is
 %   supplied, the current implementation is intended for the fitting-only
@@ -59,10 +60,9 @@ function out = hpfilterFS(y, varargin)
 %   bsb :   Indices of observed points to condition on. Vector of
 %           integer-valued numeric indices. In ordinary inference mode at
 %           least 3 observations are required. In fitonly mode the minimum
-%           is size(X,2)+2, reflecting the two-dimensional affine null
-%           space of the HP penalty; therefore a trend-only fit can use an
-%           elemental subset of 2 observations. If bsb is empty all finite
-%           observations are used.
+%           is dim(null(betaPenalty))+2, reflecting the affine null space of the
+%           HP penalty plus any unpenalized coefficient directions. If bsb
+%           is empty all finite observations are used.
 %               Example - 'bsb',1:round(T*0.7); T=length(y);
 %               Data Types - numeric
 %
@@ -85,6 +85,23 @@ function out = hpfilterFS(y, varargin)
 %           is false.
 %               Example - 'fitonly',true
 %               Data Types - logical
+%
+% betaPenalty : q-by-q positive-semidefinite matrix $P_\beta$ applied to
+%           beta in addition to the HP trend penalty. Its scale is included
+%           in the matrix. This advanced fitting-only option is mainly used
+%           by repeated calls from LTSts.
+%               Example - 'betaPenalty',Pseason
+%               Data Types - double or sparse double.
+%
+% betaPenaltyNullBasis : optional basis for the full null space of
+%           betaPenalty. Numeric matrix with q rows. These directions must
+%           be identified by the data. If empty, hpfilterFS computes the
+%           basis. Supplying a precomputed basis avoids repeated dense
+%           null-space decompositions in LTSts calls. The supplied basis is
+%           checked for size, independence, null-space membership and
+%           completeness.
+%               Example - 'betaPenaltyNullBasis',Nseason
+%               Data Types - double.
 %
 %      conflev : confidence level for the confidence bands. Scalar.
 %                A number between 0 and 1 which defines the confidence
@@ -194,7 +211,8 @@ function out = hpfilterFS(y, varargin)
 %   out.lambda      = numerical value of lambda used in the fit.
 %   out.rss         = residual sum of squares computed on bsb.
 %   out.penalty     = value of lambda*||D*out.mhat||^2.
-%   out.objective   = out.rss+out.penalty.
+%   out.betaPenaltyValue = value of out.beta'*betaPenalty*out.beta.
+%   out.objective   = out.rss+out.penalty+out.betaPenaltyValue.
 %   out.fitonly     = value of input option fitonly.
 %   out.sigma2_ML   = estimate of residual variance using augmented
 %                     likelihood approach. Empty if fitonly=true.
@@ -332,6 +350,8 @@ ig_a0 = [];
 ig_b0 = [];
 X = [];
 fitonly = false;
+betaPenalty = [];
+betaPenaltyNullBasis = [];
 
 % Method used to estimate the residual variance.
 sigma2_eps = "MLaug";
@@ -346,7 +366,8 @@ if nargin>1
     options=struct('bsb',bsb,'plots',plots,'lambda',lambda,...
         'conflev',conflev,'sigma2_eps',sigma2_eps,'s',s,...
         'ig_a0',ig_a0,'ig_b0',ig_b0,'predint',predint,...
-        'X',X,'fitonly',fitonly);
+        'X',X,'fitonly',fitonly,'betaPenalty',betaPenalty,...
+        'betaPenaltyNullBasis',betaPenaltyNullBasis);
 
     names=fieldnames(options);
     for i=1:2:length(varargin)
@@ -374,6 +395,8 @@ if nargin>1
     predint=options.predint;
     X=options.X;
     fitonly=options.fitonly;
+    betaPenalty=options.betaPenalty;
+    betaPenaltyNullBasis=options.betaPenaltyNullBasis;
 end
 
 % Convert timetable input and, when possible, infer the periodicity.
@@ -474,6 +497,113 @@ else
 end
 q=size(X,2);
 
+% Validate the optional coefficient penalty. With an empty input, the
+% coefficient block remains unpenalized and the original HP fit is retained.
+if ~(isnumeric(betaPenalty) && isreal(betaPenalty) && ismatrix(betaPenalty))
+    error('FSDA:hpfilterFS:WrongInputOpt', ...
+        'betaPenalty must be a real numeric matrix or empty.')
+end
+if isempty(betaPenalty)
+    betaPenalty=sparse(q,q);
+else
+    if ~(isequal(size(betaPenalty),[q q]) && ...
+            all(isfinite(nonzeros(betaPenalty))))
+        error('FSDA:hpfilterFS:WrongInputOpt', ...
+            'betaPenalty must be a finite real q-by-q numeric matrix.')
+    end
+    betaPenalty=sparse(double(betaPenalty));
+    penaltyScale=norm(betaPenalty,'fro');
+    symmetryTolerance=1e-10*max(penaltyScale,realmin);
+    if norm(betaPenalty-betaPenalty','fro')>symmetryTolerance
+        error('FSDA:hpfilterFS:WrongInputOpt', ...
+            'betaPenalty must be symmetric.')
+    end
+    betaPenalty=(betaPenalty+betaPenalty')/2;
+
+    % A small scale-relative diagonal shift lets sparse Cholesky detect
+    % negative eigenvalues while tolerating roundoff in semidefinite input.
+    penaltyScale=norm(betaPenalty,1);
+    if q>0 && penaltyScale>0
+        psdTolerance=q*eps(penaltyScale);
+        [~,cholFlag]=chol(betaPenalty+psdTolerance*speye(q));
+        if cholFlag~=0
+            error('FSDA:hpfilterFS:WrongInputOpt', ...
+                'betaPenalty must be positive semidefinite.')
+        end
+    end
+end
+
+if ~(isnumeric(betaPenaltyNullBasis) && isreal(betaPenaltyNullBasis) && ...
+        ismatrix(betaPenaltyNullBasis))
+    error('FSDA:hpfilterFS:WrongInputOpt', ...
+        'betaPenaltyNullBasis must be a real numeric matrix or empty.')
+end
+nullBasisSupplied=~isempty(betaPenaltyNullBasis);
+if isempty(betaPenaltyNullBasis)
+    if q==0
+        betaPenaltyNullBasis=zeros(0,0);
+    elseif nnz(betaPenalty)==0
+        betaPenaltyNullBasis=speye(q);
+    else
+        betaPenaltyNullBasis=null(full(betaPenalty));
+    end
+elseif ~(size(betaPenaltyNullBasis,1)==q && ...
+        size(betaPenaltyNullBasis,2)<=q && ...
+        all(isfinite(betaPenaltyNullBasis(:))))
+    error('FSDA:hpfilterFS:WrongInputOpt', ...
+        'betaPenaltyNullBasis must be a finite real matrix with q rows.')
+end
+qnull=size(betaPenaltyNullBasis,2);
+if nullBasisSupplied && qnull>0
+    % Check that the supplied columns are independent, then scale each
+    % column to unit length so the null-space and completeness checks do
+    % not depend on arbitrary basis scaling.
+    if rank(full(betaPenaltyNullBasis))<qnull
+        error('FSDA:hpfilterFS:WrongInputOpt', ...
+            'The columns of betaPenaltyNullBasis must be linearly independent.')
+    end
+    basisColumnNorms=sqrt(sum(abs(full(betaPenaltyNullBasis)).^2,1));
+    if any(~isfinite(basisColumnNorms)) || any(basisColumnNorms==0)
+        error('FSDA:hpfilterFS:WrongInputOpt', ...
+            'The columns of betaPenaltyNullBasis must be nonzero and finite.')
+    end
+    Ncheck=sparse(bsxfun(@rdivide,full(betaPenaltyNullBasis),basisColumnNorms));
+    penaltyScale=norm(betaPenalty,'fro');
+    if penaltyScale>0
+        penaltyOneNorm=norm(betaPenalty,1);
+        nullTolerance=100*q*eps(penaltyOneNorm)*sqrt(qnull)/penaltyScale;
+        if norm((betaPenalty/penaltyScale)*Ncheck,'fro')>nullTolerance
+            error('FSDA:hpfilterFS:WrongInputOpt', ...
+                'betaPenaltyNullBasis must lie in the null space of betaPenalty.')
+        end
+    end
+
+    % A complete null basis makes betaPenalty+N*N' positive definite. Use
+    % sparse Cholesky first; a rank check is needed only for numerically
+    % borderline cases or an incomplete supplied basis.
+    if q>0 && nnz(betaPenalty)==0
+        basisComplete=(qnull==q);
+    elseif q>0
+        penaltyUnit=betaPenalty/penaltyScale;
+        completionMatrix=penaltyUnit+Ncheck*Ncheck';
+        completionMatrix=(completionMatrix+completionMatrix')/2;
+        [Rcompletion,completionFlag]=chol(completionMatrix);
+        completionTolerance=q*eps(max(norm(completionMatrix,1),1));
+        if completionFlag==0 && ...
+                min(abs(diag(Rcompletion)).^2)>completionTolerance
+            basisComplete=true;
+        else
+            basisComplete=rank(full([penaltyUnit Ncheck]))==q;
+        end
+    else
+        basisComplete=true;
+    end
+    if ~basisComplete
+        error('FSDA:hpfilterFS:WrongInputOpt', ...
+            'betaPenaltyNullBasis must span the full null space of betaPenalty.')
+    end
+end
+
 if q>0 && ~fitonly
     error('FSDA:hpfilterFS:JointInferenceNotImplemented',...
         ['When X is supplied, use ''fitonly'',true. Prediction intervals ' ...
@@ -492,14 +622,15 @@ end
 % at least three observations because its variance calculations were
 % developed under that condition.
 if fitonly
-    if nbsb<q+2
-        if q==0
+    qnull=size(betaPenaltyNullBasis,2);
+    if nbsb<qnull+2
+        if qnull==0
             error('FSDA:hpfilterFS:WrongInputOpt',...
                 'At least two finite observations are required in bsb when fitonly=true.')
         else
             error('FSDA:hpfilterFS:RankDeficient',...
                 ['The number of observations in bsb must be at least ' ...
-                'size(X,2)+2 for the joint HP-regression fit.'])
+                'the penalty nullity plus two for the joint HP fit.'])
         end
     end
 else
@@ -510,8 +641,12 @@ else
 end
 
 Xb=X(bsb,:);
-Aid=[ones(nbsb,1) double(bsb) double(Xb)];
-if rank(Aid)<q+2
+Aid=[ones(nbsb,1) double(bsb) double(Xb*betaPenaltyNullBasis)];
+requiredRank=size(Aid,2);
+% MATLAB's rank uses SVD, which does not accept sparse input. Seasonal
+% designs and their null-space products may be sparse, so convert only this
+% small identifiability matrix to full form.
+if rank(full(Aid))<requiredRank
     error('FSDA:hpfilterFS:RankDeficient',...
         ['The columns of X are not identifiable jointly with the HP ' ...
         'trend. In particular, X cannot contain an intercept, a linear ' ...
@@ -562,7 +697,7 @@ else
     Ry=y(bsb)-AinvWy(bsb);
     RX=Xb-AinvWX(bsb,:);
 
-    G=Xb'*RX;
+    G=Xb'*RX+betaPenalty;
     G=(G+G')/2;
     g=Xb'*Ry;
 
@@ -584,7 +719,12 @@ RSS=full(r_obs'*r_obs);
 % Compute Qhat = RSS + lambda ||D m_hat||^2
 Dm=D*m_hat;
 penalty=lambda*full(Dm'*Dm);
-Qhat=RSS+penalty;
+if q>0
+    betaPenaltyValue=full(beta'*betaPenalty*beta);
+else
+    betaPenaltyValue=0;
+end
+Qhat=RSS+penalty+betaPenaltyValue;
 
 % Initialize inferential outputs. They remain empty in fitting-only mode.
 sigma2_ML=[];
@@ -774,6 +914,7 @@ out.bsb=bsb;
 out.lambda=lambda;
 out.rss=RSS;
 out.penalty=penalty;
+out.betaPenaltyValue=betaPenaltyValue;
 out.objective=Qhat;
 out.fitonly=fitonly;
 

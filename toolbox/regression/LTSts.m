@@ -171,6 +171,58 @@ function [out, varargout] = LTSts(y,varargin)
 %                       Therefore, for example, model.seasonal=201
 %                       corresponds to B=1 and G=2, while model.seasonal=3
 %                       corresponds to B=3 and G=0;
+%               model.seasonalType = character vector or string specifying
+%                       the seasonal basis. The default is 'harmonic', which
+%                       retains the harmonic specification described above.
+%                       If model.seasonalType='dummy', model.seasonal is a
+%                       0/1 indicator for including seasonality and the
+%                       seasonal component is represented by centered
+%                       seasonal contrasts. The contrast coefficients may
+%                       vary over years through model.seasonalTimeOrder.
+%               model.seasonalTimeOrder = integer 0, 1 or 2 specifying the
+%                       polynomial order of the year variation when
+%                       model.seasonalType='dummy'. The default is 1. Order
+%                       0 gives a constant dummy seasonal profile; order 1
+%                       gives linearly changing seasonal contrasts; order 2
+%                       allows quadratic change. The year basis is centered
+%                       and scaled to improve numerical conditioning. The
+%                       contrasts compare each of the first s-1 positions
+%                       with the final position; implied effects sum to zero.
+%               model.seasonality = structure specifying the modern seasonal
+%                       interface. If this field is nonempty, its supplied
+%                       fields take precedence over the flat seasonal
+%                       aliases above. For harmonic seasonality, omitted
+%                       harmonics and degree inherit the legacy numeric
+%                       model.seasonal setting. Its fields are:
+%                         type: 'harmonic' (default), 'dummy' or 'none'.
+%                         harmonics: positive integer B, used only for the
+%                           harmonic type. The seasonal period is still s.
+%                         evolution: 'polynomial' (default) or 'penalized'.
+%                         degree: 0 (default), 1 or 2 for polynomial
+%                           evolution. For harmonic seasonality this maps to
+%                           the existing
+%                           harmonic-amplitude polynomial/ALS specification.
+%                           For dummy seasonality it is the degree of the
+%                           year polynomial for centered seasonal contrasts.
+%                         lambda: positive penalty strength, required for
+%                           penalized evolution.
+%                         differenceOrder: 1 or 2; default 2. Penalized
+%                           evolution penalizes this order of differences
+%                           between annual seasonal profiles. Use lambda and
+%                           differenceOrder instead of degree.
+%                       Examples:
+%                         model.seasonality.type='harmonic';
+%                         model.seasonality.harmonics=3;
+%                         model.seasonality.evolution='polynomial';
+%                         model.seasonality.degree=2;
+%                       or:
+%                         model.seasonality.type='dummy';
+%                         model.seasonality.evolution='penalized';
+%                         model.seasonality.lambda=10;
+%                         model.seasonality.differenceOrder=2;
+%                       When model.seasonality is empty, the legacy numeric
+%                       model.seasonal syntax, including values above 100,
+%                       retains its previous meaning.
 %               model.X  =  matrix of size T-by-nexpl containing the
 %                         values of nexpl extra covariates which are likely
 %                         to affect y.
@@ -456,14 +508,16 @@ function [out, varargout] = LTSts(y,varargin)
 %                       option model.lshift is not equal to 0.
 %     out.numscale2 = matrix of size lts.bestr-by-(T-2*lshift) containing
 %                       (in the columns) the values of the lts.bestr smallest
-%                       residual sums of squares. With model.trend='HP',
-%                       these values are kept for scale estimation while
-%                       candidate ranking uses the penalized HP objective.
+%                       residual sums of squares. For an HP trend or
+%                       penalized seasonal evolution, these values are kept
+%                       for scale estimation while candidate ranking uses
+%                       the full penalized objective.
 %     out.BestIndexes = matrix of size nbestindexes-by-(T-2*lshift)
 %                       containing in each column the indexes
 %                       associated with the best nbestindexes solutions.
-%                       With model.trend='HP', best means smallest penalized
-%                       HP objective; otherwise it means smallest trimmed RSS.
+%                       With an HP trend or penalized seasonal evolution,
+%                       best means smallest full penalized objective;
+%                       otherwise it means smallest trimmed RSS.
 %                       The indexes from lts.bestr/2+1 to lts.bestr are
 %                       associated with best solutions from previous
 %                       tentative level shift.
@@ -525,6 +579,8 @@ function [out, varargout] = LTSts(y,varargin)
 %                       profiled penalized information matrix for the
 %                       finite-dimensional coefficients, conditional on the
 %                       final subset and fixed model.lambdaHP.
+%                       It is empty for penalized seasonal profiles because
+%                       coefficient-wise inference is not reported.
 %                       where $A$ is the matrix of partial derivatives. More
 %                       precisely:
 %                       \[
@@ -540,7 +596,8 @@ function [out, varargout] = LTSts(y,varargin)
 %          out.trend = T-by-1 vector containing the final HP trend. This
 %                       field is present when model.trend='HP'.
 %       out.seasonal = T-by-1 vector containing the final seasonal component.
-%                       This field is present when model.trend='HP'.
+%                       This field is present when model.trend='HP' or when
+%                       model.seasonalType='dummy'.
 %    out.explanatory = T-by-1 vector containing the final contribution of
 %                       explanatory and autoregressive variables. This field
 %                       is present when model.trend='HP'.
@@ -549,12 +606,19 @@ function [out, varargout] = LTSts(y,varargin)
 %                       field is present when model.trend='HP'.
 %              out.hp = structure containing HP-specific final-fit
 %                       information. Fields are lambda, rss, penalty,
-%                       objective, objectiveCandidates, objectiveLSH and
-%                       inference. The objective is rss+penalty.
+%                       seasonalPenalty, objective, objectiveCandidates,
+%                       objectiveLSH and inference. The objective is rss
+%                       plus the trend and seasonal penalties.
 % out.LastHarmonicPval = combined p value for the coefficients of the
 %                        last harmonic. For a polynomial trend this is the
 %                        existing F-test calculation. For an HP trend it is
-%                        an approximate conditional Wald test.
+%                        an approximate conditional Wald test. It is empty
+%                        for dummy seasonality and for penalized seasonal
+%                        evolution.
+% out.seasonalProfile = structure with fields yearIndex, seasonIndex and
+%                        effect, containing the fitted seasonal effect for
+%                        each year and seasonal position for dummy
+%                        seasonality, and for any penalized seasonal profile.
 % out.LevelShiftPval  = p value of the level shift corrected for the
 %                       search over tentative shift positions. The existing
 %                       polynomial-trend calculation is unchanged. For an HP
@@ -1078,30 +1142,30 @@ function [out, varargout] = LTSts(y,varargin)
     load('TTP17049075');
     Y4 = P12119085{:,1};
     Y5 = P17049075{:,1};
-    
+
     % the model
     model           = struct;
     model.trend     = 1;
     model.seasonal  = 102;
     model.s         = 12;
     model.lshift    = 14:length(Y4)-13;
-    
+
     % LTSts
     out4 = LTSts(Y4,'model',model,'plots',0,'dispresults',true,'msg',0);
     out5 = LTSts(Y5,'model',model,'plots',0,'dispresults',true,'msg',0);
-    
+
     % the wedgeplot with the time series and the detected outliers and
     % level shift
     wedgeplot(out4,'extradata',Y4,'titl','P12119085, imports of plants from KN to UK');
     wedgeplot(out5,'extradata',Y5,'titl','P17049075, imports of sugars from UA to LT');
-    
+
     % Forecasts with a 99.9 per cent confidence level
     nfore=10;
     outfore4 = forecastTS(out4,'model',model,'nfore',nfore,'conflev',0.999,'titl','LTSts forecast for P12119085, imports of plants from KN to UK');
     outfore5 = forecastTS(out5,'model',model,'nfore',nfore,'conflev',0.999,'titl','LTSts forecast for P17049075, imports of sugar from UA to LT');
-    
+
     % Comparing with FS (needs conflev option)
-    
+
     outLTS4 = LTSts(Y4,'model',model,'plots',1,'conflev',0.99,'msg',0);
     drawnow;
     ax = findall(0, 'Type', 'axes', 'Tag', 'LTSts:ts');
@@ -1110,7 +1174,7 @@ function [out, varargout] = LTSts(y,varargin)
     else
         warning('FSRts:ts axes not found. Title not assigned.');
     end
-    
+
     outFRS4 = FSRts(Y4,'model',model,'plots',1);
     ax=findobj(gcf,'Tag','FSRts:ts');
     if ~isempty(ax) && isgraphics(ax(1),'axes')
@@ -1118,15 +1182,15 @@ function [out, varargout] = LTSts(y,varargin)
     else
         warning('FSRts:ts axes not found. Title not assigned.');
     end
-    
+
     outLTS5 = LTSts(Y5,'model',model,'plots',1,'conflev',0.99,'msg',0);
-    ax=findobj(gcf,'Tag','LTSts:ts');    
+    ax=findobj(gcf,'Tag','LTSts:ts');
     if ~isempty(ax) && isgraphics(ax(1),'axes')
         title(ax,'P17049075, LTS with conflev=0.99');
     else
         warning('FSRts:ts axes not found. Title not assigned.');
     end
-    
+
     outFRS5 = FSRts(Y5,'model',model,'plots',1);
     ax=findobj(gcf,'Tag','FSRts:ts');
     if ~isempty(ax) && isgraphics(ax(1),'axes')
@@ -1176,6 +1240,9 @@ modeldef.trend   =1;        % linear trend
 modeldef.lambdaHP=[];       % HP smoothing parameter (used if trend='HP')
 modeldef.s       =12;       % monthly time series
 modeldef.seasonal=1;        % just one harmonic
+modeldef.seasonalType='harmonic'; % 'harmonic' or 'dummy'
+modeldef.seasonalTimeOrder=1; % year polynomial order for dummy seasonality
+modeldef.seasonality=[];    % modern nested seasonal specification
 modeldef.X       =[];       % no extra explanatory variable
 modeldef.lshift  =0;        % no level shift
 modeldef.ARp     =0;        % no autoregressive component
@@ -1286,8 +1353,179 @@ end
 s          = model.s;           % get periodicity of time series
 trendInput = model.trend;       % get kind of trend
 seasonal   = model.seasonal;    % get number of harmonics
+seasonalType=model.seasonalType;
+seasonalTimeOrder=model.seasonalTimeOrder;
 lshift     = model.lshift;      % get level shift
 lambdaHP   = model.lambdaHP;    % HP smoothing parameter
+
+% The nested model.seasonality structure is the modern interface. The
+% legacy scalar model.seasonal and the earlier flat dummy options remain
+% available when the nested structure is empty.
+seasonalitySpec=model.seasonality;
+seasonalEvolution='polynomial';
+seasonalPenaltyLambda=[];
+seasonalPenaltyOrder=2;
+seasonalityModern=~isempty(seasonalitySpec);
+
+if seasonalityModern
+    if ~isstruct(seasonalitySpec) || ~isscalar(seasonalitySpec)
+        error('FSDA:LTSts:WrongInput', ...
+            'model.seasonality must be an empty value or a scalar structure.')
+    end
+    allowedSeasonalityFields={'type','harmonics','evolution','degree', ...
+        'lambda','differenceOrder'};
+    suppliedFields=fieldnames(seasonalitySpec);
+    badFields=setdiff(suppliedFields,allowedSeasonalityFields);
+    if ~isempty(badFields)
+        error('FSDA:LTSts:WrongInput', ...
+            'Unknown model.seasonality field: %s.',badFields{1})
+    end
+
+    if isfield(seasonalitySpec,'type')
+        seasonalType=seasonalitySpec.type;
+    else
+        seasonalType='harmonic';
+    end
+    if isstring(seasonalType) && isscalar(seasonalType)
+        seasonalType=char(seasonalType);
+    end
+    if ~(ischar(seasonalType) && isrow(seasonalType) && ...
+            any(strcmpi(seasonalType,{'harmonic','dummy','none'})))
+        error('FSDA:LTSts:WrongInput', ...
+            ['model.seasonality.type must be ''harmonic'', ''dummy'' ' ...
+            'or ''none''.'])
+    end
+
+    if isfield(seasonalitySpec,'evolution')
+        seasonalEvolution=seasonalitySpec.evolution;
+    end
+    if isstring(seasonalEvolution) && isscalar(seasonalEvolution)
+        seasonalEvolution=char(seasonalEvolution);
+    end
+    if ~(ischar(seasonalEvolution) && isrow(seasonalEvolution) && ...
+            any(strcmpi(seasonalEvolution,{'polynomial','penalized'})))
+        error('FSDA:LTSts:WrongInput', ...
+            ['model.seasonality.evolution must be ''polynomial'' ' ...
+            'or ''penalized''.'])
+    end
+    seasonalEvolution=lower(seasonalEvolution);
+
+    if strcmpi(seasonalType,'none')
+        seasonal=0;
+    elseif strcmpi(seasonalType,'harmonic')
+        % If omitted, harmonics and polynomial degree inherit the legacy
+        % model.seasonal value, which keeps default model structures useful.
+        legacySeasonal=seasonal;
+        legacyDegree=0;
+        if isnumeric(legacySeasonal) && isscalar(legacySeasonal) && ...
+                isfinite(legacySeasonal) && legacySeasonal>=100
+            legacyDegree=floor(legacySeasonal/100);
+            legacySeasonal=mod(legacySeasonal,100);
+        end
+        if isfield(seasonalitySpec,'harmonics')
+            seasonal=seasonalitySpec.harmonics;
+        else
+            seasonal=legacySeasonal;
+        end
+        if ~(isnumeric(seasonal) && isscalar(seasonal) && ...
+                isfinite(seasonal) && seasonal>=1 && seasonal==fix(seasonal))
+            error('FSDA:LTSts:WrongInput', ...
+                ['model.seasonality.harmonics must be a positive ' ...
+                'integer for harmonic seasonality.'])
+        end
+        if strcmp(seasonalEvolution,'polynomial')
+            if isfield(seasonalitySpec,'degree')
+                seasonalTimeOrder=seasonalitySpec.degree;
+            else
+                seasonalTimeOrder=legacyDegree;
+            end
+            if ~(isnumeric(seasonalTimeOrder) && ...
+                    isscalar(seasonalTimeOrder) && ...
+                    isfinite(seasonalTimeOrder) && ...
+                    ismember(seasonalTimeOrder,[0 1 2]))
+                error('FSDA:LTSts:WrongInput', ...
+                    'model.seasonality.degree must be 0, 1 or 2.')
+            end
+            % Reuse the existing harmonic/ALS implementation. Its legacy
+            % encoding is G*100+B, where G is the degree and B the number
+            % of harmonics.
+            if seasonalTimeOrder>0
+                seasonal=100*seasonalTimeOrder+seasonal;
+            end
+        end
+    elseif strcmpi(seasonalType,'dummy')
+        % The nested type itself activates dummy seasonality. Legacy
+        % model.seasonal is not used as an on/off switch in this interface.
+        seasonal=1;
+        if strcmp(seasonalEvolution,'polynomial')
+            if isfield(seasonalitySpec,'degree')
+                seasonalTimeOrder=seasonalitySpec.degree;
+            else
+                seasonalTimeOrder=0;
+            end
+        end
+    end
+
+    if strcmp(seasonalEvolution,'penalized') && ...
+            ~strcmpi(seasonalType,'none')
+        if ~isfield(seasonalitySpec,'lambda')
+            error('FSDA:LTSts:WrongInput', ...
+                ['model.seasonality.lambda is required when ' ...
+                'evolution=''penalized''.'])
+        end
+        seasonalPenaltyLambda=seasonalitySpec.lambda;
+        if isfield(seasonalitySpec,'differenceOrder')
+            seasonalPenaltyOrder=seasonalitySpec.differenceOrder;
+        end
+        if isfield(seasonalitySpec,'degree')
+            error('FSDA:LTSts:WrongInput', ...
+                ['Do not specify model.seasonality.degree when ' ...
+                'evolution=''penalized''.'])
+        end
+        if ~(isnumeric(seasonalPenaltyLambda) && ...
+                isscalar(seasonalPenaltyLambda) && ...
+                isfinite(seasonalPenaltyLambda) && seasonalPenaltyLambda>0)
+            error('FSDA:LTSts:WrongInput', ...
+                'model.seasonality.lambda must be a positive finite scalar.')
+        end
+        if ~(isnumeric(seasonalPenaltyOrder) && ...
+                isscalar(seasonalPenaltyOrder) && ...
+                isfinite(seasonalPenaltyOrder) && ...
+                ismember(seasonalPenaltyOrder,[1 2]))
+            error('FSDA:LTSts:WrongInput', ...
+                'model.seasonality.differenceOrder must be 1 or 2.')
+        end
+    elseif strcmp(seasonalEvolution,'polynomial') && ...
+            (isfield(seasonalitySpec,'lambda') || ...
+            isfield(seasonalitySpec,'differenceOrder'))
+        error('FSDA:LTSts:WrongInput', ...
+            ['Specify degree for polynomial evolution, or lambda and ' ...
+            'differenceOrder for penalized evolution, but not both.'])
+    end
+end
+
+if isstring(seasonalType) && isscalar(seasonalType)
+    seasonalType=char(seasonalType);
+end
+if ~(ischar(seasonalType) && isrow(seasonalType) && ...
+        any(strcmpi(seasonalType,{'harmonic','dummy','none'})))
+    error('FSDA:LTSts:WrongInput', ...
+        'The seasonal type must be ''harmonic'', ''dummy'' or ''none''.')
+end
+seasonalDummy=strcmpi(seasonalType,'dummy');
+if strcmpi(seasonalType,'none')
+    seasonal=0;
+end
+if strcmp(seasonalEvolution,'polynomial') && ...
+        ~(isnumeric(seasonalTimeOrder) && isscalar(seasonalTimeOrder) && ...
+        isfinite(seasonalTimeOrder) && ...
+        ismember(seasonalTimeOrder,[0 1 2]))
+    error('FSDA:LTSts:WrongInput', ...
+        'The seasonal polynomial degree must be 0, 1 or 2.')
+end
+if strcmp(seasonalEvolution,'polynomial')
+    seasonalTimeOrder=double(seasonalTimeOrder);
+end
 
 % trendHPYN is true when the nonparametric Hodrick-Prescott trend is used.
 % At this stage the HP branch is available only for MATLAB execution.
@@ -1359,37 +1597,167 @@ ntrend = size(Xtrend,2);
 % every concentration step and by the final reweighted fit.
 trendHP=zeros(T,1);
 
-% seasonal component
+% Seasonal component. The dummy option uses a sum-to-zero contrast basis
+% whose coefficients evolve as a polynomial in the year index. This keeps
+% the component linear in its coefficients, so both the polynomial-trend
+% and the joint HP-regression fitting paths can be reused.
 yhatseaso=0;
-if seasonal >0
-    sstring=sprintf('%.0f',seasonal);
-    % sstring=num2str(seasonal); TODO
-    if seasonal>100
-        varampl=real(str2double(sstring(1)));
-        seasonal=real(str2double(sstring(2:3)));
+seasonalPenaltyActive=seasonalityModern && ...
+    strcmp(seasonalEvolution,'penalized') && seasonal>0;
+seasonalPenaltyMatrix=[];
+seasonalPenaltyNullBasis=[];
+seasonalProfileBasis=[];
+seasonalBasisDimension=0;
+seasonalNullity=0;
+
+if seasonalPenaltyActive
+    if ~(isnumeric(s) && isscalar(s) && isfinite(s) && ...
+            s>=2 && s==fix(s))
+        error('FSDA:LTSts:WrongInput', ...
+            'Penalized seasonality requires model.s to be an integer >= 2.')
+    end
+    seasonIndex=mod(seq-1,s)+1;
+    if seasonalDummy
+        seasonal=1;
+        ncontrast=s-1;
+        seasonIndicators=sparse(seq,seasonIndex,1,T,s);
+        seasonContrast=[eye(ncontrast); zeros(1,ncontrast)]- ...
+            (ones(s,1)/s)*ones(1,ncontrast);
+        seasonalProfileBasis=seasonContrast;
     else
-        varampl=0;
+        if ~(isnumeric(seasonal) && isscalar(seasonal) && ...
+                isfinite(seasonal) && seasonal>=1 && ...
+                seasonal==fix(seasonal) && seasonal<=floor(s/2))
+            error('FSDA:LTSts:WrongInput', ...
+                'Harmonic count must be between 1 and floor(model.s/2).')
+        end
+        phase=(1:s)';
+        seasonalProfileBasis=zeros(s,2*seasonal);
+        for j=1:seasonal
+            seasonalProfileBasis(:,2*j-1:2*j)= ...
+                [cos(j*2*pi*phase/s) sin(j*2*pi*phase/s)];
+        end
+        if mod(s,2)==0 && seasonal==s/2
+            seasonalProfileBasis=seasonalProfileBasis(:,1:end-1);
+        end
+        seasonContrast=[];
     end
 
-    if seasonal < 1 || seasonal >floor(s/2)
-        stoprint=floor(s/2);
-        error('FSDA:LTSts:WrongInput','Seasonal component must be an integer between 1 and %.0f', stoprint)
+    seasonalBasisDimension=size(seasonalProfileBasis,2);
+    nYears=ceil(T/s);
+    if nYears<=seasonalPenaltyOrder
+        error('FSDA:LTSts:WrongInput', ...
+            ['The time series must contain more years than ' ...
+            'model.seasonality.differenceOrder.'])
+    end
+    yearIndex=floor((seq-1)/s);
+    Xseaso=sparse(T,nYears*seasonalBasisDimension);
+    for iy=0:nYears-1
+        rows=find(yearIndex==iy);
+        cols=iy*seasonalBasisDimension+(1:seasonalBasisDimension);
+        Xseaso(rows,cols)=seasonalProfileBasis(seasonIndex(rows),:);
     end
 
-    Xseaso=zeros(T,seasonal*2);
-    for j=1:seasonal
-        Xseaso(:,2*j-1:2*j)=[cos(j*2*pi*seq/s) sin(j*2*pi*seq/s)];
-    end
-    % Remark: when s is even the sine term disappears for j=s/2 and so the
-    % maximum number of trigonometric terms is s-1.
-    if seasonal==(s/2)
-        Xseaso=Xseaso(:,1:end-1);
-    end
+    % Penalize differences of the seasonal profiles themselves. The Gram
+    % matrix maps basis coefficients to the squared norm over all seasonal
+    % positions, so the penalty does not depend on arbitrary basis scaling.
+    Dseason=diff(speye(nYears),seasonalPenaltyOrder,1);
+    seasonalPenaltyMatrix=seasonalPenaltyLambda* ...
+        kron(Dseason'*Dseason, ...
+        sparse(seasonalProfileBasis'*seasonalProfileBasis));
+    seasonalPenaltyNullBasis=kron(null(full(Dseason)), ...
+        eye(seasonalBasisDimension));
+    seasonalNullity=size(seasonalPenaltyNullBasis,2);
     nseaso=size(Xseaso,2);
-else
-    nseaso=0;
     varampl=0;
-    Xseaso=[];
+    seasonalTimeOrder=0;
+elseif seasonalDummy
+    if ~(isnumeric(seasonal) && isscalar(seasonal) && ...
+            isfinite(seasonal) && ismember(seasonal,[0 1]))
+        error('FSDA:LTSts:WrongInput', ...
+            ['With model.seasonalType=''dummy'', model.seasonal must be ' ...
+            '0 or 1.'])
+    end
+    if seasonal>0
+        if ~(isnumeric(s) && isscalar(s) && isfinite(s) && ...
+                s>=2 && s==fix(s))
+            error('FSDA:LTSts:WrongInput', ...
+                ['For dummy seasonality, model.s must be an integer ' ...
+                'greater than or equal to 2.'])
+        end
+        seasonal=1;
+        varampl=0;
+        ncontrast=s-1;
+        seasonIndex=mod(seq-1,s)+1;
+        seasonIndicators=sparse(seq,seasonIndex,1,T,s);
+        % Each coefficient is the difference between one of the first
+        % s-1 seasonal effects and the final seasonal effect. Centering the
+        % indicators makes the implied seasonal effects sum to zero.
+        seasonContrast=[eye(ncontrast); zeros(1,ncontrast)]- ...
+            (ones(s,1)/s)*ones(1,ncontrast);
+        XseasonContrast=seasonIndicators*seasonContrast;
+
+        % The year coordinate is constant within each seasonal cycle and
+        % scaled to approximately [-0.5,0.5].
+        yearIndex=floor((seq-1)/s);
+        nYears=ceil(T/s);
+        yearScale=max(nYears-1,1);
+        yearCoordinate=(yearIndex-(nYears-1)/2)/yearScale;
+
+        Xseaso=zeros(T,ncontrast*(seasonalTimeOrder+1));
+        for ig=0:seasonalTimeOrder
+            cols=ig*ncontrast+(1:ncontrast);
+            Xseaso(:,cols)=bsxfun(@times,XseasonContrast, ...
+                yearCoordinate.^ig);
+        end
+        nseaso=size(Xseaso,2);
+    else
+        seasonal=0;
+        varampl=0;
+        nseaso=0;
+        Xseaso=[];
+        nYears=ceil(T/s);
+        yearScale=max(nYears-1,1);
+        yearIndex=floor((seq-1)/s);
+        seasonContrast=[];
+    end
+else
+    nYears=[];
+    yearScale=[];
+    yearIndex=[];
+    seasonContrast=[];
+    if seasonal >0
+        sstring=sprintf('%.0f',seasonal);
+        % sstring=num2str(seasonal); TODO
+        if seasonal>100
+            varampl=real(str2double(sstring(1)));
+            seasonal=real(str2double(sstring(2:3)));
+        else
+            varampl=0;
+        end
+
+        if seasonal < 1 || seasonal >floor(s/2)
+            stoprint=floor(s/2);
+            error('FSDA:LTSts:WrongInput', ...
+                'Seasonal component must be an integer between 1 and %.0f', ...
+                stoprint)
+        end
+
+        Xseaso=zeros(T,seasonal*2);
+        for j=1:seasonal
+            Xseaso(:,2*j-1:2*j)=[cos(j*2*pi*seq/s) sin(j*2*pi*seq/s)];
+        end
+        % Remark: when s is even the sine term disappears for j=s/2 and so the
+        % maximum number of trigonometric terms is s-1.
+        if seasonal==(s/2)
+            Xseaso=Xseaso(:,1:end-1);
+        end
+        nseaso=size(Xseaso,2);
+    else
+        nseaso=0;
+        varampl=0;
+        Xseaso=[];
+    end
 end
 
 X = model.X;
@@ -1451,15 +1819,23 @@ end
 pini=ntrend+nseaso+nexpl;
 
 % piniElemental is the size of an elemental subset in the absence of a
-% level shift. The HP penalty has a two-dimensional affine null space
-% (level and slope). Moreover, when the seasonal amplitude varies, the HP
-% step inside ALS conditionally estimates varampl coefficients after the
-% nseaso linear seasonal coefficients have been removed. Therefore the HP
-% elemental subset must identify both conditional linear problems.
+% level shift. In the ordinary model it equals the number of coefficients.
+% With penalized seasonal evolution, only the null space of the seasonal
+% difference penalty must be identified from the subset; the remaining
+% seasonal directions are identified by the penalty. The HP trend also
+% contributes its two-dimensional affine null space.
 if trendHPYN
-    piniElemental=nexpl+max(nseaso,varampl)+2;
+    if seasonalPenaltyActive
+        piniElemental=nexpl+seasonalNullity+2;
+    else
+        piniElemental=nexpl+max(nseaso,varampl)+2;
+    end
 else
-    piniElemental=pini;
+    if seasonalPenaltyActive
+        piniElemental=ntrend+nexpl+seasonalNullity;
+    else
+        piniElemental=pini;
+    end
 end
 
 % p = total number of parameters in the model
@@ -1478,8 +1854,13 @@ if coder.target('MATLAB')
     % if lshift=-1, then tentative level shifts are considered for positions
     % p+1, p+2, ..., T-p-1
     if isscalar(lshift) && lshift==-1
-        % lshift=(p+1):(T-p);
-        lshift=min([(p+1),5]):max([(T-p),T-4]);
+        if seasonalPenaltyActive
+            shiftBorder=piniElemental;
+        else
+            shiftBorder=p;
+        end
+        lshift=min([(shiftBorder+1),5]): ...
+            max([(T-shiftBorder),T-4]);
     end
 end
 
@@ -1560,6 +1941,12 @@ if nsamp_gt_ncomb
 end
 
 h=floor(options.h);         % Number of data points on which estimates are based
+
+if seasonalPenaltyActive && piniElemental>=h
+    error('FSDA:LTSts:SeasonalPenaltySubset', ...
+        ['The requested h-subset must be larger than the dimension of ' ...
+        'the unpenalized seasonal and trend subspace.'])
+end
 
 if h>T-nummissing
     disp(['h=' num2str(h)])
@@ -1703,8 +2090,9 @@ bestrdiv2=round(bestr/2);
 allnumscale2=zeros(bestr,1);
 
 % allobjective contains the criterion used to rank the bestr solutions.
-% For polynomial trends it coincides with allnumscale2. For the HP trend it
-% is RSS + lambdaHP*||D*trendHP||^2.
+% For an unpenalized polynomial-trend model it equals allnumscale2. A
+% seasonal penalty adds its profile roughness term; the HP trend adds
+% lambdaHP*||D*trendHP||^2.
 allobjective=Inf(bestr,1);
 
 % Store residual sum of squares and ranking objective for all tentative
@@ -1745,6 +2133,11 @@ else
     end
     % zero for varampl is automatically included because b0 is
     % initialized as a vector of zeroes b0=[b0;zeros(varampl,1)];
+end
+if seasonalPenaltyActive
+    % The annual profile block is sparse. Preserve that structure through
+    % subset fitting instead of materializing a dense T-by-nseaso matrix.
+    Xsel=sparse(Xsel);
 end
 
 % WEIisum = matrix which will contain the number of times each units has
@@ -1926,7 +2319,11 @@ for ilsh=1:lLSH
             Xlshift=[];
         end
 
-        Xfinal=[Xsel Xlshift];
+        if seasonalPenaltyActive
+            Xfinal=[Xsel sparse(Xlshift)];
+        else
+            Xfinal=[Xsel Xlshift];
+        end
         % Preliminary estimates (including tentative level shift) based
         % just on the units forming subset.
         bsb=double(index(:));
@@ -1937,7 +2334,16 @@ for ilsh=1:lLSH
             % singular elemental subset is skipped rather than terminating
             % the complete robust search.
             qhp=size(Xfinal,2);
-            Aid=[ones(length(bsb),1) double(bsb) double(Xfinal(bsb,:))];
+            if seasonalPenaltyActive
+                Nhp=seasonalNullBasisForDesign(qhp);
+                Aid=[ones(length(bsb),1) double(bsb) ...
+                    double(Xfinal(bsb,:)*Nhp)];
+                requiredRank=size(Aid,2);
+            else
+                Aid=[ones(length(bsb),1) double(bsb) ...
+                    double(Xfinal(bsb,:))];
+                requiredRank=qhp+2;
+            end
 
             % With a rich seasonal design (in particular when all seasonal
             % harmonics are used), a uniformly drawn minimal subset can be
@@ -1947,15 +2353,20 @@ for ilsh=1:lLSH
             % non-missing observations until the augmented design
             % [1,t,Xfinal] has full row rank. The subset cardinality is kept
             % unchanged, so the fit remains elemental.
-            if length(bsb)>=qhp+2 && rank(Aid)<qhp+2
-                [bsb,fullrankHP]=repairHPElementalSubset(bsb,Xfinal,lsh);
+            if length(bsb)>=requiredRank && rank(full(Aid))<requiredRank
+                if seasonalPenaltyActive
+                    [bsb,fullrankHP]=repairHPElementalSubset( ...
+                        bsb,Xfinal,lsh,Nhp);
+                else
+                    [bsb,fullrankHP]=repairHPElementalSubset(bsb,Xfinal,lsh);
+                end
                 if fullrankHP
                     % Keep the internally stored elemental subset aligned
                     % with the observations actually used for the HP fit.
                     index=bsb';
                 end
             else
-                fullrankHP=length(bsb)>=qhp+2;
+                fullrankHP=length(bsb)>=requiredRank;
             end
 
             if ~fullrankHP
@@ -1963,14 +2374,25 @@ for ilsh=1:lLSH
                 trendHP=NaN(T,1);
                 singsub=singsub+1;
             else
-                outHP=hpfilterFS(yin,'bsb',bsb,'X',Xfinal, ...
-                    'lambda',lambdaHP,'fitonly',true);
+                if seasonalPenaltyActive
+                    outHP=hpfilterFS(yin,'bsb',bsb,'X',Xfinal, ...
+                        'lambda',lambdaHP,'fitonly',true, ...
+                        'betaPenalty',seasonalPenaltyForDesign(qhp), ...
+                        'betaPenaltyNullBasis',Nhp);
+                else
+                    outHP=hpfilterFS(yin,'bsb',bsb,'X',Xfinal, ...
+                        'lambda',lambdaHP,'fitonly',true);
+                end
                 betaini=outHP.beta;
                 trendHP=outHP.mhat;
             end
         else
             % Existing polynomial-trend branch: ordinary least squares.
-            betaini=Xfinal(bsb,:)\yin(bsb);
+            if seasonalPenaltyActive
+                betaini=seasonalPenalizedFit(Xfinal(bsb,:),yin(bsb));
+            else
+                betaini=Xfinal(bsb,:)\yin(bsb);
+            end
         end
         % Check if betaini contains NaN
         if ~any(isnan(betaini))
@@ -2143,7 +2565,7 @@ for ilsh=1:lLSH
         end
 
         % Store the bestrdiv2 best values according to the ranking
-        % criterion. For the HP trend this is the penalized objective.
+        % criterion, including any active seasonal and HP penalties.
         [~,numscale2ssorind]=sort(allobjective);
         bestyhattoadd=bestyhatall(:,numscale2ssorind(1:bestrdiv2));
         bestbetastoadd=bestbetasall(numscale2ssorind(1:bestrdiv2),:);
@@ -2202,11 +2624,13 @@ for j=1:size(Weimod,2)
 end
 
 
-if trendHPYN
-    % Candidate level-shift positions are compared using the penalized HP
-    % objective, not the residual RSS.
+if trendHPYN || seasonalPenaltyActive
+    % When either the HP trend or seasonal profile is penalized, candidate
+    % level-shift positions are compared using the full penalized objective.
     [~,minidx]=min(objectiveLSH(:,2));
-    trendHP=trendHProbLSH(:,minidx);
+    if trendHPYN
+        trendHP=trendHProbLSH(:,minidx);
+    end
 else
     [~,minidx]=min(numscale2LSH(:,2));
 end
@@ -2315,7 +2739,14 @@ if trendHPYN
     % discrete level-shift position.
     Jbs=hpFiniteJacobian(brobfinal);
     qbs=size(Jbs,2);
-    nbs=qbs+2;
+    if seasonalPenaltyActive
+        Nbs=seasonalNullBasisForDesign(qbs);
+        requiredRank=size(Nbs,2)+2;
+    else
+        Nbs=speye(qbs);
+        requiredRank=qbs+2;
+    end
+    nbs=requiredRank;
     nofullrank=true;
     while nofullrank
         if nbs>T-nummissing
@@ -2324,24 +2755,48 @@ if trendHPYN
         end
         bs=IndBestRes(1:nbs);
         bs=bs(~isnan(yin(bs)));
-        if length(bs)>=qbs+2 && ...
-                rank([ones(length(bs),1) double(bs) double(Jbs(bs,:))])==qbs+2
+        if length(bs)>=requiredRank && ...
+                rank(full([ones(length(bs),1) double(bs) ...
+                double(Jbs(bs,:)*Nbs)]))==requiredRank
             nofullrank=false;
         else
             nbs=nbs+1;
         end
     end
 else
-    % Existing polynomial-trend calculation.
-    nofullrank=true;
-    bs=IndBestRes(1:p+1);
-    ij=0;
-    while nofullrank
-        bs=IndBestRes(1:p+ij);
-        if rank(zscore(Xsel(bs,2:end)))<pini-1
-            ij=ij+1;
-        else
-            nofullrank = false;
+    if seasonalPenaltyActive
+        % For penalized seasonality, only the null space of the penalty
+        % must be identified by the reweighting subset.
+        Nbs=seasonalNullBasisForDesign(size(Xsel,2));
+        requiredRank=size(Nbs,2);
+        nbs=requiredRank;
+        nofullrank=true;
+        while nofullrank
+            if nbs>T-nummissing
+                error('FSDA:LTSts:NoFullRank', ...
+                    'The penalized seasonal model is not identifiable on the non-missing observations.')
+            end
+            bs=IndBestRes(1:nbs);
+            bs=bs(~isnan(yin(bs)));
+            if length(bs)>=requiredRank && ...
+                    rank(full(Xsel(bs,:)*Nbs))==requiredRank
+                nofullrank=false;
+            else
+                nbs=nbs+1;
+            end
+        end
+    else
+        % Existing polynomial-trend calculation.
+        nofullrank=true;
+        bs=IndBestRes(1:p+1);
+        ij=0;
+        while nofullrank
+            bs=IndBestRes(1:p+ij);
+            if rank(zscore(Xsel(bs,2:end)))<pini-1
+                ij=ij+1;
+            else
+                nofullrank = false;
+            end
         end
     end
 end
@@ -2457,8 +2912,10 @@ bsbModSel=bsb;
 
 hpFinalRSS=[];
 hpFinalPenalty=[];
+hpFinalSeasonalPenalty=[];
 hpFinalObjective=[];
 hpInference='';
+invXX=[];
 
 % Final refinement after the reweighting step.
 % For the traditional polynomial-trend model, the final refinement is
@@ -2477,18 +2934,31 @@ if trendHPYN
         % With fixed seasonal amplitude all finite-dimensional components
         % are linear once the level-shift position has been fixed.
         if lshiftYN==1
-            XhpFinal=[Xsel Xlshift];
+            if seasonalPenaltyActive
+                XhpFinal=[Xsel sparse(Xlshift)];
+            else
+                XhpFinal=[Xsel Xlshift];
+            end
         else
             XhpFinal=Xsel;
         end
 
-        outHPfinal=hpfilterFS(yin,'bsb',bsbFinal,'X',XhpFinal, ...
-            'lambda',lambdaHP,'fitonly',true);
+        if seasonalPenaltyActive
+            Nfinal=seasonalNullBasisForDesign(size(XhpFinal,2));
+            outHPfinal=hpfilterFS(yin,'bsb',bsbFinal,'X',XhpFinal, ...
+                'lambda',lambdaHP,'fitonly',true, ...
+                'betaPenalty',seasonalPenaltyForDesign(size(XhpFinal,2)), ...
+                'betaPenaltyNullBasis',Nfinal);
+        else
+            outHPfinal=hpfilterFS(yin,'bsb',bsbFinal,'X',XhpFinal, ...
+                'lambda',lambdaHP,'fitonly',true);
+        end
         trendHP=outHPfinal.mhat;
         betaout=outHPfinal.beta;
         yhat=outHPfinal.yhat;
         hpFinalRSS=outHPfinal.rss;
         hpFinalPenalty=outHPfinal.penalty;
+        hpFinalSeasonalPenalty=outHPfinal.betaPenaltyValue;
         hpFinalObjective=outHPfinal.objective;
 
         if lshiftYN==1
@@ -2527,42 +2997,56 @@ if trendHPYN
         bsb=bsbFinal;
         hpFinalRSS=sum((yin(bsbFinal)-yhat(bsbFinal)).^2,'omitnan');
         hpFinalPenalty=lambdaHP*sum(diff(trendHP,2).^2);
-        hpFinalObjective=hpFinalRSS+hpFinalPenalty;
+        hpFinalSeasonalPenalty=seasonalPenaltyValue(betafinalHP);
+        hpFinalObjective=hpFinalRSS+hpFinalPenalty+hpFinalSeasonalPenalty;
     end
 
-    % Profile the HP trend out of the local information matrix. invXX is
-    % cov(beta)/sigma^2 under the fixed-lambda conditional working model.
+    % Profile the HP trend out of the local information matrix. For an
+    % unpenalized finite-dimensional component, invXX is cov(beta)/sigma^2
+    % under the fixed-lambda conditional working model. Coefficient-wise
+    % inference is suppressed for penalized seasonal profiles.
     Xlin=hpFiniteJacobian(betaout);
-    invXX=hpProfileInvInfo(Xlin,bsbFinal);
-    hpInference='conditional-fixed-lambda-profiled-Wald';
+    if seasonalPenaltyActive
+        invXX=[];
+        hpInference='not-reported-penalized-seasonal-coefficients';
+    else
+        invXX=hpProfileInvInfo(Xlin,bsbFinal);
+        hpInference='conditional-fixed-lambda-profiled-Wald';
+    end
 
 else
     if varampl==0 && lshiftYN==0 % In this case, the model is linear.
-        % Function lik constructs fitted values and residual sum of
-        % squares
-        betaout = Xsel(bsb,:) \ yin(bsb);
-        % update fitted values
-        yhat = Xsel * betaout;
-
-        % find fitted values using all observations
-        yhat =  Xsel * betaout;
-        s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xsel,2));
-        invXX=inv(Xsel'*Xsel);
-        covB=s2*invXX; %#ok<MINV>
+        Xfit=Xsel(bsb,:);
+        if seasonalPenaltyActive
+            betaout=seasonalPenalizedFit(Xfit,yin(bsb));
+        else
+            betaout=Xfit\yin(bsb);
+            s2=sum((yin(bsb)-Xfit*betaout).^2)/(h-size(Xsel,2));
+            invXX=inv(Xsel'*Xsel);
+            covB=s2*invXX; %#ok<MINV>
+        end
+        yhat=Xsel*betaout;
         Xlin=Xsel;
 
     elseif   varampl==0 && lshiftYN==1
         % In this case there is just level shift, however we do not redo
         % the non linear estimation but a simple LS
 
-        Xseldum=[Xsel Xlshift];
-        betaout = Xseldum(bsb,:) \ yin(bsb);
-
-        % find fitted values using all observations
-        yhat =  Xseldum * betaout;
-        s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xseldum,2));
-        invXX=inv(Xseldum(bsb,:)'*Xseldum(bsb,:));
-        covB=s2*invXX; %#ok<MINV>
+        if seasonalPenaltyActive
+            Xseldum=[Xsel sparse(Xlshift)];
+        else
+            Xseldum=[Xsel Xlshift];
+        end
+        Xfit=Xseldum(bsb,:);
+        if seasonalPenaltyActive
+            betaout=seasonalPenalizedFit(Xfit,yin(bsb));
+        else
+            betaout=Xfit\yin(bsb);
+            s2=sum((yin(bsb)-Xfit*betaout).^2)/(h-size(Xseldum,2));
+            invXX=inv(Xfit'*Xfit);
+            covB=s2*invXX; %#ok<MINV>
+        end
+        yhat=Xseldum*betaout;
         Xlin=Xseldum;
     else % model is non linear because there is time varying amplitude in seasonal component
         Xtrendf=Xtrend(bsb,:);
@@ -2623,11 +3107,19 @@ else
 
     end
 
-    % Existing polynomial-trend inference.
-    sebetaout=sqrt(diag(covB));
-    tout=betaout./sebetaout;
-    dfe=T-length(betaout);
-    pval=2*(tcdf(-abs(tout), dfe));
+    if seasonalPenaltyActive
+        % Penalized estimates are biased; do not report ordinary standard
+        % errors, t statistics, or p-values for their coefficients.
+        sebetaout=NaN(size(betaout));
+        tout=NaN(size(betaout));
+        pval=NaN(size(betaout));
+    else
+        % Existing polynomial-trend inference.
+        sebetaout=sqrt(max(diag(covB),0));
+        tout=betaout./sebetaout;
+        dfe=T-length(betaout);
+        pval=2*(tcdf(-abs(tout), dfe));
+    end
     B=[betaout sebetaout tout pval];
 end
 
@@ -2663,14 +3155,20 @@ end
 s0=s0*factor;
 
 if trendHPYN
-    % Approximate conditional covariance of the finite-dimensional HP
-    % coefficients. The robust final scale multiplies the inverse profiled
-    % penalized information matrix. lambdaHP and the final subset are
-    % treated as fixed; robust selection uncertainty is not included.
-    covB=(s0^2)*invXX;
     if isempty(betaout)
         B=zeros(0,4);
+    elseif seasonalPenaltyActive
+        % Penalized coefficients are biased. Avoid forming their dense
+        % covariance matrix and make unavailable inference explicit.
+        sebetaout=NaN(size(betaout));
+        statout=NaN(size(betaout));
+        pval=NaN(size(betaout));
+        B=[betaout sebetaout statout pval];
     else
+        % Approximate conditional covariance of the finite-dimensional HP
+        % coefficients. lambdaHP and the final subset are treated as fixed;
+        % robust selection uncertainty is not included.
+        covB=(s0^2)*invXX;
         sebetaout=sqrt(max(diag(covB),0));
         statout=betaout./sebetaout;
         pval=2*normcdf(-abs(statout));
@@ -2713,6 +3211,44 @@ b_X    =    ['b_explX1'; 'b_explX2'; 'b_explX3'; 'b_explX4'; 'b_explX5'; 'b_expl
 b_varampl = ['b_varaml'; 'b_varam2'; 'b_varam3'];
 b_lshift  = ['b_lshift' ; 't_lshift'];
 
+% Coefficient labels for the selected seasonal basis.
+b_seasoUse=b_seaso;
+if seasonalPenaltyActive && seasonal>0
+    seasonalLabels=cell(nseaso,1);
+    ilab=0;
+    for iy=1:nYears
+        if seasonalDummy
+            for im=1:seasonalBasisDimension
+                ilab=ilab+1;
+                seasonalLabels{ilab}=sprintf('%-8s', ...
+                    sprintf('d%02dy%04d',im,iy));
+            end
+        else
+            for j=1:seasonal
+                ilab=ilab+1;
+                seasonalLabels{ilab}=sprintf('%-8s', ...
+                    sprintf('c%02dy%04d',j,iy));
+                if ~(mod(s,2)==0 && j==s/2)
+                    ilab=ilab+1;
+                    seasonalLabels{ilab}=sprintf('%-8s', ...
+                        sprintf('s%02dy%04d',j,iy));
+                end
+            end
+        end
+    end
+    b_seasoUse=char(seasonalLabels);
+elseif seasonalDummy && seasonal>0
+    dummyLabels=cell(nseaso,1);
+    ilab=0;
+    for ig=0:seasonalTimeOrder
+        for im=1:(s-1)
+            ilab=ilab+1;
+            dummyLabels{ilab}=sprintf('%-8s',sprintf('c%02d_g%d',im,ig));
+        end
+    end
+    b_seasoUse=char(dummyLabels);
+end
+
 if autoRegressive==true
     b_expl=[b_AR(1:lARp,:); b_X(1:nexpl-lARp,:)];
     b_expl=b_expl(:,1:8);
@@ -2724,7 +3260,7 @@ if trendHPYN
     % There are no polynomial-trend coefficients in out.B for an HP trend.
     lab=repmat(' ',0,8);
     if nseaso>0
-        lab=[lab; b_seaso(1:nseaso,:)];
+        lab=[lab; b_seasoUse(1:nseaso,:)];
     end
     if nexpl>0
         lab=[lab; b_expl(1:nexpl,:)];
@@ -2744,7 +3280,7 @@ else
         % last harmonic is identically zero and is removed from Xseaso.
         % Use nseaso also for the labels so that B and Btable have the same
         % number of rows.
-        lab=[b_trend(1:trend+1,:); b_seaso(1:nseaso,:)];
+        lab=[b_trend(1:trend+1,:); b_seasoUse(1:nseaso,:)];
     else
         lab=b_trend(1:trend+1,:);
     end
@@ -2841,10 +3377,75 @@ if trendHPYN
     out.explanatory=explanatoryHP;
     out.levelshift=levelshiftHP;
     out.hp=struct('lambda',lambdaHP,'rss',hpFinalRSS, ...
-        'penalty',hpFinalPenalty,'objective',hpFinalObjective, ...
+        'penalty',hpFinalPenalty,'seasonalPenalty', ...
+        hpFinalSeasonalPenalty,'objective',hpFinalObjective, ...
         'objectiveCandidates',ALLobjective,'objectiveLSH',objectiveLSH, ...
         'inference',hpInference);
 end
+
+% Return the dummy seasonal contribution and its year-by-season profile.
+% The profile is evaluated at the center of each seasonal cycle.
+out.seasonalProfile=[];
+if seasonalPenaltyActive
+    betaByYear=reshape(betaout(indlinsc), ...
+        seasonalBasisDimension,nYears)';
+    profileEffects=betaByYear*seasonalProfileBasis';
+    out.seasonal=Xseaso*betaout(indlinsc);
+    out.seasonalProfile=struct('yearIndex',(1:nYears)', ...
+        'seasonIndex',(1:s)','effect',profileEffects, ...
+        'type',seasonalType,'evolution','penalized', ...
+        'lambda',seasonalPenaltyLambda, ...
+        'differenceOrder',seasonalPenaltyOrder);
+elseif seasonalDummy && seasonal>0
+    seasonalDummyBeta=reshape(betaout(indlinsc),s-1, ...
+        seasonalTimeOrder+1);
+    profileYearIndex=(0:nYears-1)';
+    profileYearCoordinate=(profileYearIndex-(nYears-1)/2)/yearScale;
+    profilePowers=bsxfun(@power,profileYearCoordinate, ...
+        0:seasonalTimeOrder);
+    profileEffects=(seasonContrast* ...
+        (seasonalDummyBeta*profilePowers'))';
+    out.seasonal=Xseaso*betaout(indlinsc);
+    out.seasonalProfile=struct('yearIndex',profileYearIndex+1, ...
+        'seasonIndex',(1:s)','effect',profileEffects, ...
+        'type','dummy','evolution','polynomial', ...
+        'degree',seasonalTimeOrder);
+end
+
+seasonalPenaltyFinal=seasonalPenaltyValue(betaout);
+if strcmpi(seasonalType,'none')
+    seasonalEvolutionOutput='none';
+else
+    seasonalEvolutionOutput=seasonalEvolution;
+end
+if seasonalPenaltyActive
+    seasonalDegreeOutput=[];
+    seasonalLambdaOutput=seasonalPenaltyLambda;
+    seasonalDifferenceOrderOutput=seasonalPenaltyOrder;
+else
+    if seasonalDummy
+        seasonalDegreeOutput=seasonalTimeOrder;
+    elseif seasonal>0
+        seasonalDegreeOutput=varampl;
+    else
+        seasonalDegreeOutput=0;
+    end
+    seasonalLambdaOutput=[];
+    seasonalDifferenceOrderOutput=[];
+end
+if seasonalDummy || seasonal==0
+    seasonalHarmonicsOutput=[];
+else
+    seasonalHarmonicsOutput=seasonal;
+end
+out.seasonalPenalty=seasonalPenaltyFinal;
+out.seasonality=struct('type',lower(seasonalType), ...
+    'harmonics',seasonalHarmonicsOutput, ...
+    'evolution',seasonalEvolutionOutput, ...
+    'degree',seasonalDegreeOutput, ...
+    'lambda',seasonalLambdaOutput, ...
+    'differenceOrder',seasonalDifferenceOrderOutput, ...
+    'penalty',seasonalPenaltyFinal);
 
 % Store robust estimate of s
 out.scale = s0;
@@ -3047,10 +3648,9 @@ if coder.target('MATLAB')
     if plots==2 && lshiftYN==1
 
         % Values of the target function for each tentative level shift
-        % position. For the HP trend the target is the penalized objective;
-        % otherwise it is the truncated residual sum of squares.
+        % position. Penalized models use the complete objective.
         figure;
-        if trendHPYN
+        if trendHPYN || seasonalPenaltyActive
             targetPlot=ALLobjective;
             targetBest=objectiveLSH(:,2);
         else
@@ -3136,11 +3736,18 @@ if coder.target('MATLAB')
     end
 end
 
-% Inference for the final harmonic of the seasonal component.
+% Inference for the final harmonic of the seasonal component. The
+% corresponding test is not defined for the dummy seasonal basis.
 bsb=bsbModSel;
 
 pval=[];
-if trendHPYN
+if seasonalPenaltyActive
+    % The legacy last-harmonic test is not defined for a regularized
+    % year-specific seasonal profile.
+    pval=[];
+elseif seasonalDummy
+    pval=[];
+elseif trendHPYN
     if seasonal>0
         if seasonal==(s/2)
             idxLast=nseaso;
@@ -3280,7 +3887,11 @@ end
 out.LastHarmonicPval=pval;
 
 if lshiftYN==1
-    if trendHPYN
+    if seasonalPenaltyActive
+        % The existing level-shift p-value calculation does not account for
+        % the seasonal penalty or its smoothing bias.
+        LevelShiftPval=NaN;
+    elseif trendHPYN
         % The HP coefficient test is conditional on fixed lambda and final
         % weights. Correct only for the search over the tested level-shift
         % positions using a transparent Bonferroni bound.
@@ -3379,7 +3990,7 @@ end
                 % null-space components together with all columns of Xhp.
                 qhp=size(Xhp,2);
                 Aid=[ones(length(bsb),1) double(bsb) double(Xhp(bsb,:))];
-                if length(bsb)<qhp+2 || rank(Aid)<qhp+2
+                if length(bsb)<qhp+2 || rank(full(Aid))<qhp+2
                     newbeta=beta0;
                     exitflag=-1;
                     break
@@ -3592,15 +4203,19 @@ end
         % The HP trend itself is profiled out and is not included in J.
 
         q=nseaso+nexpl+varampl+lshiftYN;
-        J=zeros(T,q);
+        if seasonalPenaltyActive
+            J=sparse(T,q);
+        else
+            J=zeros(T,q);
+        end
 
         if nseaso>0
             if varampl>0
                 ampl=1+Seq(:,2:varampl+1)*beta0(indvarampl);
+                J(:,indlinsc)=Xseaso.*ampl;
             else
-                ampl=ones(T,1);
+                J(:,indlinsc)=Xseaso;
             end
-            J(:,indlinsc)=Xseaso.*ampl;
         end
 
         if nexpl>0
@@ -3633,8 +4248,16 @@ end
         end
 
         Jb=J(bsbInfo,:);
-        Aid=[ones(length(bsbInfo),1) double(bsbInfo) double(Jb)];
-        if length(bsbInfo)<q+2 || rank(Aid)<q+2
+        if seasonalPenaltyActive
+            N=seasonalNullBasisForDesign(q);
+            Aid=[ones(length(bsbInfo),1) double(bsbInfo) ...
+                double(Jb*N)];
+            requiredRank=size(Aid,2);
+        else
+            Aid=[ones(length(bsbInfo),1) double(bsbInfo) double(Jb)];
+            requiredRank=q+2;
+        end
+        if length(bsbInfo)<requiredRank || rank(full(Aid))<requiredRank
             error('FSDA:LTSts:HPFinalRankDeficient', ...
                 ['The finite-dimensional component is not identifiable ' ...
                 'jointly with the affine null space of the HP trend on ' ...
@@ -3655,14 +4278,87 @@ end
         RJ=Jb-AinvWJ(bsbInfo,:);
         G=Jb'*RJ;
         G=(G+G')/2;
+        Gdata=G;
+        if seasonalPenaltyActive
+            G=G+seasonalPenaltyForDesign(q);
+        end
 
-        if rank(G)<q
+        if rank(full(G))<q
             error('FSDA:LTSts:HPFinalInformation', ...
                 'The profiled HP information matrix is rank deficient.')
         end
 
-        invInfo=G\eye(q);
+        if seasonalPenaltyActive
+            Ginv=G\eye(q);
+            invInfo=Ginv*Gdata*Ginv;
+        else
+            invInfo=G\eye(q);
+        end
         invInfo=(invInfo+invInfo')/2;
+    end
+
+% -------------------------------------------------------------------
+% subfunctions for penalized seasonal evolution
+% -------------------------------------------------------------------
+
+    function P=seasonalPenaltyForDesign(ncolumns)
+        % Embed the seasonal roughness penalty in a full linear design.
+        P=sparse(ncolumns,ncolumns);
+        if seasonalPenaltyActive
+            P(indlinsc,indlinsc)=seasonalPenaltyMatrix;
+        end
+    end
+
+    function N=seasonalNullBasisForDesign(ncolumns)
+        % Basis for the coefficient directions not identified by the
+        % seasonal penalty. These directions must be identified by data.
+        if ~seasonalPenaltyActive
+            N=speye(ncolumns);
+            return
+        end
+        unpenalized=setdiff(1:ncolumns,indlinsc);
+        nUnpenalized=length(unpenalized);
+        nSeasonalNull=size(seasonalPenaltyNullBasis,2);
+        N=sparse(ncolumns,nUnpenalized+nSeasonalNull);
+        if nUnpenalized>0
+            N(unpenalized,1:nUnpenalized)=speye(nUnpenalized);
+        end
+        if nSeasonalNull>0
+            N(indlinsc,nUnpenalized+(1:nSeasonalNull))= ...
+                seasonalPenaltyNullBasis;
+        end
+    end
+
+    function beta=seasonalPenalizedFit(Xb,yb)
+        % Solve the subset penalized least-squares problem. The subset must
+        % identify the null space of the penalty; the remaining directions
+        % are regularized by seasonalPenaltyMatrix.
+        P=seasonalPenaltyForDesign(size(Xb,2));
+        N=seasonalNullBasisForDesign(size(Xb,2));
+        if rank(full(Xb*N))<size(N,2)
+            beta=NaN(size(Xb,2),1);
+            return
+        end
+        % Preserve sparsity: annual dummy designs and their difference
+        % penalties have sparse normal matrices even when they contain
+        % many year-specific profile coefficients.
+        G=Xb'*Xb+P;
+        G=(G+G')/2;
+        [R,flag]=chol(G);
+        if flag~=0
+            beta=NaN(size(Xb,2),1);
+            return
+        end
+        beta=R\(R'\(Xb'*yb));
+    end
+
+    function value=seasonalPenaltyValue(beta)
+        if seasonalPenaltyActive
+            theta=beta(indlinsc);
+            value=full(theta'*seasonalPenaltyMatrix*theta);
+        else
+            value=0;
+        end
     end
 
 % -------------------------------------------------------------------
@@ -3732,7 +4428,7 @@ end
 
 
         % Initialize parameters for the refining steps loop
-        exitfl      =0;   newbeta=0; numscale2=0; % MATLAC C coder initialization
+        exitfl      =0;   newbeta=initialbeta; numscale2=0; % MATLAB C coder initialization
         iter        = 0;
         betadiff    = 9999;
         if lshiftYN==1
@@ -3782,7 +4478,11 @@ end
             if varampl==0 && lshiftYN==0 % In this case the model is linear
                 % Function lik constructs fitted values and residual sum of
                 % squares
-                newbeta = Xsel(bsb,:) \ y(bsb);
+                if seasonalPenaltyActive
+                    newbeta=seasonalPenalizedFit(Xsel(bsb,:),y(bsb));
+                else
+                    newbeta = Xsel(bsb,:) \ y(bsb);
+                end
                 % update residuals
                 yhat = Xsel * newbeta;
                 exitfl=0;
@@ -3802,11 +4502,19 @@ end
                 else
                     % If there is just level shift
                     % we update estimate of beta using simple LS
-                    Xseld=[Xsel Xlshift];
+                    if seasonalPenaltyActive
+                        Xseld=[Xsel sparse(Xlshift)];
+                    else
+                        Xseld=[Xsel Xlshift];
+                    end
                     % newb = new estimate of beta just using units forming
                     % subset (newb does not contain the position of level
                     % shift in the last position)
-                    newb = Xseld(bsb,:)\ y(bsb);
+                    if seasonalPenaltyActive
+                        newb=seasonalPenalizedFit(Xseld(bsb,:),y(bsb));
+                    else
+                        newb = Xseld(bsb,:)\ y(bsb);
+                    end
                     % yhat = vector of fitted values for all obs
                     yhat=Xseld*newb;
                     % newbeta = new estimate of beta just using units
@@ -3914,9 +4622,11 @@ end
         % Store all output variables. For the polynomial branch the
         % ranking objective is simply the residual sum of squares and there
         % is no roughness penalty.
+        penalty=seasonalPenaltyValue(newbeta);
+        objective=numscale2+penalty;
         outIRWLS = struct('betarw',newbeta,'yhat',yhat,'weights',weights, ...
             'exiflag',exitfl,'numscale2rw',numscale2, ...
-            'penalty',0,'objective',numscale2,'trendHP',zeros(0,1));
+            'penalty',penalty,'objective',objective,'trendHP',zeros(0,1));
 
     end
 
@@ -3950,7 +4660,8 @@ end
         beta=initialbeta;
         newbeta=initialbeta;
         exitfl=0;
-        penalty=lambdaHP*sum(diff(trendHP,2).^2);
+        penalty=lambdaHP*sum(diff(trendHP,2).^2)+ ...
+            seasonalPenaltyValue(initialbeta);
         objective=ininumscale2+penalty;
         numscale2=ininumscale2;
 
@@ -3959,7 +4670,8 @@ end
         if refsteps==0
             bsb=selectHsubset(i_r2s,initialbeta,h);
             numscale2=sum(r2(bsb));
-            penalty=lambdaHP*sum(diff(trendHP,2).^2);
+            penalty=lambdaHP*sum(diff(trendHP,2).^2)+ ...
+                seasonalPenaltyValue(initialbeta);
             objective=numscale2+penalty;
         else
             previousObjective=Inf;
@@ -3975,20 +4687,41 @@ end
                     % All finite-dimensional components are linear once the
                     % level-shift position has been fixed.
                     if lshiftYN==1
-                        Xhp=[Xsel Xlshift];
+                        if seasonalPenaltyActive
+                            Xhp=[Xsel sparse(Xlshift)];
+                        else
+                            Xhp=[Xsel Xlshift];
+                        end
                     else
                         Xhp=Xsel;
                     end
 
                     qhp=size(Xhp,2);
-                    Aid=[ones(length(bsbfit),1) double(bsbfit) double(Xhp(bsbfit,:))];
-                    if length(bsbfit)<qhp+2 || rank(Aid)<qhp+2
+                    if seasonalPenaltyActive
+                        Nstep=seasonalNullBasisForDesign(qhp);
+                        Aid=[ones(length(bsbfit),1) double(bsbfit) ...
+                            double(Xhp(bsbfit,:)*Nstep)];
+                        requiredRank=size(Aid,2);
+                    else
+                        Aid=[ones(length(bsbfit),1) double(bsbfit) ...
+                            double(Xhp(bsbfit,:))];
+                        requiredRank=qhp+2;
+                    end
+                    if length(bsbfit)<requiredRank || ...
+                            rank(full(Aid))<requiredRank
                         exitfl=-1;
                         break
                     end
 
-                    outHPstep=hpfilterFS(y,'bsb',bsbfit,'X',Xhp, ...
-                        'lambda',lambdaHP,'fitonly',true);
+                    if seasonalPenaltyActive
+                        outHPstep=hpfilterFS(y,'bsb',bsbfit,'X',Xhp, ...
+                            'lambda',lambdaHP,'fitonly',true, ...
+                            'betaPenalty',seasonalPenaltyForDesign(qhp), ...
+                            'betaPenaltyNullBasis',Nstep);
+                    else
+                        outHPstep=hpfilterFS(y,'bsb',bsbfit,'X',Xhp, ...
+                            'lambda',lambdaHP,'fitonly',true);
+                    end
                     trendHP=outHPstep.mhat;
                     if lshiftYN==1
                         newbeta=[outHPstep.beta; initialbeta(indlshiftpos)];
@@ -3997,7 +4730,7 @@ end
                     end
                     yhat=outHPstep.yhat;
                     numscale2=outHPstep.rss;
-                    penalty=outHPstep.penalty;
+                    penalty=outHPstep.penalty+outHPstep.betaPenaltyValue;
                     objective=outHPstep.objective;
                 else
                     % With varying seasonal amplitude, ALS performs the
@@ -4013,7 +4746,8 @@ end
                     lik(newbeta);
                     bsb=bsbfit;
                     numscale2=sum((y(bsbfit)-yhat(bsbfit)).^2,'omitnan');
-                    penalty=lambdaHP*sum(diff(trendHP,2).^2);
+                    penalty=lambdaHP*sum(diff(trendHP,2).^2)+ ...
+                        seasonalPenaltyValue(newbeta);
                     objective=numscale2+penalty;
                 end
 
@@ -4055,7 +4789,8 @@ end
                 [~,i_r2s]=sort(r2);
                 bsb=selectHsubset(i_r2s,initialbeta,h);
                 numscale2=sum(r2(bsb));
-                penalty=lambdaHP*sum(diff(trendHP,2).^2);
+                penalty=lambdaHP*sum(diff(trendHP,2).^2)+ ...
+                    seasonalPenaltyValue(newbeta);
                 objective=numscale2+penalty;
             else
                 % bsb is the subset on which the last HP fit was actually
@@ -4076,7 +4811,8 @@ end
 % subfunction repairHPElementalSubset
 % -------------------------------------------------------------------
 
-    function [bsbout,fullrankHP]=repairHPElementalSubset(bsbin,Xhp,lshCurrent)
+    function [bsbout,fullrankHP]=repairHPElementalSubset( ...
+            bsbin,Xhp,lshCurrent,Nhp)
         %repairHPElementalSubset repairs a singular HP elemental subset.
         %
         % The HP conditional fit is identifiable when the augmented design
@@ -4090,7 +4826,10 @@ end
 
         bsbin=double(bsbin(:));
         targetSize=length(bsbin);
-        targetRank=size(Xhp,2)+2;
+        if nargin<4 || isempty(Nhp)
+            Nhp=speye(size(Xhp,2));
+        end
+        targetRank=size(Nhp,2)+2;
         bsbout=bsbin;
         fullrankHP=false;
 
@@ -4140,8 +4879,8 @@ end
             end
             trial=[selected; cand];
             Atrial=[ones(length(trial),1) double(trial) ...
-                double(Xhp(trial,:))];
-            newRank=rank(Atrial);
+                double(Xhp(trial,:)*Nhp)];
+            newRank=rank(full(Atrial));
             if newRank>currentRank
                 selected=trial;
                 currentRank=newRank;
@@ -4175,7 +4914,7 @@ end
 
         Afinal=[ones(targetSize,1) double(selected) ...
             double(Xhp(selected,:))];
-        fullrankHP=rank(Afinal)>=targetRank;
+        fullrankHP=rank(full(Afinal))>=targetRank;
         if fullrankHP
             bsbout=selected;
         end
