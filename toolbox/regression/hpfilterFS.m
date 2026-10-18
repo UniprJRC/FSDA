@@ -69,10 +69,11 @@ function out = hpfilterFS(y, varargin)
 %       X : additional linear components. Numeric matrix or empty.
 %           Matrix with T rows containing additional regressors to be
 %           estimated jointly with the HP trend. The fitted model is
-%           y=m+X*beta+epsilon. Because the HP trend contains an
-%           unpenalized affine component, X cannot contain an intercept, a
-%           linear time trend or columns which make these components
-%           linearly dependent. If X is nonempty, fitonly must be true.
+%           y=m+X*beta+epsilon. Any coefficient direction in the null
+%           space of betaPenalty must be identifiable separately from the
+%           affine HP trend. If betaPenalty is empty, this excludes an
+%           intercept, a linear time trend, and their linear combinations.
+%           If X is nonempty, fitonly must be true.
 %               Example - 'X',X
 %               Data Types - double or empty
 %
