@@ -403,16 +403,33 @@ function [out, varargout] = LTSts(y,varargin)
 %               Example - 'yxsave',1
 %               Data Types - logical
 %
-%       plots : Plots on the screen. Scalar.
-%               If plots = 1, a two panel plot will be shown on the screen.
-%               The upper panel contains the original time series with
-%               fitted values. The bottom panel will contain the plot
-%               of robust residuals against index number. The confidence
-%               level which is used to draw the horizontal lines associated
-%               with the bands for the residuals is specified in input
-%               option conflev. If conflev is missing, a nominal 0.975
-%               confidence interval will be used. If plots =2, the following
-%               additional plots will be shown on the screen.
+%       plots : Plot selection. Numeric or logical scalar, character vector,
+%               or structure.
+%               The numeric values 0, 1 and 2 retain their existing
+%               meanings. If plots=1, a two-panel figure shows the series
+%               and fitted values above robust residuals. If plots=2, the
+%               same figure is produced and, when a level shift is fitted,
+%               the level-shift diagnostic figures are also shown.
+%               The value 'components' produces a figure with the observed
+%               and fitted series, the estimated trend and seasonal
+%               components, the AR and explanatory contributions (when
+%               present), the level-shift contribution (when present), and
+%               raw residuals. The value 'all' produces the standard
+%               figures, available level-shift diagnostics, and the
+%               components figure.
+%               A structure can select figures individually with logical
+%               scalar (or numeric 0/1) fields standard,
+%               levelShiftDiagnostics and components. Unspecified fields
+%               are false. For example,
+%               'plots',struct('components',true,'standard',true).
+%               The level-shift diagnostics are shown only when the model
+%               includes a level shift.
+%               In the standard figure, the upper panel contains the
+%               original time series with fitted values. The bottom panel
+%               contains robust residuals against index number. The
+%               confidence level for the residual bands is specified by
+%               conflev; its default value is 0.975.
+%               The level-shift diagnostic figures include:
 %               1) Boxplot of the distribution of the lts.bestr values of
 %               the target function for each tentative level shift position;
 %               2) A two panel plot which shows the values of the local sum
@@ -429,10 +446,9 @@ function [out, varargout] = LTSts(y,varargin)
 %               5) A plot which shows the relative frequency of inclusion
 %               of each unit inside the best nbestindexes subsets which are
 %               brought to full convergence.
-%               The default value of plot is 0 i.e. no plot is shown on the
-%               screen.
-%                 Example - 'plots',1
-%                 Data Types - double
+%               The default value is 0, i.e. no plot is shown.
+%                 Example - 'plots','components'
+%                 Data Types - double, logical, char, or struct
 %
 %       Remark: The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
@@ -619,6 +635,20 @@ function [out, varargout] = LTSts(y,varargin)
 %                        effect, containing the fitted seasonal effect for
 %                        each year and seasonal position for dummy
 %                        seasonality, and for any penalized seasonal profile.
+% out.components = structure containing the final additive contributions
+%                        to the fitted series. Its fields are trend,
+%                        seasonal, autoregressive, explanatory, levelshift,
+%                        fitted and residual. Trend includes the constant
+%                        level. The T-by-nAR autoregressive matrix and
+%                        T-by-nX explanatory matrix contain one contribution
+%                        per lag and per column of model.X, respectively;
+%                        their names are in autoregressiveNames and
+%                        explanatoryNames. Trend, seasonal and levelshift
+%                        are T-by-1 vectors and are zero when absent.
+%                        fitted equals out.yhat. residual is the raw
+%                        difference out.y-out.yhat (NaN for missing y).
+%                        The contribution columns sum with trend, seasonal
+%                        and levelshift to fitted.
 % out.LevelShiftPval  = p value of the level shift corrected for the
 %                       search over tentative shift positions. The existing
 %                       polynomial-trend calculation is unchanged. For an HP
@@ -1329,6 +1359,73 @@ for i=1:2:length(varargin)
     options.(varargin{i})=varargin{i+1};
 end
 
+% Convert the public plot request to three internal switches. Keep the
+% legacy numeric values unchanged and allow the descriptive interface only
+% for MATLAB execution, where figures are available.
+plotStandard=false;
+plotLevelShiftDiagnostics=false;
+plotComponents=false;
+if coder.target('MATLAB')
+    plotRequest=options.plots;
+    if islogical(plotRequest) && isscalar(plotRequest)
+        plotRequest=double(plotRequest);
+    end
+
+    if isnumeric(plotRequest) && isreal(plotRequest) && ...
+            isscalar(plotRequest) && isfinite(plotRequest) && ...
+            ismember(plotRequest,[0 1 2])
+        plotStandard=plotRequest>=1;
+        plotLevelShiftDiagnostics=plotRequest==2;
+    elseif ischar(plotRequest) && isrow(plotRequest)
+        switch lower(strtrim(plotRequest))
+            case 'components'
+                plotComponents=true;
+            case 'all'
+                plotStandard=true;
+                plotLevelShiftDiagnostics=true;
+                plotComponents=true;
+            otherwise
+                error('FSDA:LTSts:WrongInput', ...
+                    ['plots must be 0, 1, 2, ''components'', ''all'', ' ...
+                    'or a structure of plot switches.'])
+        end
+    elseif isstruct(plotRequest) && isscalar(plotRequest)
+        plotFields=fieldnames(plotRequest);
+        allowedPlotFields={'standard','levelShiftDiagnostics', ...
+            'components'};
+        badPlotFields=setdiff(plotFields,allowedPlotFields);
+        if ~isempty(badPlotFields)
+            error('FSDA:LTSts:WrongInput', ...
+                'Unknown plots structure field: %s.',badPlotFields{1})
+        end
+        for ip=1:numel(plotFields)
+            plotValue=plotRequest.(plotFields{ip});
+            if isnumeric(plotValue) && isreal(plotValue) && ...
+                    isscalar(plotValue) && isfinite(plotValue) && ...
+                    ismember(plotValue,[0 1])
+                plotRequest.(plotFields{ip})=logical(plotValue);
+            elseif ~(islogical(plotValue) && isscalar(plotValue))
+                error('FSDA:LTSts:WrongInput', ...
+                    ['Each field of the plots structure must be a ' ...
+                    'logical scalar or numeric 0/1.'])
+            end
+        end
+        if isfield(plotRequest,'standard')
+            plotStandard=plotRequest.standard;
+        end
+        if isfield(plotRequest,'levelShiftDiagnostics')
+            plotLevelShiftDiagnostics=plotRequest.levelShiftDiagnostics;
+        end
+        if isfield(plotRequest,'components')
+            plotComponents=plotRequest.components;
+        end
+    else
+        error('FSDA:LTSts:WrongInput', ...
+            ['plots must be 0, 1, 2, ''components'', ''all'', ' ...
+            'or a structure of plot switches.'])
+    end
+end
+
 
 % Default values for the optional parameters are set inside structure
 % 'options'
@@ -1620,7 +1717,6 @@ if seasonalPenaltyActive
     if seasonalDummy
         seasonal=1;
         ncontrast=s-1;
-        seasonIndicators=sparse(seq,seasonIndex,1,T,s);
         seasonContrast=[eye(ncontrast); zeros(1,ncontrast)]- ...
             (ones(s,1)/s)*ones(1,ncontrast);
         seasonalProfileBasis=seasonContrast;
@@ -1718,13 +1814,11 @@ elseif seasonalDummy
         Xseaso=[];
         nYears=ceil(T/s);
         yearScale=max(nYears-1,1);
-        yearIndex=floor((seq-1)/s);
         seasonContrast=[];
     end
 else
     nYears=[];
     yearScale=[];
-    yearIndex=[];
     seasonContrast=[];
     if seasonal >0
         sstring=sprintf('%.0f',seasonal);
@@ -1761,6 +1855,7 @@ else
 end
 
 X = model.X;
+XUser = X;
 
 % Order of the autoregressive component
 
@@ -1778,8 +1873,11 @@ ARp=ARp(:);
 if isscalar(ARp) && ARp(1)==0
     % In this case there is no ARp component
     autoRegressive=false;
+    Ylagged=zeros(T,0);
+    autoregressiveOrders=zeros(0,1);
 else
     autoRegressive=true;
+    autoregressiveOrders=ARp;
     % Ylagged = matrix which contains lagged values of Y
     Ylagged=zeros(T,lARp);
     yToUseforLagged=y;
@@ -3412,6 +3510,74 @@ elseif seasonalDummy && seasonal>0
         'degree',seasonalTimeOrder);
 end
 
+% Store a common additive decomposition for every trend and seasonal model.
+% The trend component includes the constant level. The AR columns use the
+% same lagged values (including any replacements/imputation) used in fitting.
+if trendHPYN
+    componentTrend=trendHP;
+elseif ntrend>0
+    componentTrend=Xtrend*betaout(1:ntrend);
+else
+    componentTrend=zeros(T,1);
+end
+
+componentSeasonal=zeros(T,1);
+if nseaso>0
+    componentSeasonal=Xseaso*betaout(indlinsc);
+    if varampl>0
+        componentSeasonal=(1+Seq(:,2:varampl+1)* ...
+            betaout(indvarampl)).*componentSeasonal;
+    end
+end
+
+nAR=size(Ylagged,2);
+nX=size(XUser,2);
+betaRegression=betaout(indexpl);
+if nAR>0
+    autoregressiveContribution=bsxfun(@times,Ylagged, ...
+        betaRegression(1:nAR)');
+else
+    autoregressiveContribution=zeros(T,0);
+end
+if nX>0
+    explanatoryContribution=bsxfun(@times,XUser, ...
+        betaRegression(nAR+(1:nX))');
+else
+    explanatoryContribution=zeros(T,0);
+end
+
+if lshiftYN==1
+    componentLevelshift=Xlshift*betaout(indlshiftcoef);
+else
+    componentLevelshift=zeros(T,1);
+end
+
+if coder.target('MATLAB')
+    autoregressiveNames=cell(1,nAR);
+    for j=1:nAR
+        autoregressiveNames{j}=sprintf('AR(%d)',autoregressiveOrders(j));
+    end
+    explanatoryNames=cell(1,nX);
+    for j=1:nX
+        explanatoryNames{j}=sprintf('X%d',j);
+    end
+else
+    autoregressiveNames=[];
+    explanatoryNames=[];
+end
+
+components=struct;
+components.trend=componentTrend;
+components.seasonal=componentSeasonal;
+components.autoregressive=autoregressiveContribution;
+components.autoregressiveNames=autoregressiveNames;
+components.explanatory=explanatoryContribution;
+components.explanatoryNames=explanatoryNames;
+components.levelshift=componentLevelshift;
+components.fitted=yhat;
+components.residual=yin-yhat;
+out.components=components;
+
 seasonalPenaltyFinal=seasonalPenaltyValue(betaout);
 if strcmpi(seasonalType,'none')
     seasonalEvolutionOutput='none';
@@ -3548,12 +3714,9 @@ out.lshift = lshift;
 %% Create plots
 
 if coder.target('MATLAB')
-    plots=options.plots;        % Plot of residuals equal to 1
-
-    % plots = 1 generates a figure with two panels: one with the time series
-    % and another with the residuals against index number; plots =2 produces
-    % also a number of other informative plots; else no plot is produced.
-    if plots>=1
+    % Numeric plots=1 keeps the standard two-panel figure; plots=2 also
+    % enables the existing level-shift diagnostics.
+    if plotStandard
 
         % some general plot settings
         vlt15 = verLessThan('matlab', '7.15');
@@ -3645,7 +3808,7 @@ if coder.target('MATLAB')
         end
     end
 
-    if plots==2 && lshiftYN==1
+    if plotLevelShiftDiagnostics && lshiftYN==1
 
         % Values of the target function for each tentative level shift
         % position. Penalized models use the complete objective.
@@ -3733,6 +3896,94 @@ if coder.target('MATLAB')
         %ylabel('Frequency','FontSize',FontSize);
         xlabel('Index number','FontSize',FontSize,'interpreter','none');
         set(gca,'Xtick',1:10:T,'Fontsize',SizeAxesNum);
+    end
+
+    if plotComponents
+        comp=out.components;
+        componentPanelData=cell(1,1);
+        componentPanelData{1}=[yin(:) comp.fitted(:)];
+        componentPanelNames=cell(1,1);
+        componentPanelNames{1}={'Observed','Fitted'};
+        componentPanelTitles={'Observed and fitted series'};
+
+        if trendHPYN || ntrend>0
+            componentPanelData{end+1}=comp.trend(:);
+            componentPanelNames{end+1}={'Trend including level'};
+            componentPanelTitles{end+1}='Trend (including level)';
+        end
+        if seasonal>0
+            componentPanelData{end+1}=comp.seasonal(:);
+            componentPanelNames{end+1}={'Seasonal'};
+            componentPanelTitles{end+1}='Seasonal component';
+        end
+        if nAR>0
+            componentPanelData{end+1}=comp.autoregressive;
+            componentPanelNames{end+1}=comp.autoregressiveNames;
+            componentPanelTitles{end+1}='Autoregressive contributions';
+        end
+        if nX>0
+            componentPanelData{end+1}=comp.explanatory;
+            componentPanelNames{end+1}=comp.explanatoryNames;
+            componentPanelTitles{end+1}='Explanatory-variable contributions';
+        end
+        if lshiftYN==1
+            componentPanelData{end+1}=comp.levelshift(:);
+            componentPanelNames{end+1}={'Level shift'};
+            componentPanelTitles{end+1}='Level-shift contribution';
+        end
+        componentPanelData{end+1}=comp.residual(:);
+        componentPanelNames{end+1}={'Raw residual'};
+        componentPanelTitles{end+1}='Raw residuals';
+
+        nComponentPanels=numel(componentPanelTitles);
+        if isTT
+            componentTime=rowTimes;
+        else
+            componentTime=(1:T)';
+        end
+        figure('Name','LTSts estimated components', ...
+            'NumberTitle','off','Position',[100 50 950 ...
+            max(650,140*nComponentPanels)]);
+
+        for ipanel=1:nComponentPanels
+            ax=subplot(nComponentPanels,1,ipanel);
+            hold(ax,'on')
+            Ypanel=componentPanelData{ipanel};
+            panelNames=componentPanelNames{ipanel};
+            for icol=1:size(Ypanel,2)
+                if ipanel==1 && icol==1
+                    plot(ax,componentTime,Ypanel(:,icol), ...
+                        'Color',[0 0 0],'LineWidth',1.2);
+                elseif ipanel==1 && icol==2
+                    plot(ax,componentTime,Ypanel(:,icol), ...
+                        'Color',[0 0.35 0.8],'LineStyle','--', ...
+                        'LineWidth',1.4);
+                else
+                    plot(ax,componentTime,Ypanel(:,icol), ...
+                        'LineWidth',1.1);
+                end
+            end
+            title(ax,componentPanelTitles{ipanel},'Interpreter','none');
+            if ipanel==1
+                ylabel(ax,'Series value');
+            elseif ipanel==nComponentPanels
+                ylabel(ax,'Residual');
+            else
+                ylabel(ax,'Contribution');
+            end
+            grid(ax,'on')
+            box(ax,'on')
+            if size(Ypanel,2)>1 || ipanel==1 || ...
+                    strcmp(componentPanelTitles{ipanel}, ...
+                    'Autoregressive contributions') || ...
+                    strcmp(componentPanelTitles{ipanel}, ...
+                    'Explanatory-variable contributions')
+                legend(ax,panelNames,'Location','best','Interpreter','none');
+            end
+            if ipanel==nComponentPanels
+                xlabel(ax,'Time');
+            end
+        end
     end
 end
 
