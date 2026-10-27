@@ -1,336 +1,1364 @@
 {
-  "_schemaVersion": "1.0.0",
-  "getTickers": {
-    "inputs": [
-      {
-        "name": "market",
-        "kind": "namevalue",
-        "type": [
-          ["char"],
-          ["string"],
-          ["choices={'Nasdaq','SP500','NYSE','FTSEMIB','London','DAX40','CAC40','Nikkei225'}"]
+    "_schemaVersion": "1.0.0",
+    "getTickers": {
+        "inputs": [
+            {
+                "name": "market",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["choices={'Nasdaq','SP500','NYSE','FTSEMIB','London','DAX40','CAC40','Nikkei225'}"]
+                ],
+                "purpose": "Market or index name"
+            },
+            {
+                "name": "nStocks",
+                "kind": "namevalue",
+                "type": [
+                    "numeric",
+                    "scalar",
+                    ">=1"
+                ],
+                "purpose": "Number of representative stocks to return"
+            },
+            {
+                "name": "Source",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["choices={'static','dynamic'}"]
+                ],
+                "purpose": "Source used to build the market universe"
+            },
+            {
+                "name": "RankByCap",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Rank constituents by market capitalization"
+            },
+            {
+                "name": "IncludeIndex",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Include the market index in the first row"
+            },
+            {
+                "name": "msg",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Display progress messages"
+            }
         ],
-        "purpose": "Market or index name"
-      },
-      {
-        "name": "nStocks",
-        "kind": "namevalue",
-        "type": [
-          "numeric",
-          "scalar",
-          ">=1"
+        "outputs": [
+            {
+                "name": "T",
+                "type": [
+                    "table"
+                ],
+                "purpose": "Output table of tickers and names"
+            }
+        ]
+    },
+    "getYahoo": {
+        "inputs": [
+            {
+                "name": "ticker",
+                "kind": "required",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["cellstr"]
+                ],
+                "purpose": "Ticker symbol or collection of ticker symbols"
+            },
+            {
+                "name": "LastPeriod",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["choices={'1d','5d','1mo','3mo','6mo','1y','2y','5y','10y','ytd','max'}"]
+                ],
+                "purpose": "Time span to download"
+            },
+            {
+                "name": "interval",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["choices={'1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'}"]
+                ],
+                "purpose": "Sampling interval requested to Yahoo Finance"
+            },
+            {
+                "name": "layoutHeights",
+                "kind": "namevalue",
+                "type": [
+                    "numeric",
+                    "vector",
+                    "numel=3"
+                ],
+                "purpose": "Relative heights of the three panels"
+            },
+            {
+                "name": "removeGaps",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Remove night or weekend gaps in x-axis"
+            },
+            {
+                "name": "breakAtSession",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Add separators between sessions"
+            },
+            {
+                "name": "nTicks",
+                "kind": "namevalue",
+                "type": [
+                    "numeric",
+                    "scalar",
+                    "integer",
+                    ">=1"
+                ],
+                "purpose": "Number of ticks shown on x-axis when removeGaps=true"
+            },
+            {
+                "name": "topPanelMode",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["choices={'candle','line','ma','boll'}"],
+                    ["struct", "scalar"]
+                ],
+                "purpose": "Type of plot in the top panel; when supplied as a struct, it also controls the suboptions associated with the selected visualization"
+            },
+            {
+                "name": "bottomPanelMode",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["choices={'rsi','stoch','macd','williamsr','roc'}"],
+                    ["struct", "scalar"]
+                ],
+                "purpose": "Indicator shown in the bottom panel; when supplied as a struct, it also controls the suboptions associated with the selected indicator"
+            },
+            {
+                "name": "showPanelHelp",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Display textual explanation in Command Window"
+            },
+            {
+                "name": "autoFixInterval",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Automatically replace invalid range or interval combinations"
+            },
+            {
+                "name": "plots",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Create plots for each ticker"
+            },
+            {
+                "name": "msg",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Display progress messages"
+            }
         ],
-        "purpose": "Number of representative stocks to return"
-      },
-      {
-        "name": "Source",
-        "kind": "namevalue",
-        "type": [
-          ["char"],
-          ["string"],
-          ["choices={'static','dynamic'}"]
+        "outputs": [
+            {
+                "name": "out",
+                "type": [
+                    "struct"
+                ],
+                "purpose": "Structure array with downloaded time series and indicators"
+            }
+        ]
+    },
+    "getFundamentals": {
+        "inputs": [
+            {
+                "name": "ticker",
+                "kind": "required",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["cellstr"]
+                ],
+                "purpose": "Ticker symbol or collection of ticker symbols"
+            },
+            {
+                "name": "RankBy",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["choices={'marketCap','trailingPE','forwardPE','priceToBook','beta','enterpriseValue','profitMargins','returnOnEquity','returnOnAssets','totalRevenue'}"]
+                ],
+                "purpose": "Numeric variable used to rank rows in descending order"
+            },
+            {
+                "name": "ExplainFields",
+                "kind": "namevalue",
+                "type": [
+                    ["logical", "scalar"],
+                    ["char"],
+                    ["string"],
+                    ["choices={'all','basic','valuation','performance'}"]
+                ],
+                "purpose": "Display explanation of available fields or presets"
+            },
+            {
+                "name": "Fields",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["choices={'all','basic','valuation','performance'}"],
+                    ["cellstr"]
+                ],
+                "purpose": "Field preset or custom list of output variables"
+            }
         ],
-        "purpose": "Source used to build the market universe"
-      },
-      {
-        "name": "RankByCap",
-        "kind": "namevalue",
-        "type": [
-          "logical",
-          "scalar"
+        "outputs": [
+            {
+                "name": "T",
+                "type": [
+                    "table"
+                ],
+                "purpose": "Table of fundamental company information"
+            }
+        ]
+    },
+    "zscoreFS": {
+        "inputs": [
+            {
+                "name": "X",
+                "kind": "required",
+                "type": [
+                    ["double"],
+                    ["table"]
+                ],
+                "purpose": "Input data. Vector, Matrix, 3D array or table"
+            },
+            {
+                "name": "loc",
+                "kind": "ordered",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["choices={'median','mean'}"]
+                ],
+                "purpose": "Location measure to use ('median' or 'mean')"
+            },
+            {
+                "name": "scale",
+                "kind": "ordered",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["choices={'mad','Qn','Sn','std','modmadp'}"]
+                ],
+                "purpose": "Scale measure to use"
+            },
+            {
+                "name": "dim",
+                "kind": "ordered",
+                "type": [
+                    "double",
+                    "scalar",
+                    "integer",
+                    ">=1"
+                ],
+                "purpose": "Dimension to operate along"
+            }
         ],
-        "purpose": "Rank constituents by market capitalization"
-      },
-      {
-        "name": "IncludeIndex",
-        "kind": "namevalue",
-        "type": [
-          "logical",
-          "scalar"
+        "outputs": [
+            {
+                "name": "Z",
+                "type": [
+                    ["double"],
+                    ["table"]
+                ],
+                "purpose": "Centered and scaled version of X"
+            },
+            {
+                "name": "mu",
+                "type": [
+                    "double"
+                ],
+                "purpose": "Location estimate"
+            },
+            {
+                "name": "sigma",
+                "type": [
+                    "double"
+                ],
+                "purpose": "Scale estimate"
+            }
+        ]
+    },
+    "cabc": {
+        "inputs": [],
+        "outputs": []
+    },
+    "cascade": {
+        "inputs": [],
+        "outputs": []
+    },
+    "clickableMultiLegend": {
+        "inputs": [
+            {
+                "name": "varargin",
+                "kind": "ordered",
+                "type": [
+                    "any"
+                ],
+                "purpose": "Arguments passed to the legend function (labels, Name-Value pairs)"
+            }
         ],
-        "purpose": "Include the market index in the first row"
-      },
-      {
-        "name": "msg",
-        "kind": "namevalue",
-        "type": [
-          "logical",
-          "scalar"
+        "outputs": [
+            {
+                "name": "HLEG",
+                "type": [
+                    "matlab.graphics.illustration.Legend"
+                ],
+                "purpose": "Handle to the legend"
+            }
+        ]
+    },
+    "docrootFS": {
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "docr",
+                "type": [
+                    "char"
+                ],
+                "purpose": "Documentation root path"
+            }
+        ]
+    },
+    "existFS": {
+        "inputs": [
+            {
+                "name": "FileName",
+                "kind": "required",
+                "type": [
+                    ["char"],
+                    ["string"]
+                ],
+                "purpose": "Name of the file whose existence has to be verified"
+            }
         ],
-        "purpose": "Display progress messages"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "T",
-        "type": [
-          "table"
+        "outputs": [
+            {
+                "name": "result",
+                "type": [
+                    "logical"
+                ],
+                "purpose": "True if the file exists in the MATLAB path"
+            }
+        ]
+    },
+    "extendVEC": {
+        "inputs": [
+            {
+                "name": "x",
+                "kind": "required",
+                "type": [
+                    "numeric",
+                    "vector"
+                ],
+                "purpose": "Vector to be extended"
+            },
+            {
+                "name": "index",
+                "kind": "required",
+                "type": [
+                    "numeric",
+                    "vector",
+                    "integer"
+                ],
+                "purpose": "Positions where to insert value inside x"
+            },
+            {
+                "name": "value",
+                "kind": "required",
+                "type": [
+                    "numeric",
+                    "scalar"
+                ],
+                "purpose": "Element to insert in x for the extension"
+            }
         ],
-        "purpose": "Output table of tickers and names"
-      }
-    ]
-  },
-  "getYahoo": {
-    "inputs": [
-      {
-        "name": "ticker",
-        "kind": "required",
-        "type": [
-          ["char"],
-          ["string"],
-          ["cellstr"]
+        "outputs": [
+            {
+                "name": "ext",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Extension of vector x with the element value inserted in the positions in index"
+            }
+        ]
+    },
+    "findDir": {
+        "inputs": [
+            {
+                "name": "root",
+                "kind": "required",
+                "type": [
+                    ["char"],
+                    ["string"]
+                ],
+                "purpose": "Root directory"
+            },
+            {
+                "name": "InclDir",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["cellstr"]
+                ],
+                "purpose": "Include directory pattern(s)"
+            },
+            {
+                "name": "ExclDir",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["cellstr"]
+                ],
+                "purpose": "Exclude directory pattern(s)"
+            }
         ],
-        "purpose": "Ticker symbol or collection of ticker symbols"
-      },
-      {
-        "name": "LastPeriod",
-        "kind": "namevalue",
-        "type": [
-          ["char"],
-          ["string"],
-          ["choices={'1d','5d','1mo','3mo','6mo','1y','2y','5y','10y','ytd','max'}"]
+        "outputs": [
+            {
+                "name": "list",
+                "type": [
+                    "cellstr"
+                ],
+                "purpose": "All subdirectories"
+            }
+        ]
+    },
+    "findFile": {
+        "inputs": [
+            {
+                "name": "root",
+                "kind": "required",
+                "type": [
+                    ["char"],
+                    ["string"]
+                ],
+                "purpose": "Root directory"
+            },
+            {
+                "name": "InclDir",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["cellstr"]
+                ],
+                "purpose": "Include directory pattern(s)"
+            },
+            {
+                "name": "ExclDir",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["cellstr"]
+                ],
+                "purpose": "Exclude directory pattern(s)"
+            },
+            {
+                "name": "InclFiles",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["cellstr"]
+                ],
+                "purpose": "Include file pattern(s)"
+            },
+            {
+                "name": "ExclFiles",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["cellstr"]
+                ],
+                "purpose": "Exclude file pattern(s)"
+            }
         ],
-        "purpose": "Time span to download"
-      },
-      {
-        "name": "interval",
-        "kind": "namevalue",
-        "type": [
-          ["char"],
-          ["string"],
-          ["choices={'1m','2m','5m','15m','30m','60m','90m','1h','1d','5d','1wk','1mo','3mo'}"]
+        "outputs": [
+            {
+                "name": "list",
+                "type": [
+                    "cellstr"
+                ],
+                "purpose": "All files"
+            }
+        ]
+    },
+    "isfunction": {
+        "inputs": [
+            {
+                "name": "funstr",
+                "kind": "required",
+                "type": [
+                    ["char"],
+                    ["string"]
+                ],
+                "purpose": "Function name"
+            }
         ],
-        "purpose": "Sampling interval requested to Yahoo Finance"
-      },
-      {
-        "name": "layoutHeights",
-        "kind": "namevalue",
-        "type": [
-          "numeric",
-          "vector",
-          "numel=3"
+        "outputs": [
+            {
+                "name": "check",
+                "type": [
+                    "logical"
+                ],
+                "purpose": "Flag indicating if the function exists"
+            },
+            {
+                "name": "location",
+                "type": [
+                    "char"
+                ],
+                "purpose": "Function path"
+            }
+        ]
+    },
+    "m2ipynb": {
+        "inputs": [
+            {
+                "name": "append2README",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Append or not the list of filtered files to README.md file"
+            },
+            {
+                "name": "CatchError",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Whether to catch errors during conversion"
+            },
+            {
+                "name": "category",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"]
+                ],
+                "purpose": "Label inside files which specifies whether the file to be converted"
+            },
+            {
+                "name": "deleteMLXfiles",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Delete or not the .mlx files after conversion"
+            },
+            {
+                "name": "dirpath",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["cellstr"]
+                ],
+                "purpose": "Path to use or file to convert"
+            }
         ],
-        "purpose": "Relative heights of the three panels"
-      },
-      {
-        "name": "removeGaps",
-        "kind": "namevalue",
-        "type": [
-          "logical",
-          "scalar"
+        "outputs": [
+            {
+                "name": "Incl",
+                "type": [
+                    "cellstr"
+                ],
+                "purpose": "List of included files"
+            },
+            {
+                "name": "Excluded",
+                "type": [
+                    "cellstr"
+                ],
+                "purpose": "List of excluded files"
+            }
+        ]
+    },
+    "medcouple": {
+        "inputs": [
+            {
+                "name": "z",
+                "kind": "required",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Uni-dimensional array sample"
+            },
+            {
+                "name": "mcm",
+                "kind": "namevalue",
+                "type": [
+                    "double",
+                    "scalar",
+                    "integer",
+                    ">=0",
+                    "<=3"
+                ],
+                "purpose": "Medcouple method (0=fast, 1=naive, 2=quantile, 3=octile)"
+            },
+            {
+                "name": "wmm",
+                "kind": "namevalue",
+                "type": [
+                    "double",
+                    "scalar",
+                    "integer",
+                    ">=0",
+                    "<=2"
+                ],
+                "purpose": "Weighted median method (0=quickselectFSw, 1=Haase, 2=mex)"
+            }
         ],
-        "purpose": "Remove night or weekend gaps in x-axis"
-      },
-      {
-        "name": "breakAtSession",
-        "kind": "namevalue",
-        "type": [
-          "logical",
-          "scalar"
+        "outputs": [
+            {
+                "name": "medout",
+                "type": [
+                    "double",
+                    "scalar"
+                ],
+                "purpose": "Medcouple of z"
+            },
+            {
+                "name": "T",
+                "type": [
+                    "double",
+                    "scalar"
+                ],
+                "purpose": "Execution time for weighted median computation"
+            }
+        ]
+    },
+    "multialign2ref": {
+        "inputs": [
+            {
+                "name": "refSeqs",
+                "kind": "required",
+                "type": [
+                    "struct"
+                ],
+                "purpose": "Reference sequences already aligned"
+            },
+            {
+                "name": "Seqs2align",
+                "kind": "required",
+                "type": [
+                    "struct"
+                ],
+                "purpose": "Sequences which have to be aligned"
+            },
+            {
+                "name": "UseParallel",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Use parallel computing toolbox"
+            },
+            {
+                "name": "ScoringMatrix",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"]
+                ],
+                "purpose": "Scoring method to use for the alignment"
+            },
+            {
+                "name": "NumberSeqsEachIter",
+                "kind": "namevalue",
+                "type": [
+                    "double",
+                    "scalar",
+                    "integer",
+                    ">=1"
+                ],
+                "purpose": "Number of sequences to add for each iteration"
+            },
+            {
+                "name": "verbose",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Show estimated time to complete the process"
+            }
         ],
-        "purpose": "Add separators between sessions"
-      },
-      {
-        "name": "nTicks",
-        "kind": "namevalue",
-        "type": [
-          "numeric",
-          "scalar",
-          "integer",
-          ">=1"
+        "outputs": [
+            {
+                "name": "Seqsaligned",
+                "type": [
+                    "struct"
+                ],
+                "purpose": "Sequences which have been aligned"
+            },
+            {
+                "name": "WrngAlignment",
+                "type": [
+                    "struct"
+                ],
+                "purpose": "Information about sequences which could not be aligned"
+            }
+        ]
+    },
+    "multialignHeader": {
+        "inputs": [
+            {
+                "name": "Seqs",
+                "kind": "required",
+                "type": [
+                    ["struct"],
+                    ["table"]
+                ],
+                "purpose": "Sequences which have to be analyzed"
+            },
+            {
+                "name": "addContinent",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Add or not the name of the continent"
+            },
+            {
+                "name": "countPartSymb",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Add or not the 5 extra columns for particular symbols"
+            }
         ],
-        "purpose": "Number of ticks shown on x-axis when removeGaps=true"
-      },
-      {
-        "name": "topPanelMode",
-        "kind": "namevalue",
-        "type": [
-          ["char"],
-          ["string"],
-          ["choices={'candle','line','ma','boll'}"],
-          ["struct", "scalar"]
+        "outputs": [
+            {
+                "name": "T",
+                "type": [
+                    "table"
+                ],
+                "purpose": "Table with detailed information for each sequence"
+            },
+            {
+                "name": "WrongCountry",
+                "type": [
+                    "string"
+                ],
+                "purpose": "String array of country names not found"
+            },
+            {
+                "name": "indexEmptyDate",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Numeric vector of rows where date could not be extracted"
+            }
+        ]
+    },
+    "openMatlabFileFromHTML": {
+        "inputs": [
+            {
+                "name": "MatlabFileName",
+                "kind": "required",
+                "type": [
+                    ["char"],
+                    ["string"]
+                ],
+                "purpose": "Name of MATLAB file"
+            },
+            {
+                "name": "LineToOpen",
+                "kind": "ordered",
+                "type": [
+                    "double",
+                    "scalar",
+                    "integer",
+                    ">=1"
+                ],
+                "purpose": "Number of the line to position the cursor"
+            }
         ],
-        "purpose": "Type of plot in the top panel; when supplied as a struct, it also controls the suboptions associated with the selected visualization"
-      },
-      {
-        "name": "bottomPanelMode",
-        "kind": "namevalue",
-        "type": [
-          ["char"],
-          ["string"],
-          ["choices={'rsi','stoch','macd','williamsr','roc'}"],
-          ["struct", "scalar"]
+        "outputs": []
+    },
+    "pdfprotect": {
+        "inputs": [
+            {
+                "name": "inputfile",
+                "kind": "required",
+                "type": [
+                    ["char"],
+                    ["string"]
+                ],
+                "purpose": "Input pdf file"
+            },
+            {
+                "name": "edit",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Edit permission flag"
+            },
+            {
+                "name": "outputfile",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"]
+                ],
+                "purpose": "Name of the output file"
+            },
+            {
+                "name": "passedit",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"]
+                ],
+                "purpose": "Owner encryption password"
+            },
+            {
+                "name": "passopen",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"]
+                ],
+                "purpose": "User password"
+            },
+            {
+                "name": "print",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Print permission flag"
+            },
+            {
+                "name": "watermark",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"]
+                ],
+                "purpose": "Text of the watermark"
+            }
         ],
-        "purpose": "Indicator shown in the bottom panel; when supplied as a struct, it also controls the suboptions associated with the selected indicator"
-      },
-      {
-        "name": "showPanelHelp",
-        "kind": "namevalue",
-        "type": [
-          "logical",
-          "scalar"
+        "outputs": [
+            {
+                "name": "out",
+                "type": [
+                    "double",
+                    "scalar"
+                ],
+                "purpose": "Return status (-1 indicates failure)"
+            }
+        ]
+    },
+    "position": {
+        "inputs": [
+            {
+                "name": "plmain",
+                "kind": "ordered",
+                "type": [
+                    "double",
+                    "scalar"
+                ],
+                "purpose": "Figure handle of the main figure to be positioned"
+            }
         ],
-        "purpose": "Display textual explanation in Command Window"
-      },
-      {
-        "name": "autoFixInterval",
-        "kind": "namevalue",
-        "type": [
-          "logical",
-          "scalar"
+        "outputs": []
+    },
+    "quickselectFS": {
+        "inputs": [
+            {
+                "name": "A",
+                "kind": "required",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Set of unique numbers"
+            },
+            {
+                "name": "k",
+                "kind": "required",
+                "type": [
+                    "double",
+                    "scalar",
+                    "integer",
+                    ">=1"
+                ],
+                "purpose": "Order statistic index"
+            },
+            {
+                "name": "kiniindex",
+                "kind": "ordered",
+                "type": [
+                    "double",
+                    "scalar",
+                    "integer",
+                    ">=1"
+                ],
+                "purpose": "Index of an element in A close to the desired k-th order statistic"
+            }
         ],
-        "purpose": "Automatically replace invalid range or interval combinations"
-      },
-      {
-        "name": "plots",
-        "kind": "namevalue",
-        "type": [
-          "logical",
-          "scalar"
+        "outputs": [
+            {
+                "name": "kE",
+                "type": [
+                    "double",
+                    "scalar"
+                ],
+                "purpose": "k-th order statistic"
+            },
+            {
+                "name": "Asor",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Partially sorted vector"
+            }
+        ]
+    },
+    "quickselectFSnw": {
+        "inputs": [
+            {
+                "name": "D",
+                "kind": "required",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Input data"
+            },
+            {
+                "name": "W",
+                "kind": "required",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Weights"
+            },
+            {
+                "name": "p",
+                "kind": "ordered",
+                "type": [
+                    "double",
+                    "scalar",
+                    ">=0",
+                    "<=1"
+                ],
+                "purpose": "100p-th percentile"
+            }
         ],
-        "purpose": "Create plots for each ticker"
-      },
-      {
-        "name": "msg",
-        "kind": "namevalue",
-        "type": [
-          "logical",
-          "scalar"
+        "outputs": [
+            {
+                "name": "kD",
+                "type": [
+                    "double",
+                    "scalar"
+                ],
+                "purpose": "Weighted order statistic"
+            },
+            {
+                "name": "kW",
+                "type": [
+                    "double",
+                    "scalar"
+                ],
+                "purpose": "Weight of the weighted order statistic"
+            },
+            {
+                "name": "kstar",
+                "type": [
+                    "double",
+                    "scalar"
+                ],
+                "purpose": "Index of the weighted order statistic"
+            },
+            {
+                "name": "varargout",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Additional outputs"
+            }
+        ]
+    },
+    "quickselectFSw": {
+        "inputs": [
+            {
+                "name": "D",
+                "kind": "required",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Input data"
+            },
+            {
+                "name": "W",
+                "kind": "required",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Weights"
+            },
+            {
+                "name": "p",
+                "kind": "ordered",
+                "type": [
+                    "double",
+                    "scalar",
+                    ">=0",
+                    "<=1"
+                ],
+                "purpose": "100p-th percentile"
+            }
         ],
-        "purpose": "Display progress messages"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "out",
-        "type": [
-          "struct"
+        "outputs": [
+            {
+                "name": "kD",
+                "type": [
+                    "double",
+                    "scalar"
+                ],
+                "purpose": "Weighted order statistic"
+            },
+            {
+                "name": "kW",
+                "type": [
+                    "double",
+                    "scalar"
+                ],
+                "purpose": "Weight of the weighted order statistic"
+            },
+            {
+                "name": "kstar",
+                "type": [
+                    "double",
+                    "scalar"
+                ],
+                "purpose": "Index of the weighted order statistic"
+            },
+            {
+                "name": "varargout",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Additional outputs"
+            }
+        ]
+    },
+    "removeExtraSpacesLF": {
+        "inputs": [
+            {
+                "name": "txt",
+                "kind": "required",
+                "type": [
+                    ["char"],
+                    ["string"]
+                ],
+                "purpose": "Input text"
+            }
         ],
-        "purpose": "Structure array with downloaded time series and indicators"
-      }
-    ]
-  },
-  "getFundamentals": {
-    "inputs": [
-      {
-        "name": "ticker",
-        "kind": "required",
-        "type": [
-          ["char"],
-          ["string"],
-          ["cellstr"]
+        "outputs": [
+            {
+                "name": "newTxt",
+                "type": [
+                    "char"
+                ],
+                "purpose": "Output text without unwanted carriage returns and extra spaces"
+            }
+        ]
+    },
+    "repDupValWithMean": {
+        "inputs": [
+            {
+                "name": "x",
+                "kind": "required",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Vector with values to analyze"
+            },
+            {
+                "name": "y",
+                "kind": "required",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Vector on which the computations have to be made"
+            },
+            {
+                "name": "consec",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "How to compute the local means"
+            },
+            {
+                "name": "w",
+                "kind": "namevalue",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Weights for the observations"
+            }
         ],
-        "purpose": "Ticker symbol or collection of ticker symbols"
-      },
-      {
-        "name": "RankBy",
-        "kind": "namevalue",
-        "type": [
-          ["char"],
-          ["string"],
-          ["choices={'marketCap','trailingPE','forwardPE','priceToBook','beta','enterpriseValue','profitMargins','returnOnEquity','returnOnAssets','totalRevenue'}"]
+        "outputs": [
+            {
+                "name": "ysmo",
+                "type": [
+                    "double",
+                    "vector"
+                ],
+                "purpose": "Smoothed vector y with local means for non unique x values"
+            }
+        ]
+    },
+    "rescaleFS": {
+        "inputs": [
+            {
+                "name": "x",
+                "kind": "required",
+                "type": [
+                    "double",
+                    "vector",
+                    "2d",
+                    "3d"
+                ],
+                "purpose": "Vector or matrix or 3D array of elements to be rescaled"
+            },
+            {
+                "name": "a",
+                "kind": "ordered",
+                "type": [
+                    "double",
+                    "scalar"
+                ],
+                "purpose": "Minimum of the required interval"
+            },
+            {
+                "name": "b",
+                "kind": "ordered",
+                "type": [
+                    "double",
+                    "scalar"
+                ],
+                "purpose": "Maximum of the required interval"
+            }
         ],
-        "purpose": "Numeric variable used to rank rows in descending order"
-      },
-      {
-        "name": "ExplainFields",
-        "kind": "namevalue",
-        "type": [
-          ["logical", "scalar"],
-          ["char"],
-          ["string"],
-          ["choices={'all','basic','valuation','performance'}"]
+        "outputs": [
+            {
+                "name": "y",
+                "type": [
+                    "double"
+                ],
+                "purpose": "Rescaled array"
+            }
+        ]
+    },
+    "rows2varsFS": {
+        "inputs": [
+            {
+                "name": "T1",
+                "kind": "required",
+                "type": [
+                    ["table"],
+                    ["timetable"]
+                ],
+                "purpose": "Original table"
+            },
+            {
+                "name": "VariableNamesSource",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    "double",
+                    "logical"
+                ],
+                "purpose": "Variable in T1 that contains variable names"
+            },
+            {
+                "name": "DataVariables",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["cellstr"],
+                    "double",
+                    "logical"
+                ],
+                "purpose": "Selected variables from T1"
+            },
+            {
+                "name": "VariableNamingRule",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["choices={'modify','preserve'}"]
+                ],
+                "purpose": "Rule for naming variables in T2"
+            }
         ],
-        "purpose": "Display explanation of available fields or presets"
-      },
-      {
-        "name": "Fields",
-        "kind": "namevalue",
-        "type": [
-          ["char"],
-          ["string"],
-          ["choices={'all','basic','valuation','performance'}"],
-          ["cellstr"]
+        "outputs": [
+            {
+                "name": "T2",
+                "type": [
+                    "table"
+                ],
+                "purpose": "Table with p rows and n columns"
+            }
+        ]
+    },
+    "RatcliffeObesrhelp": {
+        "inputs": [
+            {
+                "name": "STR",
+                "kind": "required",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["cellstr"],
+                    ["table"]
+                ],
+                "purpose": "Strings or files to compare or list of extensions"
+            },
+            {
+                "name": "comparisonType",
+                "kind": "namevalue",
+                "type": [
+                    ["char"],
+                    ["string"],
+                    ["choices={'str','file','ext'}"]
+                ],
+                "purpose": "Specifies what are the elements inside STR"
+            },
+            {
+                "name": "remStopWords",
+                "kind": "namevalue",
+                "type": [
+                    "logical",
+                    "scalar"
+                ],
+                "purpose": "Remove Stop Words from the strings"
+            },
+            {
+                "name": "thresh",
+                "kind": "namevalue",
+                "type": [
+                    "double",
+                    "scalar"
+                ],
+                "purpose": "Threshold to define significant similarities"
+            }
         ],
-        "purpose": "Field preset or custom list of output variables"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "T",
-        "type": [
-          "table"
-        ],
-        "purpose": "Table of fundamental company information"
-      }
-    ]
-  },
-  "zscoreFS": {
-    "inputs": [
-      {
-        "name": "X",
-        "kind": "required",
-        "type": [
-          ["double"],
-          ["table"]
-        ],
-        "purpose": "Input data. Vector, Matrix, 3D array or table"
-      },
-      {
-        "name": "loc",
-        "kind": "ordered",
-        "type": [
-          ["char"],
-          ["string"],
-          ["choices={'median','mean'}"]
-        ],
-        "purpose": "Location measure to use ('median' or 'mean')"
-      },
-      {
-        "name": "scale",
-        "kind": "ordered",
-        "type": [
-          ["char"],
-          ["string"],
-          ["choices={'mad','Qn','Sn','std'}"]
-        ],
-        "purpose": "Scale measure to use"
-      },
-      {
-        "name": "dim",
-        "kind": "ordered",
-        "type": [
-          "double",
-          "scalar",
-          "integer",
-          ">=1"
-        ],
-        "purpose": "Dimension to operate along"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "Z",
-        "type": [
-          ["double"],
-          ["table"]
-        ],
-        "purpose": "Centered and scaled version of X"
-      },
-      {
-        "name": "mu",
-        "type": [
-          "double"
-        ],
-        "purpose": "Location estimate"
-      },
-      {
-        "name": "sigma",
-        "type": [
-          "double"
-        ],
-        "purpose": "Scale estimate"
-      }
-    ]
-  }
+        "outputs": [
+            {
+                "name": "ROsim",
+                "type": [
+                    "double",
+                    "2d"
+                ],
+                "purpose": "Similarity matrix"
+            },
+            {
+                "name": "ROsimT",
+                "type": [
+                    "table"
+                ],
+                "purpose": "Similarity table"
+            },
+            {
+                "name": "ROord",
+                "type": [
+                    "double",
+                    "2d"
+                ],
+                "purpose": "Ordered similarity matrix"
+            }
+        ]
+    }
 }
