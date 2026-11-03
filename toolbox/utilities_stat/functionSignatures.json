@@ -1,51 +1,871 @@
 {
-
-   "grpstatsFS":
-    {
-        "inputs":
-        [
-            {"name":"tbl", "kind":"required", "type":[["table"], ["timetable"]]},
-            {"name":"groupvar",  "description":"Grouping variable or [] if there is no grouping variable", "kind":"required", "type":[["choices=tbl.Properties.VariableNames"], ["cellstr"], ["vector", "integer", ">0"], ["logical", "vector"], ["char"],["double"]]},
-            {"name":"whichstats",  "description":"Statistics to compute", "kind":"required", "type":[["choices={'mean', 'sem', 'numel', 'gname', 'std', 'var', 'min', 'max', 'range', 'meanci', 'predci'}"], ["function_handle"], ["char"]]},
-            {"name":"Alpha", "kind":"namevalue", "type":["double", "scalar", ">=0", "<=1"]},
-            {"name":"DataVars", "kind":"namevalue", "type":[["choices=tbl.Properties.VariableNames"], ["choices=tbl.Properties.VarNames"], ["logical", "vector"], ["double", "vector", ">0"], ["cellstr"], ["char"]]},
-            {"name":"VarNames", "kind":"namevalue", "type":[["cellstr"], ["string"]]},
-            {"name":"plots", "description":"Show the errorbar plot", "kind":"namevalue", "type":["logical", "scalar"]},
-            {"name":"OutputFormat",  "description":"Nested or non nested tables when there is more than one grouping variable", "kind":"namevalue", "type":[["choices={'flat', 'nested'}"]]}
-        ]
-    },
-
-    "corrcdf":
-    {
-        "inputs":
-        [
-            {"name":"x", "description":"Values at which to evaluate cdf", "kind":"required"},
-            {"name":"rho", "description":"Population correlation coefficient", "kind":"required", "type":["double", "scalar", ">=-1", "<=1"]},
-            {"name":"n", "description":"Sample size", "kind":"required", "type":["numeric", "scalar", "integer"]},
-            {"name":"upper", "description":"Lower or upper tail", "kind":"ordered", "type":"choices={'upper'}"}
-        ]
-    },
-
-    "corrpdf":
-    {
-        "inputs":
-        [
-            {"name":"x", "description":"Values at which to evaluate pdf", "kind":"required"},
-            {"name":"rho", "description":"Population correlation coefficient", "kind":"required", "type":["double", "scalar", ">=-1", "<=1"]},
-            {"name":"n", "description":"Sample size", "kind":"required", "type":["numeric", "scalar", "integer"]}
-        ]
-    },
-
-     "corrinv":
-    {
-        "inputs":
-        [
-            {"name":"p", "description":"Probability at which to evaluate inverse cdf", "kind":"required"},
-            {"name":"rho", "description":"Population correlation coefficient", "kind":"required", "type":["double", "scalar", ">=-1", "<=1"]},
-            {"name":"n", "description":"Sample size", "kind":"required", "type":["numeric", "scalar", "integer"]}
-        ]
-    }
-
-
+  "ASbdp": {
+    "inputs": [
+      {"name": "bdp", "kind": "required", "type": ["double", "scalar", ">=0", "<=0.5"]},
+      {"name": "v", "kind": "required", "type": ["double", "scalar", "integer"]}
+    ]
+  },
+  "ASc": {
+    "inputs": [
+      {"name": "c", "kind": "required", "type": ["double", "scalar"]},
+      {"name": "v", "kind": "required", "type": ["double", "scalar", "integer"]}
+    ]
+  },
+  "ASeff": {
+    "inputs": [
+      {"name": "eff", "kind": "required", "type": ["double", "scalar"]},
+      {"name": "v", "kind": "required", "type": ["double", "scalar", "integer"]}
+    ]
+  },
+  "ASpsi": {
+    "inputs": [
+      {"name": "u", "kind": "required", "type": ["double", "vector"]},
+      {"name": "c", "kind": "required", "type": ["double", "scalar"]},
+      {"name": "v", "kind": "required", "type": ["double", "scalar", "integer"]}
+    ]
+  },
+  "ASpsider": {
+    "inputs": [
+      {"name": "u", "kind": "required", "type": ["double", "vector"]},
+      {"name": "c", "kind": "required", "type": ["double", "scalar"]},
+      {"name": "v", "kind": "required", "type": ["double", "scalar", "integer"]}
+    ]
+  },
+  "ASpsix": {
+    "inputs": [
+      {"name": "u", "kind": "required", "type": ["double", "vector"]},
+      {"name": "c", "kind": "required", "type": ["double", "scalar"]},
+      {"name": "v", "kind": "required", "type": ["double", "scalar", "integer"]}
+    ]
+  },
+  "ASrho": {
+    "inputs": [
+      {"name": "u", "kind": "required", "type": ["double", "vector"]},
+      {"name": "c", "kind": "required", "type": ["double", "scalar"]},
+      {"name": "v", "kind": "required", "type": ["double", "scalar", "integer"]}
+    ]
+  },
+  "ASwei": {
+    "inputs": [
+      {"name": "u", "kind": "required", "type": ["double", "vector"]},
+      {"name": "c", "kind": "required", "type": ["double", "scalar"]},
+      {"name": "v", "kind": "required", "type": ["double", "scalar", "integer"]}
+    ]
+  },
+  "CEVmodel": {
+    "inputs": [
+      {"name": "t", "purpose": "Discrete time grid", "kind": "required", "type": ["double", "vector"]},
+      {"name": "x", "purpose": "Initial price value", "kind": "required", "type": ["double", "scalar"]}
+    ]
+  },
+  "FE_int_vol": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FE_int_vol_Fejer": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FE_spot_vol": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FE_spot_vol_FFT": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FM_cov_matrix": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FM_int_cov": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FM_int_lev": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FM_int_quart": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FM_int_vol": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FM_int_volvol": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FM_spot_cov": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FM_spot_lev": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FM_spot_quart": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FM_spot_vol": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FM_spot_volvol": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FNChygecdf": {
+    "inputs": [
+      {"name": "x", "purpose": "Values at which to evaluate cdf", "kind": "required", "type": ["double", "vector"]},
+      {"name": "m", "purpose": "Number of white balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "n", "purpose": "Number of black balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "k", "purpose": "Number of balls drawn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "odds", "purpose": "Odds", "kind": "required", "type": ["double", "vector"]}
+    ]
+  },
+  "FNChygeinv": {
+    "inputs": [
+      {"name": "p", "purpose": "Probability at which to evaluate inverse cdf", "kind": "required", "type": ["double", "vector"]},
+      {"name": "m", "purpose": "Number of white balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "n", "purpose": "Number of black balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "k", "purpose": "Number of balls drawn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "odds", "purpose": "Odds", "kind": "required", "type": ["double", "vector"]}
+    ]
+  },
+  "FNChygepdf": {
+    "inputs": [
+      {"name": "x", "purpose": "Values at which to evaluate pdf", "kind": "required", "type": ["double", "vector"]},
+      {"name": "m", "purpose": "Number of white balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "n", "purpose": "Number of black balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "k", "purpose": "Number of balls drawn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "odds", "purpose": "Odds", "kind": "required", "type": ["double", "vector"]}
+    ]
+  },
+  "FNChygernd": {
+    "inputs": [
+      {"name": "m", "purpose": "Number of white balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "n", "purpose": "Number of black balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "k", "purpose": "Number of balls drawn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "odds", "purpose": "Odds", "kind": "required", "type": ["double", "vector"]},
+      {"name": "r", "purpose": "Number of random values to generate", "kind": "required", "type": ["double", "scalar", "integer"]}
+    ]
+  },
+  "FSMbonfbound": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FSRbonfbound": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "FowlkesMallowsIndex": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HAbdp": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HAc": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HAeff": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HApsi": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HApsider": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HApsix": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HArho": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HAwei": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HUc": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HUeff": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HUpsi": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HUpsider": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HUpsix": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HUrho": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HUwei": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HYPbdp": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HYPc": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HYPck": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HYPeff": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HYPk": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HYPpsi": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HYPpsider": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HYPpsix": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HYPrho": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "HYPwei": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "Heston1D": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "Heston2D": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "Mlocation": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "Mlocsca": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "Mscale": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "Mscale1": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "OPTbdp": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "OPTc": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "OPTeff": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "OPTpsi": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "OPTpsider": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "OPTpsix": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "OPTrho": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "OPTwei": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "OSILA": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "OptimalCuttingFrequency": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "PDbdp": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "PDc": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "PDeff": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "PDpsi": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "PDpsider": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "PDpsix": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "PDrho": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "PDwei": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "Powertra": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "Qn": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "RKbdp": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "RKeff": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "RKpsi": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "RKpsider": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "RKpsix": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "RKrho": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "RKwei": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "RandIndexFS": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "RhoPsiWei": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "Sn": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "TBbdp": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "TBc": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "TBeff": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "TBpsi": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "TBpsider": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "TBpsix": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "TBrho": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "TBwei": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "WNChygecdf": {
+    "inputs": [
+      {"name": "x", "purpose": "Values at which to evaluate cdf", "kind": "required", "type": ["double", "vector"]},
+      {"name": "m", "purpose": "Number of white balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "n", "purpose": "Number of black balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "k", "purpose": "Number of balls drawn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "odds", "purpose": "Odds", "kind": "required", "type": ["double", "vector"]}
+    ]
+  },
+  "WNChygeinv": {
+    "inputs": [
+      {"name": "p", "purpose": "Probability at which to evaluate inverse cdf", "kind": "required", "type": ["double", "vector"]},
+      {"name": "m", "purpose": "Number of white balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "n", "purpose": "Number of black balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "k", "purpose": "Number of balls drawn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "odds", "purpose": "Odds", "kind": "required", "type": ["double", "vector"]}
+    ]
+  },
+  "WNChygepdf": {
+    "inputs": [
+      {"name": "x", "purpose": "Values at which to evaluate pdf", "kind": "required", "type": ["double", "vector"]},
+      {"name": "m", "purpose": "Number of white balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "n", "purpose": "Number of black balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "k", "purpose": "Number of balls drawn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "odds", "purpose": "Odds", "kind": "required", "type": ["double", "vector"]}
+    ]
+  },
+  "WNChygernd": {
+    "inputs": [
+      {"name": "m", "purpose": "Number of white balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "n", "purpose": "Number of black balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "k", "purpose": "Number of balls drawn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "odds", "purpose": "Odds", "kind": "required", "type": ["double", "vector"]},
+      {"name": "r", "purpose": "Number of random values to generate", "kind": "required", "type": ["double", "scalar", "integer"]}
+    ]
+  },
+  "add2boxplot": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "basicPower": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "bwe": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "corrcdf": {
+    "inputs": [
+      {"name": "x", "purpose": "Values at which to evaluate cdf", "kind": "required"},
+      {"name": "rho", "purpose": "Population correlation coefficient", "kind": "required", "type": ["double", "scalar", ">=-1", "<=1"]},
+      {"name": "n", "purpose": "Sample size", "kind": "required", "type": ["numeric", "scalar", "integer"]},
+      {"name": "upper", "purpose": "Lower or upper tail", "kind": "ordered", "type": "choices={'upper'}"}
+    ]
+  },
+  "corrinv": {
+    "inputs": [
+      {"name": "p", "purpose": "Probability at which to evaluate inverse cdf", "kind": "required"},
+      {"name": "rho", "purpose": "Population correlation coefficient", "kind": "required", "type": ["double", "scalar", ">=-1", "<=1"]},
+      {"name": "n", "purpose": "Sample size", "kind": "required", "type": ["numeric", "scalar", "integer"]}
+    ]
+  },
+  "corrpdf": {
+    "inputs": [
+      {"name": "x", "purpose": "Values at which to evaluate pdf", "kind": "required"},
+      {"name": "rho", "purpose": "Population correlation coefficient", "kind": "required", "type": ["double", "scalar", ">=-1", "<=1"]},
+      {"name": "n", "purpose": "Sample size", "kind": "required", "type": ["numeric", "scalar", "integer"]}
+    ]
+  },
+  "crosstab2datamatrix": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "ctsub": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "ellipse": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "exactcdf": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "genr8next": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "grpstatsFS": {
+    "inputs": [
+      {"name": "tbl", "kind": "required", "type": [["table"], ["timetable"]]},
+      {"name": "groupvar", "purpose": "Grouping variable or [] if there is no grouping variable", "kind": "required", "type": [["choices=tbl.Properties.VariableNames"], ["cellstr"], ["vector", "integer", ">0"], ["logical", "vector"], ["char"], ["double"]]},
+      {"name": "whichstats", "purpose": "Statistics to compute", "kind": "required", "type": [["choices={'mean', 'sem', 'numel', 'gname', 'std', 'var', 'min', 'max', 'range', 'meanci', 'predci'}"], ["function_handle"], ["char"]]},
+      {"name": "Alpha", "kind": "namevalue", "type": ["double", "scalar", ">=0", "<=1"]},
+      {"name": "DataVars", "kind": "namevalue", "type": [["choices=tbl.Properties.VariableNames"], ["choices=tbl.Properties.VarNames"], ["logical", "vector"], ["double", "vector", ">0"], ["cellstr"], ["char"]]},
+      {"name": "VarNames", "kind": "namevalue", "type": [["cellstr"], ["string"]]},
+      {"name": "plots", "purpose": "Show the errorbar plot", "kind": "namevalue", "type": ["logical", "scalar"]},
+      {"name": "OutputFormat", "purpose": "Nested or non nested tables when there is more than one grouping variable", "kind": "namevalue", "type": [["choices={'flat', 'nested'}"]]}
+    ]
+  },
+  "inversegamcdf": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "inversegaminv": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "inversegampdf": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "kdebiv": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "logfactorial": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "logmvnpdfFS": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "mFNChygeodds": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "mFNChygepdf": {
+    "inputs": [
+      {"name": "x", "purpose": "Values at which to evaluate pdf", "kind": "required", "type": ["double", "2d"]},
+      {"name": "m", "purpose": "Number of white balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "n", "purpose": "Number of black balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "k", "purpose": "Number of balls drawn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "odds", "purpose": "Odds", "kind": "required", "type": ["double", "vector"]}
+    ]
+  },
+  "mFNChygernd": {
+    "inputs": [
+      {"name": "m", "purpose": "Number of white balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "n", "purpose": "Number of black balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "k", "purpose": "Number of balls drawn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "odds", "purpose": "Odds", "kind": "required", "type": ["double", "vector"]},
+      {"name": "r", "purpose": "Number of random values to generate", "kind": "required", "type": ["double", "scalar", "integer"]}
+    ]
+  },
+  "mWNChygeodds": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "mWNChygepdf": {
+    "inputs": [
+      {"name": "x", "purpose": "Values at which to evaluate pdf", "kind": "required", "type": ["double", "2d"]},
+      {"name": "m", "purpose": "Number of white balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "n", "purpose": "Number of black balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "k", "purpose": "Number of balls drawn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "odds", "purpose": "Odds", "kind": "required", "type": ["double", "vector"]}
+    ]
+  },
+  "mWNChygernd": {
+    "inputs": [
+      {"name": "m", "purpose": "Number of white balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "n", "purpose": "Number of black balls in the urn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "k", "purpose": "Number of balls drawn", "kind": "required", "type": ["double", "vector"]},
+      {"name": "odds", "purpose": "Odds", "kind": "required", "type": ["double", "vector"]},
+      {"name": "r", "purpose": "Number of random values to generate", "kind": "required", "type": ["double", "scalar", "integer"]}
+    ]
+  },
+  "mahalCorAna": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "mahalFS": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "mdpattern": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "mdpd": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "minscale": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "msdcutoff": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "mtR": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "ncpci": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "ncx2mixtcdf": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "normBoxCox": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "normYJ": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "normYJpn": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "pivotCoord": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "pivotCoordInv": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "qqplotFS": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "rthin": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "tabulateFS": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "tobitcdf": {
+    "inputs": [
+      {"name": "x", "purpose": "Values at which to evaluate cdf", "kind": "required", "type": ["double", "vector"]},
+      {"name": "mu", "purpose": "Mean of the underlying normal distribution", "kind": "required", "type": ["double", "scalar"]},
+      {"name": "sigma", "purpose": "Standard deviation of the underlying normal distribution", "kind": "required", "type": ["double", "scalar", ">0"]}
+    ]
+  },
+  "tobitinv": {
+    "inputs": [
+      {"name": "p", "purpose": "Probability at which to evaluate inverse cdf", "kind": "required", "type": ["double", "vector"]},
+      {"name": "mu", "purpose": "Mean of the underlying normal distribution", "kind": "required", "type": ["double", "scalar"]},
+      {"name": "sigma", "purpose": "Standard deviation of the underlying normal distribution", "kind": "required", "type": ["double", "scalar", ">0"]}
+    ]
+  },
+  "tobitpdf": {
+    "inputs": [
+      {"name": "x", "purpose": "Values at which to evaluate pdf", "kind": "required", "type": ["double", "vector"]},
+      {"name": "mu", "purpose": "Mean of the underlying normal distribution", "kind": "required", "type": ["double", "scalar"]},
+      {"name": "sigma", "purpose": "Standard deviation of the underlying normal distribution", "kind": "required", "type": ["double", "scalar", ">0"]}
+    ]
+  },
+  "tobitrnd": {
+    "inputs": [
+      {"name": "mu", "purpose": "Mean of the underlying normal distribution", "kind": "required", "type": ["double", "scalar"]},
+      {"name": "sigma", "purpose": "Standard deviation of the underlying normal distribution", "kind": "required", "type": ["double", "scalar", ">0"]},
+      {"name": "r", "purpose": "Number of random values to generate", "kind": "required", "type": ["double", "scalar", "integer"]}
+    ]
+  },
+  "twdcdf": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "twdpdf": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "twdrnd": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "vervaatrnd": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "vervaatsim": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "vervaatxdf": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "winsor": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  },
+  "wthin": {
+    "inputs": [
+      {"name": "varargin", "kind": "ordered", "type": ["any"]}
+    ]
+  }
 }
-
