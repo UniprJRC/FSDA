@@ -1230,6 +1230,111 @@ function [out, varargout] = LTSts(y,varargin)
     end
 %}
 
+%{
+    %% Plotting the fitted time-series components.
+    % This example combines a trend, evolving dummy seasonality, an
+    % explanatory variable, an autoregressive term, a level shift and a few
+    % outliers. The component figure displays each fitted contribution and
+    % the raw residuals.
+    rng(20261026)
+    s=12;
+    nYears=12;
+    T=s*nYears;
+    t=(1:T)';
+    month=mod(t-1,s)+1;
+    year=floor((t-1)/s);
+    yearCoordinate=(year-mean(year))/(max(year)-min(year));
+
+    seasonalBase=[2 1 0 -1 -2 -1 -2 -1 0 1 2 1];
+    seasonalSlope=[-1 -1 0 1 2 1 0 -1 0 0 0 -1];
+    seasonalBase=seasonalBase-mean(seasonalBase);
+    seasonalSlope=seasonalSlope-mean(seasonalSlope);
+    x=sin(2*pi*t/29);
+    signal=0.03*t+seasonalBase(month)'+ ...
+        yearCoordinate.*seasonalSlope(month)'+0.7*x;
+    signal(73:end)=signal(73:end)+3.5;
+
+    % Generate an AR(1) series around the deterministic signal.
+    phi=0.25;
+    errorTerm=0.25*randn(T,1);
+    y=zeros(T,1);
+    y(1)=signal(1)+errorTerm(1);
+    for it=2:T
+        y(it)=signal(it)+phi*y(it-1)+errorTerm(it);
+    end
+    bad=[38 109]';
+    y(bad)=y(bad)+[6 -5]';
+
+    model=struct('trend',1,'s',s,'seasonal',1,'X',x, ...
+        'lshift',65:81,'ARp',1,'ARtentout',[]);
+    model.seasonality=struct('type','dummy', ...
+        'evolution','polynomial','degree',1);
+    fitOptions={'nsamp',200,'h',100,'msg',0};
+
+    % Show the component figure only.
+    rng(1001)
+    outComponents=LTSts(y,'model',model,fitOptions{:}, ...
+        'plots','components');
+
+    % Show the standard plots, level-shift diagnostics and components.
+    rng(1001)
+    outAll=LTSts(y,'model',model,fitOptions{:},'plots','all');
+
+    % Select the standard and component figures, leaving level-shift
+    % diagnostics off. Unspecified structure fields default to false.
+    plotSelection=struct('standard',true,'components',true);
+    rng(1001)
+    outSelected=LTSts(y,'model',model,fitOptions{:}, ...
+        'plots',plotSelection);
+
+    % The fitted contributions are also available in the output structure:
+    % outComponents.components.trend
+    % outComponents.components.seasonal
+    % outComponents.components.autoregressive
+    % outComponents.components.explanatory
+    % outComponents.components.levelshift
+    % outComponents.components.residual
+%}
+
+%{
+    %% Component plots with an HP trend.
+    % The underlying trend is piecewise linear, with two changes in slope.
+    % The series also contains a persistent level shift at t=73. LTSts
+    % searches for it within the candidate window 65:81.
+    % The HP specification lets the estimated trend vary over time instead
+    % of restricting it to one global polynomial. The HP estimate smooths
+    % the bends, with lambdaHP controlling the degree of smoothing. The
+    % seasonal Fourier coefficients also evolve under a smoothness penalty.
+    rng(1002)
+    s=12;
+    nYears=12;
+    T=s*nYears;
+    t=(1:T)';
+    year=floor((t-1)/s);
+    yearCoordinate=(year-mean(year))/(max(year)-min(year));
+
+    trendTrue=5+0.02*t+0.06*max(t-48,0)-0.10*max(t-96,0);
+    levelShiftPosition=73;
+    levelShiftTrue=3.5*(t>=levelShiftPosition);
+    seasonalTrue=(1+0.3*yearCoordinate).* ...
+        (2*cos(2*pi*t/s)-0.5*sin(2*pi*t/s));
+    y=trendTrue+seasonalTrue+levelShiftTrue+0.25*randn(T,1);
+    bad=[37 91 130]';
+    y(bad)=y(bad)+[6 -7 5]';
+
+    model=struct('trend','HP','lambdaHP',1600,'s',s, ...
+        'seasonal',1,'X',[],'lshift',65:81, ...
+        'ARp',0,'ARtentout',[]);
+    model.seasonality=struct('type','harmonic','harmonics',1, ...
+        'evolution','penalized','lambda',20,'differenceOrder',2);
+
+    rng(1003)
+    outHPComponents=LTSts(y,'model',model,'nsamp',300,'h',100, ...
+        'plots','components','msg',0);
+
+   
+%}
+
 %% Beginning of code
 
 % Input parameters checking
