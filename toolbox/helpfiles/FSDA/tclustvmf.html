@@ -1,0 +1,387 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>tclustvmf</title><meta content="refpage" name="chunktype"><meta content="function:tclustvmf" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tclustvmf computes trimmed clustering for directional data using mixtures of von Mises-Fisher distribution." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/x-mathjax-config">MathJax.Hub.Config({jax: ["input/TeX", "output/HTML-CSS"],extensions: ["tex2jax.js", "TeX/AMSeqnum.js"],tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},TeX: {extensions: ["AMSsymbols.js"],equationNumbers: { autoNumber: "AMS" }}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">tclustvmf</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">tclustvmf on a synthetic 3-D directional data set, default options.</a></li><li><a class="intrnllnk" href="#Example_2">Effect of the equalweights option.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Effect of the mixt option: soft vs crisp assignment.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Effect of nsamp: number of random subsamples.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Effect of refsteps and reftol: concentration step control.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">The normalize option: rows need not be unit-norm on input.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">The newtonsteps option: Newton-Raphson steps for kappa estimation.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">The conflev option: confidence level for the group caps.</a></li><li><a class="intrnllnk" href="#ExtraExample_7">The ellipsenpts option: boundary resolution of the confidence caps.</a></li><li><a class="intrnllnk" href="#ExtraExample_8">The markersize option: point size in scatter plots.</a></li><li><a class="intrnllnk" href="#ExtraExample_9">The msg option: suppress or increase command-window output.</a></li><li><a class="intrnllnk" href="#ExtraExample_10">The Ysave option: store the (possibly normalised) data in out.</a></li><li><a class="intrnllnk" href="#ExtraExample_11">The plots option: draw the classification scatter.</a></li><li><a class="intrnllnk" href="#ExtraExample_12">The plottype option: points, ellipse or both.</a></li><li><a class="intrnllnk" href="#ExtraExample_13">The plotdims option: viewing high-dimensional data in 3D.</a></li><li><a class="intrnllnk" href="#ExtraExample_14">The nocheck option: skip the NaN/Inf input validation.</a></li><li><a class="intrnllnk" href="#ExtraExample_15">The noise option: explicit uniform-background component.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li><li><a class="intrnllnk" href="#input_argument_k">k</a></li><li><a class="intrnllnk" href="#input_argument_alpha">alpha</a></li><li><a class="intrnllnk" href="#input_argument_restrfactor">restrfactor</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_equalweights">equalweights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_mixt">mixt</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_normalize">normalize</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_newtonsteps">newtonsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ellipsenpts">ellipsenpts</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_markersize">markersize</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Ysave">Ysave</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plottype">plottype</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plotdims">plotdims</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_noise">noise</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">tclustvmf</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">tclustvmf computes trimmed clustering for directional data using mixtures of von Mises-Fisher distribution</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=tclustvmf(Y,k,alpha,restrfactor)</code><span class="syntax_example"><a class="intrnllnk" href="tclustvmf.html#Example_1">example</a></span></li><li><code class="synopsis">out=tclustvmf(Y,k,alpha,restrfactor,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="tclustvmf.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>tclustvmf partitions the points in the n-by-p data matrix Y, where
+   each row is assumed to be a unit vector on the hypersphere S^(p-1) in
+   R^p, into k clusters. This is the directional-data counterpart of
+   tclust: the multivariate normal model N(mu_j,Sigma_j) is replaced by
+   the von Mises-Fisher (vMF) model vMF(mu_j,kappa_j), where mu_j (a
+   unit vector) is the mean direction and kappa_j&gt;=0 is the concentration
+   parameter of group j. kappa_j is the vMF analogue of the inverse of
+   Sigma_j: a large kappa_j implies a tightly concentrated, "low
+   variance" cluster around mu_j, exactly as a large eigenvalue of
+   Sigma_j^{-1} does in the Gaussian case. The vMF density on S^(p-1) is
+
+     f(y; mu, kappa) = C_p(kappa) * exp(kappa * mu' * y),
+
+   where C_p(kappa) is the normalizing constant (see vMFlogC.m) and y is
+   a unit vector. Robustness is achieved via the same impartial ("hard")
+   trimming device used by tclust and tkmeans: at most n-h observations
+   are left unassigned, where h = fix(n*(1-alpha)). A constraint on the
+   ratio max(kappa_j)/min(kappa_j) prevents the classification likelihood
+   from becoming unbounded as a cluster collapses onto a single direction
+   (the vMF analogue of tclust's eigenvalue restriction, which prevents
+   Sigma_j from collapsing to a singular matrix).</p> <p>
+
+   Setting restrfactor=1 forces a common kappa across all groups, which
+   reduces the discriminant rule to cosine similarity: this is "trimmed
+   spherical k-means", the exact directional analogue of the relationship
+   between tclust (restrfactor=1) and tkmeans.</p><p>
+
+   Optionally (see option 'noise'), an extra (k+1)-th component modelling
+   uniform "background" noise on the hypersphere can be added alongside
+   the k vMF clusters. This is used together with a typically smaller
+   trimming level: trimming remains a distribution-free safeguard against
+   contamination of unknown/arbitrary shape, while the noise component
+   explicitly captures contamination that is itself uniform on the sphere.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustvmf.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustvmf(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_alpha"><code>alpha</code></a>,<a class="intrnllnk" href="#inputarg_restrfactor"><code>restrfactor</code></a>)</code></span>tclustvmf on a synthetic 3-D directional data set, default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustvmf.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustvmf(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_alpha"><code>alpha</code></a>,<a class="intrnllnk" href="#inputarg_restrfactor"><code>restrfactor</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Effect of the equalweights option.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> tclustvmf on a synthetic 3-D directional data set, default options.</li></span></a></span></h3><div class="collapse"><p>.
+     Two vMF clusters (p=3) with 10% trimming and restriction factor 50.
+     Points and 95% confidence caps are drawn.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+n1=150; n2=150; nnoise=30;
+mu1=[1 0 0]; kappa1=30;
+mu2=[0 1 0]; kappa2=15;
+normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
+simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
+Y = [simplevMF(mu1,kappa1,n1); simplevMF(mu2,kappa2,n2)];
+noisePts = normalize_rows(randn(nnoise,3));
+Y = [Y; noisePts];
+out = tclustvmf(Y,2,0.1,50,'plots',1,'plottype','both');</pre></div></div><a href='http://rosa.unipr.it/fsda/tclustvmf.html#Example_1'><img vspace="5" hspace="5" src="images/tclustvmf_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Effect of the equalweights option.</li></span></a></span></h3><div class="collapse"><p>.
+     With equalweights=true the mixing proportions are fixed to 1/k
+     rather than estimated from the data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+n1=150; n2=150;
+normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
+simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
+Y = [simplevMF([1 0 0],30,n1); simplevMF([0 1 0],15,n2)];
+out1 = tclustvmf(Y,2,0.05,20,'equalweights',false,'plots',0);
+out2 = tclustvmf(Y,2,0.05,20,'equalweights',true, 'plots',0);
+disp(out1.kappaopt); disp(out2.kappaopt);</pre></div></div><pre class="codeoutput">   33.9113
+   22.4799
+
+   22.4799
+   33.9113
+
+</pre>
+            </p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Effect of the mixt option: soft vs crisp assignment.</li></span></a></span></h3><div class="collapse"><p>     mixt=0 (default) is crisp CEM; mixt=2 uses the mixture log-density     for trimming and a soft M-step.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n1=150; n2=150;    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));    Y = [simplevMF([1 0 0],20,n1); simplevMF([0 1 0],10,n2)];    out0 = tclustvmf(Y,2,0.05,20,'mixt',0,'plots',0);    out2 = tclustvmf(Y,2,0.05,20,'mixt',2,'plots',0);    fprintf('mixt=0 obj=%.2f, mixt=2 obj=%.2f\n',out0.obj,out2.obj);</pre></div></div><pre class="codeoutput">mixt=0 obj=-173.35, mixt=2 obj=-173.26
+</pre>
+            </p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Effect of nsamp: number of random subsamples.</li></span></a></span></h3><div class="collapse"><p>     Increasing nsamp improves solution quality at the cost of runtime.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n1=200; n2=200;    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];    out = tclustvmf(Y,2,0.05,20,'nsamp',100,'plots',0);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Effect of refsteps and reftol: concentration step control.</li></span></a></span></h3><div class="collapse"><p>     Fewer steps speed up the loop; tighter tolerance improves convergence.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n1=150; n2=150;    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];    out = tclustvmf(Y,2,0.05,20,'refsteps',10,'reftol',1e-08,'plots',0);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> The normalize option: rows need not be unit-norm on input.</li></span></a></span></h3><div class="collapse"><p>     When normalize=true tclustvmf rescales each row to unit norm before     clustering, so raw (non-normalised) data can be passed directly.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n1=150; n2=150;    % Generate raw (un-normalised) directional data.    Y = [randn(n1,3)+repmat([3 0 0],n1,1); randn(n2,3)+repmat([0 3 0],n2,1)];    out = tclustvmf(Y,2,0.05,20,'normalize',true,'plots',0);</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> The newtonsteps option: Newton-Raphson steps for kappa estimation.</li></span></a></span></h3><div class="collapse"><p>     More steps give a more accurate inversion of the mean resultant     length into a concentration parameter (see kappaFS).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n1=150; n2=150;    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];    out = tclustvmf(Y,2,0.05,20,'newtonsteps',5,'plots',0);</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> The conflev option: confidence level for the group caps.</li></span></a></span></h3><div class="collapse"><p>     out.ellipse{j} contains the boundary of the conflev cap of group j.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n1=150; n2=150;    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];    out = tclustvmf(Y,2,0.05,20,'conflev',0.90,'plots',1,'plottype','ellipse');</pre></div></div><a href='http://rosa.unipr.it/fsda/tclustvmf.html#ExtraExample_6'><img vspace="5" hspace="5" src="images/tclustvmf_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> The ellipsenpts option: boundary resolution of the confidence caps.</li></span></a></span></h3><div class="collapse"><p>     More points give a smoother circle when p==3.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n1=150; n2=150;    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];    out = tclustvmf(Y,2,0.05,20,'ellipsenpts',200,'plots',0);    disp(size(out.ellipse{1}));</pre></div></div><pre class="codeoutput">   200     3
+
+</pre>
+            </p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> The markersize option: point size in scatter plots.</li></span></a></span></h3><div class="collapse"><p>     Increase it for small samples or high-resolution displays.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n1=100; n2=100;    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];    out = tclustvmf(Y,2,0.05,20,'plots',1,'markersize',20);</pre></div></div><a href='http://rosa.unipr.it/fsda/tclustvmf.html#ExtraExample_8'><img vspace="5" hspace="5" src="images/tclustvmf_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> The msg option: suppress or increase command-window output.</li></span></a></span></h3><div class="collapse"><p>     msg=0 runs silently; msg=1 (default) prints basic progress.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n1=150; n2=150;    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];    out = tclustvmf(Y,2,0.05,20,'msg',0,'plots',0);</pre></div></div></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> The Ysave option: store the (possibly normalised) data in out.</li></span></a></span></h3><div class="collapse"><p>Y.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n1=150; n2=150;    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];    out = tclustvmf(Y,2,0.05,20,'Ysave',true,'plots',0);    disp(size(out.Y));</pre></div></div><pre class="codeoutput">   300     3
+
+</pre>
+            </p></div></div><div id="Extraexample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> The plots option: draw the classification scatter.</li></span></a></span></h3><div class="collapse"><p>     plots=1 opens a 3D sphere figure with the final assignment.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n1=150; n2=150;    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];    out = tclustvmf(Y,2,0.05,20,'plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/tclustvmf.html#ExtraExample_11'><img vspace="5" hspace="5" src="images/tclustvmf_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> The plottype option: points, ellipse or both.</li></span></a></span></h3><div class="collapse"><p>     'ellipse' draws only the confidence caps; 'both' adds the data points.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n1=150; n2=150;    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];    out = tclustvmf(Y,2,0.05,20,'plots',1,'plottype','both');</pre></div></div><a href='http://rosa.unipr.it/fsda/tclustvmf.html#ExtraExample_12'><img vspace="5" hspace="5" src="images/tclustvmf_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> The plotdims option: viewing high-dimensional data in 3D.</li></span></a></span></h3><div class="collapse"><p>     High-dimensional case (p=50, e.g. embeddings). The clustering     itself needs nothing special; only plotting requires choosing a 3D     view via 'plotdims', which is not picked automatically.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(2)    p=50; n1=200; n2=200; nnoise=40;    mu1=zeros(1,p); mu1(1)=1;   kappa1=25;    mu2=zeros(1,p); mu2(2)=1;   kappa2=15;    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,p)/sqrt(kappa));    Y = [simplevMF(mu1,kappa1,n1); simplevMF(mu2,kappa2,n2)];    noisePts = normalize_rows(randn(nnoise,p));    Y = [Y; noisePts];    out = tclustvmf(Y,2,0.1,50,'plots',1,'plottype','both','plotdims',[1 2 3]);</pre></div></div><a href='http://rosa.unipr.it/fsda/tclustvmf.html#ExtraExample_13'><img vspace="5" hspace="5" src="images/tclustvmf_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_14" class="example_module expandableContent"><div id="ExtraExample_14"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> The nocheck option: skip the NaN/Inf input validation.</li></span></a></span></h3><div class="collapse"><p>     Useful for speed when the data are guaranteed to be clean.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n1=150; n2=150;    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];    out = tclustvmf(Y,2,0.05,20,'nocheck',1,'plots',0);</pre></div></div></p></div></div><div id="Extraexample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> The noise option: explicit uniform-background component.</li></span></a></span></h3><div class="collapse"><p>     An extra (k+1)-th component models uniform noise on the sphere,     used here with a small trimming level (2%). Most uniform     contamination is absorbed by the noise component (out.idx==k+1,     shown in gray) rather than by trimming (out.idx==0, red).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(3)    n1=150; n2=150; nnoise=60;    mu1=[1 0 0]; kappa1=30;    mu2=[0 1 0]; kappa2=15;    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));    Y = [simplevMF(mu1,kappa1,n1); simplevMF(mu2,kappa2,n2)];    noiseY = normalize_rows(randn(nnoise,3));    Y = [Y; noiseY];    out = tclustvmf(Y,2,0.02,50,'noise',true,'plots',1,'plottype','both');    fprintf('Estimated noise proportion: %.1f%%\n',100*out.noiseprop);</pre></div></div><pre class="codeoutput">Estimated noise proportion: 12.2%
+</pre>
+            <a href='http://rosa.unipr.it/fsda/tclustvmf.html#ExtraExample_15'><img vspace="5" hspace="5" src="images/tclustvmf_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n-by-p matrix of directional data:</p> <p>
+               each row of Y must be a unit vector (norm 1). Use option
+               'normalize' to have tclustvmf rescale the rows for you;</p><p>
+               otherwise an error is thrown if rows are not unit-norm.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; Number of groups. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Positive integer specifying
+               how many vMF clusters to fit.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alpha" class="clearfix"> </div> <h3 id="input_argument_alpha" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alpha</code> &#8212; Global trimming level. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>If 0&lt;=alpha&lt;1 clustering
+               is based on h=fix(n*(1-alpha)) observations; if alpha is
+               an integer &gt;=1 then h=n-floor(alpha). alpha=0 means no
+               trimming.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restrfactor" class="clearfix"> </div> <h3 id="input_argument_restrfactor" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restrfactor</code> &#8212; Restriction factor on the concentration parameters. </span>  </a><span class="example_desc">Positive scalar, at least 1.</span></span></h3> <div class="collapse"> <p><p>Constrains the ratio
+               max(kappa_j)/min(kappa_j) across the k groups.</p> <p>
+               restrfactor=1 forces a common kappa (trimmed spherical
+               k-means); larger values allow groups of increasingly
+               different concentration. See <a href="restrKappaFS.html">restrKappaFS</a>.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'equalweights',true
+</code>,<code> 'mixt',2
+</code>,<code> 'nsamp',500
+</code>,<code> 'refsteps',10
+</code>,<code> 'reftol',1e-08
+</code>,<code> 'normalize',true
+</code>,<code> 'newtonsteps',5
+</code>,<code> 'conflev',0.90
+</code>,<code> 'ellipsenpts',200
+</code>,<code> 'markersize',20
+</code>,<code> 'msg',0
+</code>,<code> 'Ysave',true
+</code>,<code> 'plots',1
+</code>,<code> 'plottype','both'
+</code>,<code> 'plotdims',[3 7 42]
+</code>,<code> 'nocheck',1
+</code>,<code> 'noise',true
+</code></code></span></div><div class="expandableContent"><div id="inputarg_equalweights" class="clearfix"></div><h3 id="input_argument_namevalue_equalweights" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>equalweights</code> &#8212;Cluster weights in the concentration/assignment
+               steps and in the log-likelihood.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>If false
+               (default) mixing proportions pi_j=n_j/h are estimated
+               and enter the discriminant, exactly as in tclust. If
+               true all pi_j are fixed to 1/k (or 1/kn with noise),
+               reducing to cosine-distance assignment within each group.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'equalweights',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_mixt" class="clearfix"></div><h3 id="input_argument_namevalue_mixt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mixt</code> &#8212;Mixture modelling or crisp assignment.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The
+               semantics mirror tclust exactly. mixt=0 (default) is the
+               crisp classification likelihood, i.e. the CEM algorithm.</p> <p>
+               mixt=1 uses crisp trimming with a posterior-probability-
+               weighted M-step (a hybrid CEM/EM). mixt=2 is the fully
+               soft trimming criterion based on the mixture log-density,
+               i.e. the EM algorithm. The choice governs which
+               information criterion is returned: CLACLA for mixt=0,
+               MIXMIX and MIXCLA for mixt&gt;0 (see Cerioli et al., 2017).</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'mixt',2
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples to extract.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default is
+               min(300, nchoosek(n,k*(p+1))). Each subsample draws
+               k*(p+1) observations (p+1 per cluster), enough to
+               initialise a non-degenerate vMF estimate (direction from
+               the resultant vector, kappa from the mean resultant
+               length via kappaFS). Set nsamp=0 to enumerate all
+               subsets.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',500
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_refsteps" class="clearfix"></div><h3 id="input_argument_namevalue_refsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refsteps</code> &#8212;Number of concentration steps (CEM/EM iterations) run
+               on each subsample before comparing objective values.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default 15.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refsteps',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftol" class="clearfix"></div><h3 id="input_argument_namevalue_reftol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftol</code> &#8212;Convergence tolerance for the concentration steps.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The loop stops when the relative change in assignments
+               (mixt=0) or in posterior probabilities (mixt&gt;0) falls
+               below this threshold. Default 1e-06.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftol',1e-08
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_normalize" class="clearfix"></div><h3 id="input_argument_namevalue_normalize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>normalize</code> &#8212;Rescale each row of Y to unit norm before clustering.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>Default false (an error is thrown instead if
+               rows are not already unit-norm). Set to true when passing
+               raw embedding vectors or other non-normalised directional
+               data.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'normalize',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_newtonsteps" class="clearfix"></div><h3 id="input_argument_namevalue_newtonsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>newtonsteps</code> &#8212;Number of Newton-Raphson steps used by kappaFS to invert
+               the mean resultant length r into the concentration
+               parameter kappa (solving A_p(kappa)=r, where A_p is the
+               ratio of Bessel functions I_{p/2}(kappa)/I_{p/2-1}(kappa)).</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default 2 (see kappaFS for accuracy figures; 2
+               steps give about 1e-6 relative error for most r in (0,1)).</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'newtonsteps',5
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence level for the group caps returned in
+               out.</span></a><span class="example_desc">ellipse and, when plots=1, drawn as boundary circles.</span></span></h3><div class="collapse">	<p><p>Scalar in (0,1). The cap is the region on S^(p-1) where
+               the vMF density exceeds its (1-conflev) quantile, i.e.</p> <p>
+               all directions within an angular radius theta_j of mu_j,
+               where theta_j = arccos(1 + log(1-conflev)/kappa_j).</p> <p>
+               Default 0.95. See <a href="vMFcap.html">vMFcap</a>.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.90
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ellipsenpts" class="clearfix"></div><h3 id="input_argument_namevalue_ellipsenpts" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ellipsenpts</code> &#8212;Number of points used to represent each confidence cap
+               boundary in out.</span></a><span class="example_desc">ellipse.</span></span></h3><div class="collapse">	<p><p>Scalar. For p==3 these are
+               evenly spaced around the exact boundary circle; for p&gt;3
+               they are a random sample of the boundary (p-2)-sphere
+               (see vMFcap.m). Default 100.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ellipsenpts',200
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_markersize" class="clearfix"></div><h3 id="input_argument_namevalue_markersize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>markersize</code> &#8212;Marker size used for the scatter points in the 'points'
+               and 'both' plots.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default 12.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'markersize',20
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output displayed during the search.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default 1 (prints basic progress). Set to 0 to run
+               silently, or to 2 for more detail.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',0
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Ysave" class="clearfix"></div><h3 id="input_argument_namevalue_Ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ysave</code> &#8212;Store the (possibly row-normalised) data matrix in the
+               output.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>Default false. If true, the matrix
+               used internally (after any normalisation) is returned as
+               out.Y.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Ysave',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot the resulting classification on the unit sphere.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default 0. If plots=1, produces a 3D scatter
+               with points and/or group confidence caps (see plottype),
+               colored by final assignment (trimmed units in red, noise
+               units in gray when noise=true). For p==3 this is the
+               native space; for p~=3 a 3D view must be supplied via
+               plotdims.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plottype" class="clearfix"></div><h3 id="input_argument_namevalue_plottype" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plottype</code> &#8212;What to draw when plots=1.</span></a><span class="example_desc">string, one of 'points'               (default), 'ellipse' (confidence caps only, trimmed units               omitted since they carry no group), | 'both'.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plottype','both'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char|string</code></p></div></div><div class="expandableContent"><div id="inputarg_plotdims" class="clearfix"></div><h3 id="input_argument_namevalue_plotdims" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plotdims</code> &#8212;3D view of Y used for plotting when p~=3.</span></a><span class="example_desc">either a               vector of 3 distinct coordinate indices in 1:p (a simple               selection of original variables), | a p-by-3 matrix               (any linear projection, e.</span></span></h3><div class="collapse">	<p><p>g. leading PCA loadings) used
+               as Y*plotdims. Required if plots=1 and p~=3: which 3
+               coordinates or which projection best represents the
+               high-dimensional sphere is left to the user. When a
+               projection is used, confidence caps are shown as an
+               approximate projected point cloud (see <a href="vMFcap.html">vMFcap</a> and
+               "More About" below).</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plotdims',[3 7 42]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Skip the automated NaN/Inf check on Y.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default 0.</p> <p>
+               Set to 1 for speed when the data are guaranteed clean.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_noise" class="clearfix"></div><h3 id="input_argument_namevalue_noise" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>noise</code> &#8212;Add an extra, (k+1)-th mixture component modelling
+               uniform noise on the hypersphere alongside the k vMF
+               clusters.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>Default false. The uniform density on
+               S^(p-1) is parameter-free and equals 1/surface_area(S^(p-1))
+               = C_p(0) everywhere (the kappa=0 special case of the vMF
+               density). Its mixing proportion pi_{k+1} is estimated
+               jointly with the k real cluster proportions. Units
+               assigned to this component get out.idx=k+1, distinct from
+               a real cluster (1,...,k) and a trimmed unit (0). The
+               estimated mixing proportion is in out.noiseprop. See
+               "More About" for the motivation and the relationship with
+               Banfield and Raftery (1993).</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'noise',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>A structure containing the following fields:</p> <p>
+
+ </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>idx</code></td><td><p>n-by-1 vector of cluster assignments. Trimmed units
+                    have idx=0. If noise=true, units assigned to the
+                    uniform background component have idx=k+1 (distinct
+                    from both a real cluster and a trimmed unit).</p></td></tr><tr valign="top"><td><code>muopt</code></td><td><p>k-by-p matrix of estimated mean directions; each
+                    row is a unit vector.</p></td></tr><tr valign="top"><td><code>kappaopt</code></td><td><p>k-by-1 vector of estimated (restricted) concentration
+                    parameters.</p></td></tr><tr valign="top"><td><code>postprob</code></td><td><p><p>n-by-kn matrix of posterior probabilities, where
+                    kn=k when noise=false and kn=k+1 when noise=true.</p> <p>
+                    Column j contains P(z_i=j|y_i) for j=1,...,kn.</p> <p>
+                    The last column (when noise=true) gives the posterior
+                    probability of belonging to the uniform background.</p><p>
+                    Trimmed units have postprob set to zero.</p></p></td></tr><tr valign="top"><td><code>ellipse</code></td><td><p>k-by-1 cell array; out.ellipse{j} is an
+                    ellipsenpts-by-p matrix of points on the boundary of
+                    the conflev confidence cap of group j in the native
+                    p-dimensional space (see vMFcap.m): an exact circle
+                    if p==3, a Monte Carlo sample of the boundary
+                    (p-2)-sphere otherwise. Project via plotdims before
+                    superimposing on a 3D view of Y.</p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p>confidence level used for out.ellipse.</p></td></tr><tr valign="top"><td><code>siz</code></td><td><p>matrix as returned by tabulate(out.idx): group id,
+                    count, percentage. Rows for the noise group (k+1)
+                    and trimmed units (0) appear when present.</p></td></tr><tr valign="top"><td><code>h</code></td><td><p>number of untrimmed observations used to compute the
+                    final parameter estimates.</p></td></tr><tr valign="top"><td><code>obj</code></td><td><p>value of the maximized trimmed log-likelihood at the
+                    best solution: classification log-likelihood for
+                    mixt=0, mixture log-likelihood for mixt=2.</p></td></tr><tr valign="top"><td><code>NlogL</code></td><td><p>-2 times the classification log-likelihood of the h
+                    untrimmed units at the final estimates, computed as
+                    -2*sum_i max_j [log(pi_j)+log f(y_i;mu_j,kappa_j)]
+                    over i in the top-h retained units. This equals
+                    2*NlogL in the CLACLA and MIXCLA formulae. Available
+                    for all values of mixt.</p></td></tr><tr valign="top"><td><code>NlogLmixt</code></td><td><p>(only if mixt&gt;0) -2 times the mixture log-likelihood
+                    of the h assigned units at the final estimates,
+                    computed as -2*sum_i log(sum_j pi_j*f(y_i;mu_j,kappa_j))
+                    over the h units retained by the mixture trimming
+                    criterion. This is the numerator of out.MIXMIX.</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p>indices of the elemental subset which gave rise to
+                    the best solution (the one maximising out.obj across
+                    all nselected subsamples).</p></td></tr><tr valign="top"><td><code>fullsol</code></td><td><p>nselected-by-1 vector of the objective function
+                    value found at the end of each subsample's
+                    concentration steps.</p></td></tr><tr valign="top"><td><code>notconver</code></td><td><p>fraction of subsamples for which the concentration
+                    steps did not converge within refsteps iterations
+                    (mudiff &gt; reftol at the last step).</p></td></tr><tr valign="top"><td><code>equalweights</code></td><td><p>logical, as the input option.</p></td></tr><tr valign="top"><td><code>mixt</code></td><td><p>scalar, as the input option.</p></td></tr><tr valign="top"><td><code>noise</code></td><td><p>logical, as the input option.</p></td></tr><tr valign="top"><td><code>noiseprop</code></td><td><p>(only if noise=true) estimated mixing proportion
+                    pi_{k+1} of the uniform background component among
+                    the h retained units, taken from the M-step of the
+                    best subsample solution. This is a parametric
+                    estimate (the EM mixing proportion pi_{k+1} = n_{k+1}/h
+                    at convergence of the best subsample) and may differ
+                    from the empirical count sum(out.idx==k+1)/h from
+                    the final hard assignment.</p></td></tr><tr valign="top"><td><code>CLACLA</code></td><td><p><p>(only if mixt==0) classification-likelihood BIC:</p> <p>
+                    out.NlogL + nParam*log(h),
+                    where nParam = k*p + (k-1) [or k*p + k with noise]
+                    and the BIC penalty uses log(h) rather than log(n),
+                    following the FSDA convention for trimmed estimators
+                    (see Cerioli et al., 2017, and "More About" below).</p></p></td></tr><tr valign="top"><td><code>MIXMIX</code></td><td><p><p>(only if mixt&gt;0) mixture-likelihood BIC:</p> <p>
+                    out.NlogLmixt + nParam*log(h). Uses the mixture
+                    log-likelihood (numerator) and mixture-based
+                    parameter estimates. Analogous to tclust's "New BIC"
+                    (Cerioli et al., 2017).</p></p></td></tr><tr valign="top"><td><code>MIXCLA</code></td><td><p>(only if mixt&gt;0) classification-likelihood BIC at
+                    mixture estimates: out.NlogL + nParam*log(h). Uses
+                    the classification log-likelihood with the
+                    mixture-based parameter estimates. Analogous to
+                    tclust's "New ICL" (Cerioli et al., 2017).</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>original (or row-normalised) data matrix, stored
+                    only if Ysave is true.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p> CONCENTRATION STEPS (CEM/EM algorithm on the hypersphere)
+
+ The algorithm alternates four steps for each random subsample:</p> <p>
+  (i)  E-step: compute log-discriminants
+         d_{ij} = log(pi_j) + log C_p(kappa_j) + kappa_j*(mu_j'*y_i)
+       for each unit i and group j (and the uniform noise term if
+       noise=true); pi_j are the current mixing proportions.</p> <p>
+  (ii) Trimming: retain the h units with the largest d_{ij} value
+       (or largest log-mixture-density for mixt=2).</p> <p>
+  (iii)M-step: re-estimate mu_j as the direction of the resultant
+       vector R_j = sum_{i in group j} y_i, and kappa_j from the mean
+       resultant length r_j = ||R_j||/n_j via kappaFS.</p> <p>
+  (iv) Restriction: apply restrKappaFS to enforce
+       max(kappa_j)/min(kappa_j) &lt;= restrfactor.</p> <p>
+
+ PARAMETER COUNT AND INFORMATION CRITERIA
+
+ A unit vector on S^(p-1) has p-1 free parameters (one constraint:</p> <p>
+ ||mu||=1 from p Cartesian coordinates). The concentration parameter
+ kappa_j adds 1 more. The uniform noise component is parameter-free
+ (kappa=0 is fixed; its density is determined by the geometry of the
+ sphere alone). With kn total components and estimated mixing proportions,
+ there are kn-1 free mixing-proportion parameters. The total parameter
+ count is therefore:</p> <p>
+
+   nParam = k*(p-1+1)  +  (kn-1)   [equalweights=false]
+          = k*p        +  (kn-1)
+
+ where kn=k (noise=false) or kn=k+1 (noise=true).</p> <p>
+
+ The three information criteria returned (Cerioli, Garcia-Escudero,
+ Mayo-Iscar and Riani, 2017, JCGS) are:</p> <p>
+
+   CLACLA = -2*CLA_CLA + nParam*log(h)   [mixt=0]
+   MIXMIX = -2*MIX_MIX + nParam*log(h)   [mixt&gt;0]
+   MIXCLA = -2*MIX_CLA + nParam*log(h)   [mixt&gt;0]
+
+ where CLA_CLA is the classification log-likelihood at CEM estimates,
+ MIX_MIX is the mixture log-likelihood at EM estimates, and MIX_CLA is
+ the classification log-likelihood evaluated at EM estimates. CLACLA
+ and MIXMIX are BIC-type criteria; MIXCLA is an ICL-type criterion.</p> <p>
+ NOTE: following the FSDA convention for trimmed estimators, the BIC
+ penalty uses log(h) instead of log(n). This differs from the
+ original CGMR 2017 paper (which uses log(n)) but is consistent with
+ all FSDA functions built on tclust.</p> <p>
+
+ RESTRICTION ON CONCENTRATION PARAMETERS
+
+ tclust restricts the eigenvalues of Sigma_j via <a href="restreigen.html">restreigen</a>, which
+ minimises a Gaussian log-likelihood-consistent weighted loss to find,
+ analytically, the optimal common floor m. That formula is tied to the
+ Gaussian likelihood and cannot be applied to kappa_j directly.</p> <p>
+ <a href="restrKappaFS.html">restrKappaFS</a> instead uses the vMF-consistent loss
+   L(kappa) = -logC_p(kappa) - kappa*r_j
+ (the per-group vMF log-likelihood as a function of kappa for fixed r_j),
+ which is convex in kappa for the same reason the Gaussian loss is
+ convex in the eigenvalue. For fixed m, the constrained optimum of each
+ kappa_j in [m, restrfactor*m] is again the unconstrained estimate
+ clipped to that interval; the optimal m is found by 1-D minimisation
+ (Bessel function involved, no closed form). See <a href="restrKappaFS.html">restrKappaFS</a>.</p> <p>
+
+ NOISE COMPONENT AND RELATIONSHIP WITH BANFIELD-RAFTERY (1993)
+
+ For Gaussian mixtures, Banfield and Raftery (1993) proposed a uniform
+ noise component over the convex hull of the data. That proposal has two
+ known problems (Hennig 2004; Coretto and Hennig): (a) the convex-hull
+ density depends on the data itself, so the model is not a fixed
+ statistical model and the MLE lacks standard properties; (b) it is not
+ breakdown-robust. On S^(p-1) both issues vanish automatically: the
+ sphere is compact, the uniform distribution on it is a fixed proper
+ density (C_p(0) = 1/omega_{p-1}, where omega_{p-1} is the surface area
+ of S^(p-1)) that does not depend on the data at all, and is exactly the
+ kappa=0 special case of the vMF density already in use. No data-dependent
+ convex hull needs to be defined. Combined with impartial trimming, the
+ noise component and the trimming mechanism play distinct roles: trimming
+ absorbs an arbitrary alpha-fraction of contamination of any shape; the
+ noise component explicitly models contamination that is itself uniformly
+ spread over the sphere, without spending trimming budget on it.</p> <p>
+
+ HIGH-DIMENSIONAL PLOTTING (p~=3)
+
+ The clustering itself is entirely dimension-agnostic, but visualising
+ S^(p-1) in 3D is not. tclustvmf requires an explicit 'plotdims' (3
+ coordinate indices or a p-by-3 projection matrix) rather than picking
+ a view automatically; which 3 coordinates or which projection is most
+ informative is left to the user. When a linear projection is used,
+ points appear at their projected (generally sub-unit-norm) coordinates
+ and confidence caps are shown as approximate projected point clouds
+ rather than exact circles (see vMFcap.m).</p> <p>
+
+ References:</p> <p>
+
+   Banfield, J.D. and Raftery, A.E. (1993), Model-Based Gaussian and
+   Non-Gaussian Clustering, Biometrics, Vol. 49, 803-821.</p> <p>
+
+   Banerjee, A., Dhillon, I.S., Ghosh, J. and Sra, S. (2005),
+   Clustering on the Unit Hypersphere using von Mises-Fisher
+   Distributions, Journal of Machine Learning Research, Vol. 6,
+   pp. 1345-1382.</p> <p>
+
+   Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani, M.</p> <p>
+   (2017), Finding the Number of Groups in Model-Based Clustering via
+   Constrained Likelihoods, Journal of Computational and Graphical
+   Statistics, Vol. 27, pp. 404-416. doi:10.1080/10618600.2017.1390469
+   (source of CLACLA/MIXMIX/MIXCLA and their relationship to BIC/ICL)
+
+   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A.</p> <p>
+   (2008), A General Trimming Approach to Robust Cluster Analysis,
+   Annals of Statistics, Vol. 36, pp. 1324-1345.</p> <p>
+   (tclust: the Euclidean parent of tclustvmf)
+
+   Hennig, C. (2004), Breakdown Points for Maximum Likelihood Estimators
+   of Location-Scale Mixtures, Annals of Statistics, Vol. 32, 1313-1340.</p><p>
+   (limitations of the Banfield-Raftery noise component)
+
+   Mardia, K.V. and Jupp, P.E. (2000), Directional Statistics, Wiley,
+   Chichester. (vMF distribution, mean resultant length, kappa estimation)
+
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Banfield, J.D. and Raftery, A.E. (1993), Model-Based Gaussian and
+   Non-Gaussian Clustering, Biometrics, Vol. 49, 803-821.</p></div><div><p>Banerjee, A., Dhillon, I.S., Ghosh, J. and Sra, S. (2005),
+   Clustering on the Unit Hypersphere using von Mises-Fisher
+   Distributions, Journal of Machine Learning Research, Vol. 6,
+   pp. 1345-1382.</p></div><div><p>(2017), Finding the Number of Groups in Model-Based Clustering via
+   Constrained Likelihoods, Journal of Computational and Graphical
+   Statistics, Vol. 27, pp. 404-416. doi:10.1080/10618600.2017.1390469
+   (source of CLACLA/MIXMIX/MIXCLA and their relationship to BIC/ICL)</p></div><div><p><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A.</p> <p>
+   (2008), A General Trimming Approach to Robust Cluster Analysis,
+   Annals of Statistics, Vol. 36, pp. 1324-1345.</p><p>
+   (tclust: the Euclidean parent of tclustvmf)</p></p></div><div><p><p>Hennig, C. (2004), Breakdown Points for Maximum Likelihood Estimators
+   of Location-Scale Mixtures, Annals of Statistics, Vol. 32, 1313-1340.</p> <p>
+   (limitations of the Banfield-Raftery noise component)</p></p></div><div><p>Mardia, K.V. and Jupp, P.E. (2000), Directional Statistics, Wiley,
+   Chichester. (vMF distribution, mean resultant length, kappa estimation)</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="logvMFpdfFS.html" itemprop="url"><span itemprop="name"><code>logvMFpdfFS</code></span></a></span> | <span itemprop="seealso"><a href="kappaFS.html" itemprop="url"><span itemprop="name"><code>kappaFS</code></span></a></span> | <span itemprop="seealso"><a href="restrKappaFS.html" itemprop="url"><span itemprop="name"><code>restrKappaFS</code></span></a></span> | <span itemprop="seealso"><a href="vMFlogC.html" itemprop="url"><span itemprop="name"><code>vMFlogC</code></span></a></span> | <span itemprop="seealso"><a href="vMFcap.html" itemprop="url"><span itemprop="name"><code>vMFcap</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

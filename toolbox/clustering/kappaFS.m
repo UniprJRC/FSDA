@@ -1,89 +1,164 @@
 function kappa = kappaFS(r, p, newtonsteps)
 %kappaFS estimates the von Mises-Fisher concentration parameter from the mean resultant length
 %
-%<a href="matlab: docsearchFS('kappaFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('kappaFS')">Link to the help page for this function</a>
 %
 %   kappaFS inverts the equation
 %
-%       Ap(kappa) = I_(p/2)(kappa) / I_(p/2-1)(kappa) = r
+%       A_p(kappa) = I_{p/2}(kappa) / I_{p/2-1}(kappa) = r
 %
-%   for kappa, where I_nu is the modified Bessel function of the first
-%   kind of order nu, r is the (weighted) mean resultant length of a
-%   group of unit vectors, and p is the dimension of the ambient space
-%   (data live on S^(p-1)). This equation has no closed-form solution
-%   because it requires inverting a ratio of Bessel functions; kappaFS
-%   uses the Banerjee, Dhillon, Ghosh and Sra (2005) closed-form
-%   approximation as a starting value, refined by a small number of
-%   Newton-Raphson iterations on Ap (Sra, 2012), which brings the
-%   relative error down to essentially machine precision for the range
-%   of p and kappa relevant in clustering applications.
+%   for kappa>=0, where I_nu is the modified Bessel function of the first
+%   kind of order nu, r is the (weighted) mean resultant length of a group
+%   of unit vectors in R^p, and p is the ambient dimension (data live on
+%   S^(p-1)). A_p is strictly increasing on [0,inf) from 0 to 1, so the
+%   equation has a unique solution for every r in [0,1). The function
+%   uses the Banerjee et al. (2005) closed-form approximation as the
+%   starting value and refines it with Newton-Raphson iterations on A_p
+%   (Sra, 2012), bringing the relative error to below 1e-5 uniformly for
+%   p in [2,50] and kappa in [0,1000] with just two Newton steps.
 %
 %   This is the vMF-mixture counterpart of the covariance-matrix update
-%   inside the concentration steps of tclust: exactly as tclust
-%   recomputes sigmaini(:,:,j) from the current group of untrimmed units,
-%   tclustmvmf recomputes kappaini(j) by calling kappaFS on the mean
-%   resultant length of the units currently assigned to group j.
+%   inside the concentration steps of tclust: exactly as tclust recomputes
+%   sigmaini(:,:,j) from the current group of untrimmed units, tclustvmf
+%   recomputes kappaini(j) by calling kappaFS on the mean resultant length
+%   of the units currently assigned to group j.
 %
 %  Required input arguments:
 %
 %            r: Mean resultant length(s). Vector or scalar. Values in
-%               [0,1). Typically r = norm(sum(Y(group,:)))/n_group for one
-%               or more groups (kappaFS is fully vectorized over r).
+%               [0,1); each entry is typically norm(sum(Y_j,1))/n_j for
+%               one group of n_j unit vectors (the row-sum of the group
+%               matrix normalised by its size). kappaFS is fully
+%               vectorized over r, so all groups can be processed at once.
 %            p: Dimension of the ambient space. Scalar. Data lie on
-%               S^(p-1), i.e. Y has p columns.
+%               S^(p-1), so Y has p columns. For the circular case p=2;
+%               for the spherical case p=3.
+%  newtonsteps: Number of Newton-Raphson refinement steps. Scalar.
+%               Default 2. With newtonsteps=0 kappaFS returns the raw
+%               Banerjee et al. (2005) approximation. Each additional
+%               step roughly doubles the number of correct significant
+%               digits; 2 steps give a relative error below 1e-5
+%               uniformly for p in [2,50] and kappa in [0,1000].
 %
 %  Optional input arguments:
 %
-%  newtonsteps: Number of Newton-Raphson refinement steps. Scalar.
-%               The default value is 2, which was found (see the
-%               examples below) to bring the relative error to below
-%               1e-05 uniformly for p in [2,50] and kappa in [0,1000].
-%               newtonsteps=0 returns the raw Banerjee et al. (2005)
-%               approximation.
-%                 Example - 3
-%                 Data Types - double
+% (none beyond what is listed above; all three arguments are positional)
 %
 %  Output:
 %
 %        kappa : Estimated concentration parameter(s). Vector or scalar,
-%                same size as r.
+%                same size as r. All entries are non-negative and finite:
+%                values of r clipped to 1-1e-10 (see More About) are
+%                returned as large but finite kappa values.
 %
 % More About:
 %
-% Values of r very close to 1 (near-degenerate groups, e.g. very small
-% or near-identical-direction groups) are clipped to 1-1e-10 before
-% inversion. This keeps kappa large but finite rather than Inf, which is
-% required for the subsequent eigenvalue-ratio-style restriction step
-% (restreigen/restreigeneasy, reused unmodified from tclust on the 1-by-k
-% matrix of kappa values) to operate correctly.
+% APPROXIMATION FORMULA (Banerjee et al., 2005; Sra, 2012)
+%
+% The starting value is the closed-form approximation:
+%
+%   kappa_0 = r*(p - r^2) / (1 - r^2)
+%
+% proposed by Banerjee et al. (2005) and analysed by Sra (2012, eq. 21).
+% For r->0 (uniform group) kappa_0->0; for r->1 (degenerate group)
+% kappa_0->inf.
+%
+% NEWTON-RAPHSON REFINEMENT (Sra, 2012)
+%
+% Each Newton step updates kappa using
+%
+%   kappa <- kappa - (A_p(kappa) - r) / A_p'(kappa)
+%
+% where the derivative is (Watson 1944; Sra 2012, eq. 3)
+%
+%   A_p'(kappa) = 1 - A_p(kappa)^2 - ((p-1)/kappa)*A_p(kappa).
+%
+% Both A_p and its derivative are evaluated using scaled Bessel functions
+% (besseli with the 'exponentially scaled' flag) so that overflow does not
+% occur for large kappa; the scaling factors cancel in the ratio.
+% A safeguard reverts any Newton step that produces a non-positive or
+% non-finite result back to the Banerjee approximation for that element.
+%
+% CLIPPING OF r NEAR 1
+%
+% Values of r very close to 1 (near-degenerate groups) are clipped to
+% 1-1e-10 before inversion. This keeps kappa large but finite, which is
+% required for the subsequent concentration-parameter restriction step
+% restrKappaFS to operate correctly (a kappa of Inf would make the ratio
+% max/min kappa undefined and the numerical minimisation inside
+% restrKappaFS fail).
 %
 % References:
 %
 %   Banerjee, A., Dhillon, I.S., Ghosh, J. and Sra, S. (2005),
-%   "Clustering on the Unit Hypersphere using von Mises-Fisher
-%   Distributions", Journal of Machine Learning Research, Vol. 6.
-%   Sra, S. (2012), "A short note on parameter approximation for von
-%   Mises-Fisher distributions, and a fast implementation of I_s(x)",
-%   Computational Statistics, Vol. 27.
+%   Clustering on the Unit Hypersphere using von Mises-Fisher
+%   Distributions, Journal of Machine Learning Research, Vol. 6,
+%   pp. 1345-1382.
+%
+%   Sra, S. (2012), A short note on parameter approximation for von
+%   Mises-Fisher distributions: and a fast implementation of I_s(x),
+%   Computational Statistics, Vol. 27, pp. 177-190.
+%   doi:10.1007/s00180-011-0232-x
+%
+%   Watson, G.S. (1983), Statistics on Spheres, Wiley, New York.
+%   (derivative of A_p; original result attributed to Watson 1944)
+%
+% See also: tclustvmf, restrKappaFS, vMFlogC
 %
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('kappaFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('kappaFS')">Link to the help page for this function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
-
+%
 % Examples:
-
+%
 %{
-    % Recovery check: for known kappa, r=Ap(kappa); verify kappaFS(r,p) ~ kappa.
+    % Recovery check: for known kappa, verify that kappaFS inverts A_p correctly.
+    % For p=5 and several values of kappa, compute r=A_p(kappa) and check
+    % that kappaFS(r,p) recovers kappa to within 1e-5 relative error.
     p = 5;
     nu = p/2 - 1;
-    Ap = @(k) besseli(nu+1,k,1)./besseli(nu,k,1); % scaling cancels in the ratio
+    Ap = @(k) besseli(nu+1,k,1)./besseli(nu,k,1); % scaled ratio: scaling cancels
     ktrue = [0.5 3 10 50 200];
     r = Ap(ktrue);
     khat = kappaFS(r,p);
-    disp([ktrue; khat])
+    relErr = abs(khat - ktrue)./ktrue;
+    disp(array2table([ktrue; khat; relErr],'RowNames',{'kTrue','kHat','relErr'}))
+%}
+%
+%{
+    % Effect of newtonsteps: accuracy vs speed trade-off.
+    % With newtonsteps=0 the raw Banerjee approximation is returned.
+    % Each additional step roughly doubles the significant digits.
+    p = 3;
+    nu = p/2 - 1;
+    Ap = @(k) besseli(nu+1,k,1)./besseli(nu,k,1);
+    ktrue = logspace(-1, 3, 50);    % 50 values from 0.1 to 1000
+    r = Ap(ktrue);
+    for ns = 0:3
+        khat = kappaFS(r, p, ns);
+        maxRelErr = max(abs(khat - ktrue)./ktrue);
+        fprintf('newtonsteps=%d: max relative error = %.2e\n', ns, maxRelErr);
+    end
+%}
+%
+%{
+    % Vectorized use across groups inside a clustering loop.
+    % kappaFS accepts a vector of mean resultant lengths r (one per group)
+    % and returns a vector of kappa estimates in one call.
+    rng(1)
+    p = 3;
+    n1 = 100; n2 = 150; n3 = 80;
+    normalize_rows = @(X) X ./ vecnorm(X,2,2);
+    Y1 = normalize_rows(randn(n1,p) + [5 0 0]);
+    Y2 = normalize_rows(randn(n2,p) + [0 5 0]);
+    Y3 = normalize_rows(randn(n3,p) + [0 0 5]);
+    R = [norm(sum(Y1))/n1, norm(sum(Y2))/n2, norm(sum(Y3))/n3];
+    kappa = kappaFS(R, p);
+    fprintf('Group mean resultant lengths: %.3f %.3f %.3f\n', R);
+    fprintf('Estimated kappa:              %.2f  %.2f  %.2f\n', kappa);
 %}
 
 %% Beginning of code
