@@ -1,0 +1,296 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>benford</title><meta content="refpage" name="chunktype"><meta content="function:benford" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="Benford-law analysis for leading digits, first-two digits, and mantiss." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/x-mathjax-config">MathJax.Hub.Config({jax: ["input/TeX", "output/HTML-CSS"],extensions: ["tex2jax.js", "TeX/AMSeqnum.js"],tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},TeX: {extensions: ["AMSsymbols.js"],equationNumbers: { autoNumber: "AMS" }}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">benford</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">A clean Benford-like sample, with the default tests and plots.</a></li><li><a class="intrnllnk" href="#Example_2">Selecting digit groups, significance level and plots.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Running silently and using the output structure.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">A sample contaminated with round amounts.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Is the Benford hypothesis plausible at all? Order of magnitude.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Mantissa-based tests.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">Controlling the Monte Carlo accuracy.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">Benford-savvy tests: only the first digit mimics Benford's law.</a></li><li><a class="intrnllnk" href="#ExtraExample_7">Lacunary single-observation test: flagging individual observations.</a></li><li><a class="intrnllnk" href="#ExtraExample_8">All the tests and all the plots on a clean sample.</a></li><li><a class="intrnllnk" href="#ExtraExample_9">Redrawing selected plots from a stored output.</a></li><li><a class="intrnllnk" href="#ExtraExample_10">Cross-checking the digit extraction with independent methods.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_x">x</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_Digits">Digits</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Plots">Plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Tests">Tests</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Alpha">Alpha</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_B">B</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_LacunaryM">LacunaryM</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_PVTS">PVTS</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Display">Display</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#Acknowledgements">Acknowledgements</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">benford</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">Benford-law analysis for leading digits, first-two digits, and mantiss</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=benford(x)</code><span class="syntax_example"><a class="intrnllnk" href="benford.html#Example_1">example</a></span></li><li><code class="synopsis">out=benford(x,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="benford.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>benford analyzes a positive numeric sample according to Benford's law.</p> <p>
+   The function extracts the first digit, second digit, first two digits,
+   and mantissa, compares the observed frequencies with the Benford
+   theoretical frequencies, and returns chi-square, two-stage, and
+   mantissa-based test results. It can also produce comparison plots for
+   the selected digit groups. Before the analysis, invalid observations
+   are removed and the digit extraction is checked for consistency using
+   independent methods.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="benford.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=benford(<a class="intrnllnk" href="#inputarg_x"><code>x</code></a>)</code></span>A clean Benford-like sample, with the default tests and plots.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="benford.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=benford(<a class="intrnllnk" href="#inputarg_x"><code>x</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Selecting digit groups, significance level and plots.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> A clean Benford-like sample, with the default tests and plots.</li></span></a></span></h3><div class="collapse"><p>.
+     The amounts are log-uniform over three orders of magnitude, hence
+     exactly Benford. By default the chi-square and two-stage tests are
+     run and the first and second digit plots are drawn. None of the
+     tests should reject.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+V = 10.^(3*rand(2000,1));
+out = benford(V);</pre></div></div><pre class="codeoutput">Chi2 first digit  = 6.0818, p = 0.6381, reject = 0
+Chi2 second digit = 5.5021, p = 0.7885, reject = 0
+Chi2 first 2 digs = 81.9536, p = 0.6888, reject = 0
+
+Two-stage test (MAD)
+H1: stat = 0.0048, cv = 0.0089, p = 0.5993, reject = 0
+H2: stat = 0.0045, cv = 0.0089, p = 0.7118, reject = 0
+H12: stat = 0.0017, cv = 0.0020, p = 0.7646, reject = 0
+
+Two-stage test (chi2)
+H1: stat = 6.0818, cv = 20.0760, p = 0.6376, reject = 0
+H2: stat = 5.5021, cv = 22.2571, p = 0.7868, reject = 0
+H12: stat = 81.9536, cv = 112.3517, p = 0.6898, reject = 0
+</pre>
+            <a href='http://rosa.unipr.it/fsda/benford.html#Example_1'><img vspace="5" hspace="5" src="images/benford_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> <img vspace="5" hspace="5" src="images/benford_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Selecting digit groups, significance level and plots.</li></span></a></span></h3><div class="collapse"><p>.
+     All three digit groups are analysed with the chi-square test at
+     level 0.01, and three bar charts are drawn.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+V = 10.^(3*rand(2000,1));
+out = benford(V,'Digits',[1 2 12],'Tests',"chi2",'Alpha',0.01, ...
+'Plots',["first","second","firstTwo"]);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Running silently and using the output structure.</li></span></a></span></h3><div class="collapse"><p>     Display is suppressed and plots are disabled; results are accessed     directly from the output struct.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    V = 10.^(3*rand(2000,1));    out = benford(V,'Tests',"chi2",'Plots',false,'Display',false);    out.chi2.firstTwo            % statistic, df, p-value and decision    out.counts.first             % observed first-digit counts    out.expected.first           % expected first-digit counts</pre></div></div><pre class="codeoutput">
+ans = 
+
+  struct with fields:
+
+      stat: 81.9536
+        df: 89
+    pValue: 0.6888
+    reject: 0
+
+
+ans =
+
+   581
+   345
+   257
+   194
+   171
+   144
+   129
+   100
+    79
+
+
+ans =
+
+  602.0600
+  352.1825
+  249.8775
+  193.8200
+  158.3625
+  133.8936
+  115.9839
+  102.3050
+   91.5150
+
+</pre>
+            </p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>A sample contaminated with round amounts.</li></span></a></span></h3><div class="collapse"><p>     5% of the amounts are replaced by 50, 500 or 5000. The chi-square and     two-stage tests reject. The deviation plot shows which digits are     responsible and whether the departure is relevant in practice (MAD     conformity category), the heatmap pinpoints the single hot cell (first     digit 5, second digit 0), the two-stage plot shows the observed     statistics against the null distributions and the critical values, and     the duplication plot shows the repeated values.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n = 2000;    V = 10.^(3*rand(n,1));    idx = randperm(n,100);    V(idx) = 50*10.^randi([0 2],100,1);    out = benford(V,'Tests',["chi2","twostage"], ...        'Plots',["deviation","heatmap","twostage","duplication"]);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Is the Benford hypothesis plausible at all? Order of magnitude.</li></span></a></span></h3><div class="collapse"><p>     A sample spanning less than one decade cannot follow Benford's law:     all the values start with 1. The magnitude plot shows the narrow range.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    V = 100 + 15*rand(1000,1);    out = benford(V,'Tests',"chi2",'Plots',["magnitude","first"]);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Mantissa-based tests.</li></span></a></span></h3><div class="collapse"><p>     Include arc, mean, variance, joint, KS, U2, d*, Kuiper.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Benford sample against a sample uniform in (1,1000), whose mantissa    % is not uniform. The mantissa plot shows the ECDF difference with the    % KS band and the Kuiper strip: the curve of the uniform sample leaves    % both. The p-values (asymptotic and Monte Carlo) are in the output.    rng(1)    Vb = 10.^(3*rand(1000,1));    Vu = 1 + 999*rand(1000,1);    outB = benford(Vb,'Tests',"mantissa",'Plots',"mantissa");    outU = benford(Vu,'Tests',"mantissa",'Plots',"mantissa");    outU.mantissaTests.kuiper</pre></div></div><pre class="codeoutput">
+Mantissa tests
+Test            Statistic       p_asym         p_mc
+Arc                0.2154       0.8979       0.9023
+Mean              -0.8968       0.3699       0.3789
+Variance          -0.3201       0.7489       0.7595
+Joint              0.9066       0.6355       0.6471
+KS                 0.0223       0.7004       0.6973
+U2                 0.0298       0.9306       0.9345
+d*                 0.0144          NaN       0.9699
+Kuiper             0.0256       0.9731       0.9712
+
+Mantissa tests
+Test            Statistic       p_asym         p_mc
+Arc              264.3459    3.963e-58     0.000137
+Mean              20.8578    1.296e-96     0.000137
+Variance          -8.0484    8.387e-16     0.000137
+Joint            499.8239   2.915e-109     0.000137
+KS                 0.2973    8.551e-78     0.000137
+U2                 7.4482    2.513e-64     0.000137
+d*                 0.2396          NaN     0.000137
+Kuiper             0.2979    9.105e-76     0.000137
+
+ans = 
+
+  struct with fields:
+
+     stat: 0.2979
+    pAsym: 9.1052e-76
+      pMC: 1.3699e-04
+
+</pre>
+            <a href='http://rosa.unipr.it/fsda/benford.html#ExtraExample_4'><img vspace="5" hspace="5" src="images/benford_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images/benford_04.png" alt=""> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Controlling the Monte Carlo accuracy.</li></span></a></span></h3><div class="collapse"><p>     B: replications of the mantissa-based and savvy tests (if empty it is     chosen from MCHalfWidth, MCCL and MCPRef). BTwoStage: replications of     the two-stage test. PVTS: percentage used for its critical values.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    V = 10.^(3*rand(1000,1));    out = benford(V,'Tests',["twostage","mantissa"],'B',10000, ...        'BTwoStage',50000,'PVTS',1,'Plots',false);</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Benford-savvy tests: only the first digit mimics Benford's law.</li></span></a></span></h3><div class="collapse"><p>     The first digit is Benford but the fractional part of the significand     is uniform (manipulated-Benford scheme). The first-digit Pearson     statistic Q1 is within its null range, whereas Q_Delta, KS2, KU2 and     the combined tests G_KS and G_KU typically reject. The savvy plot     shows the observed point against the Monte Carlo null sample.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    n = 1000;    V = floor(10.^rand(n,1)) + rand(n,1);    out = benford(V,'Tests',["chi2","savvy"],'Plots',"savvy");</pre></div></div><pre class="codeoutput">
+Benford-savvy tests (n = 1000, B = 7299)
+Test            Statistic       p_asym         p_mc
+Q1                 2.5578        0.959       0.9641
+Q2                31.1698    0.0002768     0.000411
+KS2                0.0866    5.473e-07     0.000137
+KU2                0.0887    7.662e-06     0.000137
+Q_Delta           28.6120    8.843e-08     0.000137
+G_KS               0.0001          NaN     0.000137
+G_KU               0.0001          NaN     0.000137
+Chi2 first digit  = 2.5578, p = 0.959, reject = 0
+Chi2 second digit = 41.7376, p = 3.67e-06, reject = 1
+Chi2 first 2 digs = 106.6178, p = 0.09827, reject = 0
+</pre>
+            <a href='http://rosa.unipr.it/fsda/benford.html#ExtraExample_6'><img vspace="5" hspace="5" src="images/benford_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Lacunary single-observation test: flagging individual observations.</li></span></a></span></h3><div class="collapse"><p>     30 amounts are exact powers of ten, whose mantissa is exactly zero     (all the digits are 0): they are flagged with a tiny p-value. About     alpha*n further observations are flagged by chance, as the QQ plot of     the p-values shows (points above the band are not explained by     chance). LacunaryM is the number of mantissa digits used.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    V = 10.^(3*rand(1000,1));    idx = randperm(1000,30);    V(idx) = 10.^randi([1 3],30,1);    out = benford(V,'Tests',"lacunary",'LacunaryM',10,'Plots',"lacunary");    all(ismember(idx,out.lacunary.idxReject))   % true: all are flagged    V(out.lacunary.idxReject(1:5))</pre></div></div><pre class="codeoutput">
+Lacunary single-observation test (m = 10 digits, chi2 with 18 df)
+Observations flagged at alpha = 0.05: 73 of 1000 (about 50.0 expected under H0)
+Binomial p-value for the number of flagged observations: 0.001006
+
+ans =
+
+  logical
+
+   1
+
+
+ans =
+
+   1.0e+03 *
+
+    1.0000
+    1.0000
+    1.0000
+    0.9259
+    0.1000
+
+</pre>
+            <a href='http://rosa.unipr.it/fsda/benford.html#ExtraExample_7'><img vspace="5" hspace="5" src="images/benford_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>All the tests and all the plots on a clean sample.</li></span></a></span></h3><div class="collapse"><p>     The duplication diagnostics are computed because "all" includes them.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    V = 10.^(3*rand(1000,1));    out = benford(V,'Tests',["chi2","twostage","mantissa","savvy","lacunary"], ...        'Plots',"all");</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Redrawing selected plots from a stored output.</li></span></a></span></h3><div class="collapse"><p>     The plots can be drawn again, for example with another level for the     bands, with benfordplot, without repeating the tests.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    V = 10.^(3*rand(1000,1));    out = benford(V,'Tests',["chi2","twostage","mantissa"], ...        'Plots',false,'Display',false);    h = benfordplot(out,'plots',["deviation","mantissa"],'alpha',0.01, ...        'docked',false);</pre></div></div></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Cross-checking the digit extraction with independent methods.</li></span></a></span></h3><div class="collapse"><p>     Three independent extraction routines are compared for consistency.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)    V = 10.^(3*rand(1000,1));    out = benford(V,'CheckExtraction',true,'Plots',false);    out.extractionCheck.isConsistent</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x" class="clearfix"> </div> <h3 id="input_argument_x" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x</code> &#8212; Numeric vector of observations. </span>  </a><span class="example_desc">Positive values are used in
+           the analysis.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'Digits',[1 12]
+</code>,<code> 'Plots',["deviation","heatmap"]
+</code>,<code> 'Tests',["chi2","mantissa","savvy"]
+</code>,<code> 'Alpha',0.01
+</code>,<code> 'B',10000
+</code>,<code> 'LacunaryM',12
+</code>,<code> 'PVTS',1
+</code>,<code> 'Display',false
+</code></code></span></div><div class="expandableContent"><div id="inputarg_Digits" class="clearfix"></div><h3 id="input_argument_namevalue_Digits" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Digits</code> &#8212;Numeric vector specifying the digit groups to analyze.</span></a><span class="example_desc">allowed values are 1 (first digit), 2 (second digit) and             12 (first two digits).</span></span></h3><div class="collapse">	<p><p>Default is [1 2 12].</p> <p>
+             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Digits',[1 12]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Plots" class="clearfix"></div><h3 id="input_argument_namevalue_Plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Plots</code> &#8212;Logical or numeric scalar, or text, specifying the requested
+             plots.</span></a><span class="example_desc">the plots are drawn by function benfordplot at the end             of the analysis, so those which accompany a test need that             test in option Tests.</span></span></h3><div class="collapse">	<p><p>True (or 1) stands for "all", false (or
+             0) for no plot. Valid labels (not case sensitive) are:</p> <p>
+               - "first", "second", "firstTwo": observed against expected
+                 counts of the digit group (need the group in Digits);</p> <p>
+               - "deviation": observed minus expected proportions with
+                 simultaneous bands and the MAD conformity category
+                 (Nigrini, 2012);</p> <p>
+               - "heatmap": Pearson residuals of the 90 first-two-digit
+                 cells (needs 12 in Digits);</p> <p>
+               - "magnitude": histogram of log10(x) and counts per order
+                 of magnitude;</p> <p>
+               - "mantissa": mantissa histogram and ECDF difference with
+                 the KS band and the Kuiper strip;</p> <p>
+               - "duplication": duplicate excess by value type;</p> <p>
+               - "twostage", "savvy", "lacunary": plots of the
+                 corresponding test;</p> <p>
+               - "all": all the plots above whose ingredients are
+                 available.</p> <p>
+             See benfordplot for the description of each plot. Default is
+             ["first","second"]. To redraw plots, or to change the level
+             of their bands, call benfordplot with the output of benford.</p><p>
+             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Plots',["deviation","heatmap"]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical|double|string|char|cell</code></p></div></div><div class="expandableContent"><div id="inputarg_Tests" class="clearfix"></div><h3 id="input_argument_namevalue_Tests" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Tests</code> &#8212;Text specifying the requested tests.</span></a><span class="example_desc">implemented tests are             "chi2", "twostage", "mantissa", "savvy" and "lacunary".</span></span></h3><div class="collapse">	<p><p>Specifically:</p> <p>
+               - "chi2"     : Chi-square test for the selected digit groups
+               - "twostage" : Two-stage Benford test based on MAD and chi2
+               - "mantissa" : Mantissa-based tests for uniformity (arc,
+                              mean, variance, joint, Kolmogorov-Smirnov,
+                              Watson U2, d* and Kuiper)
+               - "savvy"    : Tests for Benford-savvy (adversarial)
+                              manipulation, Barabesi et al. (2026): KS2
+                              and KU2 on the fractional part of the
+                              significand, Q_Delta = Q2 - Q1 and the
+                              combined tests G_KS and G_KU (min p-value).</p> <p>
+                              Q1 (Pearson) and Q2 (Hotelling) are also
+                              reported.</p> <p>
+               - "lacunary" : Single-observation lacunary harmonic test of
+                              Ferrari (2026), applied to the base-10
+                              mantissa of EACH observation truncated to
+                              m = LacunaryM digits. It returns one
+                              statistic and one chi2(18) p-value per
+                              observation, and flags observations whose
+                              multiscale digit structure is atypical.</p> <p>
+             Default is ["chi2","twostage"].</p><p>
+             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Tests',["chi2","mantissa","savvy"]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>string|char|cell</code></p></div></div><div class="expandableContent"><div id="inputarg_Alpha" class="clearfix"></div><h3 id="input_argument_namevalue_Alpha" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Alpha</code> &#8212;Significance level for the chi-square tests.</span></a><span class="example_desc">scalar in (0,1).</span></span></h3><div class="collapse">	<p><p>Default value is 0.05.</p> <p>
+             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Alpha',0.01
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single|double</code></p></div></div><div class="expandableContent"><div id="inputarg_B" class="clearfix"></div><h3 id="input_argument_namevalue_B" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>B</code> &#8212;Number of Monte Carlo replications for the mantissa-based
+             and Benford-savvy tests.</span></a><span class="example_desc">positive integer | empty.</span></span></h3><div class="collapse">	<p><p>If empty (default) it is chosen automatically from options
+             MCHalfWidth, MCCL and MCPRef.</p> <p>
+             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'B',10000
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single|double</code></p></div></div><div class="expandableContent"><div id="inputarg_LacunaryM" class="clearfix"></div><h3 id="input_argument_namevalue_LacunaryM" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>LacunaryM</code> &#8212;Number of mantissa digits m used by the lacunary test.</span></a><span class="example_desc">integer between 1 and 15.</span></span></h3><div class="collapse">	<p><p>Default is 10. The mantissa of a
+             double is reliable to about 13 digits only, so values of m
+             above 12 are not recommended. The chi2 calibration of the
+             test is asymptotic in m (see Ferrari, 2026).</p> <p>
+             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'LacunaryM',12
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_PVTS" class="clearfix"></div><h3 id="input_argument_namevalue_PVTS" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>PVTS</code> &#8212;Percentile used for the two-stage critical values.</span></a><span class="example_desc">scalar             in (0,100).</span></span></h3><div class="collapse">	<p><p>Default is 5.</p> <p>
+             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'PVTS',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single|double</code></p></div></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_Display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Display</code> &#8212;Logical scalar controlling printed output.</span></a><span class="example_desc">if true, a             summary of each test result is printed to the command window.</span></span></h3><div class="collapse">	<p><p>Default is true.</p> <p>
+             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Display',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>Struct containing the results of the Benford analysis.</p> <p>
+           Fields are created only for the selected digit groups and
+           requested tests. The fields are:</p><p>
+
+     </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>data</code></td><td><p>observations used in the analysis.</p></td></tr><tr valign="top"><td><code>n</code></td><td><p>sample size.</p></td></tr><tr valign="top"><td><code>options</code></td><td><p>options used (derived internal flags
+                             included).</p></td></tr><tr valign="top"><td><code>counts</code></td><td><p>structure with fields first, second and
+                             firstTwo: observed counts of the digit
+                             groups in Digits (columns 1:9, 0:9, 10:99).</p></td></tr><tr valign="top"><td><code>expected</code></td><td><p>structure with the same fields: expected
+                             counts under the Benford law.</p></td></tr><tr valign="top"><td><code>chi2</code></td><td><p>(Tests "chi2") structure with fields first,
+                             second and firstTwo, each with fields stat,
+                             df, pValue and reject.</p></td></tr><tr valign="top"><td><code>twoStage</code></td><td><p>(Tests "twostage") structure with fields
+                             labels, cvMad, cvChi2, obsMad, obsChi2,
+                             rejectMad, rejectChi2, pValueMad,
+                             pValueChi2 (rows ordered as labels), and
+                             madSim and chi2Sim (B-by-3 null samples
+                             used by the plot).</p></td></tr><tr valign="top"><td><code>mantissa</code></td><td><p>n-by-1 vector of the mantissae
+                             frac(log10(x)).</p></td></tr><tr valign="top"><td><code>mantissaTests</code></td><td><p>(Tests "mantissa") structure with fields
+                             arc, mean, variance, joint, ks, u2, dstar
+                             and kuiper, each with fields stat, pAsym
+                             (asymptotic p-value) and pMC (Monte Carlo
+                             p-value).</p></td></tr><tr valign="top"><td><code>savvy</code></td><td><p>(Tests "savvy") structure with fields n, B,
+                             Q1, Q2, KS2, KU2, QDelta, GKS and GKU, each
+                             with fields stat, pAsym and pMC (pAsym is
+                             NaN for GKS and GKU, whose statistic is a
+                             p-value and which reject for small values),
+                             and nullStats (B-by-4 null sample with
+                             columns KS2, KU2, Q1, Q2).</p></td></tr><tr valign="top"><td><code>lacunary</code></td><td><p>(Tests "lacunary") structure with fields m,
+                             base, df, alpha, T and pValue (one entry per
+                             observation), reject, idxReject, nReject,
+                             nExpected and pBinom (rough dataset-level
+                             summary, not part of the original paper).</p></td></tr><tr valign="top"><td><code>duplication</code></td><td><p><p>(only if requested in Plots) duplication
+                             diagnostics.</p> <p>
+             out.extractionCheck,</p></p></td></tr><tr valign="top"><td><code>countsCheck</code></td><td><p>consistency checks of
+                             the digit extraction (option CheckExtraction).</p></td></tr><tr valign="top"><td><code>figures</code></td><td><p>handles of the figures drawn by benfordplot.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Benford, F. (1938). The law of anomalous numbers. Proceedings of the
+    American Philosophical Society, 78(4), 551-572.</p></div><div><p><p>Berger, A. and Hill, T.P. (2015). An Introduction to Benford's Law.</p> <p>
+    Princeton University Press, Princeton, NJ.</p></p></div><div><p>Nigrini, M.J. (2012). Benford's Law: Applications for Forensic
+    Accounting, Auditing, and Fraud Detection. Wiley, Hoboken, NJ.</p></div><div><p><p>Barabesi, L., Cerioli, A. and Di Marzio, M. (2023). Statistical models
+    and the Benford hypothesis: a unified framework. TEST, 32, 1479-1507.</p> <p>
+    doi:10.1007/s11749-023-00881-y</p></p></div><div><p>Pearson, K. (1900). On the criterion that a given system of
+    deviations from the probable in the case of a correlated system of
+    variables is such that it can be reasonably supposed to have arisen
+    from random sampling. Philosophical Magazine, Series 5, 50(302),
+    157-175.</p></div><div><p>Nigrini, M.J. (2012), see above (use of the chi-square statistic on
+    the digit counts, and of the MAD conformity ranges).</p></div><div><p><p>Barabesi, L., Cerasa, A., Cerioli, A. and Perrotta, D. (2018).</p> <p>
+    Goodness-of-fit testing for the Newcomb-Benford law with application
+    to the detection of customs fraud. Journal of Business and Economic
+    Statistics, 36(2), 346-358. doi:10.1080/07350015.2016.1172014</p></p></div><div><p><p>Cerioli, A., Barabesi, L., Cerasa, A., Menegatti, M. and Perrotta, D.</p> <p>
+    (2019). Newcomb-Benford law and the detection of frauds in
+    international trade. Proceedings of the National Academy of Sciences
+    of the USA, 116(1), 106-115. doi:10.1073/pnas.1806617115</p></p></div><div><p><p>arc test (Rayleigh test of uniformity on the circle):</p> <p>
+    Alexander, J.C. (2009). Remarks on the use of Benford's Law. Working
+    Paper, Case Western Reserve University. SSRN 1505147.</p><p>
+    doi:10.2139/ssrn.1505147</p></p></div><div><p>Rayleigh, Lord (1919). On the problem of random vibrations, and of
+    random flights in one, two, or three dimensions. Philosophical
+    Magazine, Series 6, 37(220), 321-347.</p></div><div><p>Mardia, K.V. and Jupp, P.E. (2000). Directional Statistics. Wiley,
+    Chichester.</p></div><div><p>1/12), in the spirit of the digit-based conformity tests of
+    Cerqueti, R. and Lupi, C. (2021). Some new tests of conformity with
+    Benford's law. Stats, 4(3), 745-761. doi:10.3390/stats4030044</p></div><div><p>Kolmogorov, A.N. (1933). Sulla determinazione empirica di una legge
+    di distribuzione. Giornale dell'Istituto Italiano degli Attuari, 4,
+    83-91.</p></div><div><p>Watson, G.S. (1961). Goodness-of-fit tests on a circle. Biometrika,
+    48(1/2), 109-114.</p></div><div><p><p>Kuiper, N.H. (1960). Tests concerning random points on a circle.</p> <p>
+    Proceedings of the Koninklijke Nederlandse Akademie van
+    Wetenschappen, Series A, 63, 38-47.</p></p></div><div><p><p>Tam Cho, W.K. and Gaines, B.J. (2007). Breaking the (Benford) law:</p> <p>
+    statistical fraud detection in campaign finance. The American
+    Statistician, 61(3), 218-223. doi:10.1198/000313007X223496</p></p></div><div><p>Morrow, J. (2014). Benford's law, families of distributions and a
+    test basis. CEP Discussion Paper No. 1291, Centre for Economic
+    Performance, London School of Economics and Political Science.</p></div><div><p><p>Kuiper and Watson U2 tests:</p> <p>
+    Stephens, M.A. (1970). Use of the Kolmogorov-Smirnov, Cramer-von
+    Mises and related statistics without extensive tables. Journal of
+    the Royal Statistical Society, Series B, 32(1), 115-122.</p></p></div><div><p><p>Barabesi, L., Cerioli, A., Cerasa, A. and Perrotta, D. (2026).</p> <p>
+    Statistical Detection of Adversarial Compliance With Benford's Law.</p> <p>
+    Statistical Analysis and Data Mining, 19(3), e70081.</p><p>
+    doi:10.1002/sam.70081 (preprint: Robust inference under Benford's
+    law, arXiv:2507.08650, 2025)</p></p></div><div><p><p>Barabesi, L., Cerasa, A., Cerioli, A. and Perrotta, D. (2022). On
+    characterizations and tests of Benford's law. Journal of the American
+    Statistical Association, 117(540), 1887-1903.</p> <p>
+    doi:10.1080/01621459.2021.1891927
+    (sum-invariance characterization and Hotelling statistic Q2)</p></p></div><div><p>Kuiper (1960), Kolmogorov (1933) and Stephens (1970), see above (KS2
+    and KU2 are the KS and Kuiper statistics on the fractional part of
+    the significand).</p></div><div><p>Ferrari, D. (2026). Single-Observation Uniformity Testing under
+    Increasing Precision via Lacunary Harmonics. arXiv:2604.27772
+    [stat.ME], submitted 30 April 2026.</p></div><div><p><p>Salem, R. and Zygmund, A. (1947). On lacunary trigonometric series.</p> <p>
+    Proceedings of the National Academy of Sciences of the USA, 33(11),
+    333-338. (lacunary central limit theorem underlying the chi2 null
+    distribution)</p></p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p>
+
+ </p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="benfordplot.html" itemprop="url"><span itemprop="name"><code>benfordplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
