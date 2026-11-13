@@ -194,23 +194,23 @@ function [out, varargout] = LTSts(y,varargin)
 %                       aliases above. For harmonic seasonality, omitted
 %                       harmonics and degree inherit the legacy numeric
 %                       model.seasonal setting. Its fields are:
-%                         type: 'harmonic' (default), 'dummy' or 'none'.
-%                         harmonics: positive integer B, used only for the
+%                         type - 'harmonic' (default), 'dummy' or 'none'.
+%                         harmonics - positive integer B, used only for the
 %                           harmonic type. The seasonal period is still s.
 %                         evolution: 'polynomial' (default) or 'penalized'.
-%                         degree: 0 (default), 1 or 2 for polynomial
+%                         degree - 0 (default), 1 or 2 for polynomial
 %                           evolution. For harmonic seasonality this maps to
 %                           the existing
 %                           harmonic-amplitude polynomial/ALS specification.
 %                           For dummy seasonality it is the degree of the
 %                           year polynomial for centered seasonal contrasts.
-%                         lambda: positive penalty strength, required for
+%                         lambda - positive penalty strength, required for
 %                           penalized evolution.
-%                         differenceOrder: 1 or 2; default 2. Penalized
+%                         differenceOrder - 1 or 2; default 2. Penalized
 %                           evolution penalizes this order of differences
 %                           between annual seasonal profiles. Use lambda and
 %                           differenceOrder instead of degree.
-%                       Examples:
+%                       For example:
 %                         model.seasonality.type='harmonic';
 %                         model.seasonality.harmonics=3;
 %                         model.seasonality.evolution='polynomial';
@@ -404,51 +404,32 @@ function [out, varargout] = LTSts(y,varargin)
 %               Data Types - logical
 %
 %       plots : Plot selection. Numeric or logical scalar, character vector,
-%               or structure.
-%               The numeric values 0, 1 and 2 retain their existing
-%               meanings. If plots=1, a two-panel figure shows the series
-%               and fitted values above robust residuals. If plots=2, the
-%               same figure is produced and, when a level shift is fitted,
-%               the level-shift diagnostic figures are also shown.
-%               The value 'components' produces a figure with the observed
-%               and fitted series, the estimated trend and seasonal
-%               components, the AR and explanatory contributions (when
-%               present), the level-shift contribution (when present), and
-%               raw residuals. The value 'all' produces the standard
-%               figures, available level-shift diagnostics, and the
-%               components figure.
-%               A structure can select figures individually with logical
-%               scalar (or numeric 0/1) fields standard,
-%               levelShiftDiagnostics and components. Unspecified fields
-%               are false. For example,
-%               'plots',struct('components',true,'standard',true).
-%               The level-shift diagnostics are shown only when the model
-%               includes a level shift.
-%               In the standard figure, the upper panel contains the
-%               original time series with fitted values. The bottom panel
-%               contains robust residuals against index number. The
-%               confidence level for the residual bands is specified by
-%               conflev; its default value is 0.975.
-%               The level-shift diagnostic figures include:
-%               1) Boxplot of the distribution of the lts.bestr values of
-%               the target function for each tentative level shift position;
-%               2) A two panel plot which shows the values of the local sum
-%               of squares varying the position of the level shift around
-%               the first tentative position keeping all the other
-%               parameters fixed. Top panel refers to Huberized residuals
-%               sum of squares and bottom panel refers to residual sum of
-%               squares.
-%               3) A plot which shows the indexes of the best nbestindexes
-%               solutions for each tentative level shift position.
-%               4) A plot which shows the relative frequency of inclusion
-%               of each unit in the best h-subset after lts.refsteps
-%               refining steps.
-%               5) A plot which shows the relative frequency of inclusion
-%               of each unit inside the best nbestindexes subsets which are
-%               brought to full convergence.
-%               The default value is 0, i.e. no plot is shown.
-%                 Example - 'plots','components'
-%                 Data Types - double, logical, char, or struct
+%               or scalar structure. The default is 0, i.e. no plot is shown.
+%               Numeric values 0, 1 and 2 retain their existing meanings:
+%               plots=1 shows the series and fitted values above robust
+%               residuals; plots=2 also shows level-shift diagnostics when
+%               the model includes a level shift. The character value
+%               'components' shows the observed and fitted series, estimated
+%               components and raw residuals. The value 'all' selects the
+%               standard plot, available level-shift diagnostics and the
+%               components plot.
+%               For a structure, set any combination of the following
+%               logical scalar fields (numeric 0/1 is also accepted).
+%               Fields not supplied default to false:
+%                 plots.standard = If true, show the time series and fitted
+%                   values above robust residuals. The confidence bands for
+%                   the residuals use conflev (default 0.975).
+%                 plots.levelShiftDiagnostics = If true, show the level-shift
+%                   diagnostics when the model includes a level shift. These
+%                   include the objective values by candidate position, the
+%                   local Huberized and raw residual sums of squares, the
+%                   best-solution indexes, and subset-inclusion frequencies.
+%                 plots.components = If true, show the observed and fitted
+%                   series, estimated trend and seasonal components, AR and
+%                   explanatory contributions when present, level-shift
+%                   contribution when present, and raw residuals.
+%               Example - 'plots',struct('standard',true,'components',true)
+%               Data Types - double, logical, char, or struct
 %
 %       Remark: The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
@@ -611,20 +592,21 @@ function [out, varargout] = LTSts(y,varargin)
 %                       \end{eqnarray}
 %          out.trend = T-by-1 vector containing the final HP trend. This
 %                       field is present when model.trend='HP'.
-%       out.seasonal = T-by-1 vector containing the final seasonal component.
-%                       This field is present when model.trend='HP' or when
-%                       model.seasonalType='dummy'.
-%    out.explanatory = T-by-1 vector containing the final contribution of
-%                       explanatory and autoregressive variables. This field
-%                       is present when model.trend='HP'.
-%     out.levelshift = T-by-1 vector containing the final level-shift
-%                       contribution (zero if no level shift is fitted). This
-%                       field is present when model.trend='HP'.
+%       out.seasonal = T-by-1 vector containing the fitted seasonal
+%                       contribution. It is present for an HP trend, dummy
+%                       seasonality, or penalized seasonal evolution.
+%    out.explanatory = T-by-1 vector containing the combined contribution
+%                       of autoregressive terms and model.X. It is present
+%                       when model.trend='HP'.
+%     out.levelshift = T-by-1 vector containing the fitted level-shift
+%                       contribution (zero when no shift is fitted). It is
+%                       present when model.trend='HP'.
 %              out.hp = structure containing HP-specific final-fit
-%                       information. Fields are lambda, rss, penalty,
-%                       seasonalPenalty, objective, objectiveCandidates,
-%                       objectiveLSH and inference. The objective is rss
-%                       plus the trend and seasonal penalties.
+%                       information. It is present when model.trend='HP' and
+%                       has fields lambda, rss, penalty, seasonalPenalty,
+%                       objective, objectiveCandidates, objectiveLSH and
+%                       inference. The objective is rss plus the trend and
+%                       seasonal penalties.
 % out.LastHarmonicPval = combined p value for the coefficients of the
 %                        last harmonic. For a polynomial trend this is the
 %                        existing F-test calculation. For an HP trend it is
@@ -635,6 +617,15 @@ function [out, varargout] = LTSts(y,varargin)
 %                        effect, containing the fitted seasonal effect for
 %                        each year and seasonal position for dummy
 %                        seasonality, and for any penalized seasonal profile.
+% out.seasonalPenalty = scalar seasonal-penalty contribution to the fitted
+%                        objective. It is zero when seasonal evolution is
+%                        not penalized.
+% out.seasonality = structure describing the fitted seasonal specification.
+%                        It is present for every fit and has fields type,
+%                        harmonics, evolution, degree, lambda,
+%                        differenceOrder and penalty. Values are empty when
+%                        a field does not apply; penalty equals
+%                        out.seasonalPenalty.
 % out.components = structure containing the final additive contributions
 %                        to the fitted series. Its fields are trend,
 %                        seasonal, autoregressive, explanatory, levelshift,
@@ -699,6 +690,9 @@ function [out, varargout] = LTSts(y,varargin)
 % Monitoring of Many Time Series with Application to Fraud Detection,
 % "Econometrics and Statistics". [RPRH]
 %
+% Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
+% Monitoring of Many Time Series with Application to Fraud Detection,
+% "Econometrics and Statistics". [RPRH]
 %
 % Copyright 2008-2025.
 % Written by Marco Riani, Domenico Perrotta, Peter
@@ -1063,7 +1057,7 @@ function [out, varargout] = LTSts(y,varargin)
 %}
 
 %{
-    %% Example 2 used in the paper RPRH.
+    % Example 2 used in the paper RPRH.
     % A persisting level shift and three isolated outliers, two of which in
     % proximity of the level shift.
         % Load airline data.
@@ -1114,7 +1108,7 @@ function [out, varargout] = LTSts(y,varargin)
 %}
 
 %{
-    %% Example 3 used in the paper RPRH.
+    % Example 3 used in the paper RPRH.
     % A persisting level shift preceded and followed in the proximity by
     % other two short level shifts, and an isolated outlier.
         % Load airline data.
@@ -4029,6 +4023,8 @@ if coder.target('MATLAB')
         if nx > 20
             txt2 = txt(1:mod(nx,20):nx,:);
             delete(txt(setdiff(1:nx,1:mod(nx,20):nx),:));
+        else
+            txt2=txt;
         end
         set(txt2,'FontSize',SizeAxesNum,'VerticalAlignment', 'Middle');
         hold('on');
