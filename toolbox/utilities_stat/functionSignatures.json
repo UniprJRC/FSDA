@@ -80,5 +80,52 @@
             {"name": "u", "purpose": "Scaled residuals or Mahalanobis distances", "kind": "required", "type": ["double", "vector"]},
             {"name": "c", "purpose": "Tuning parameter", "kind": "required", "type": ["double", "scalar", ">0"]}
         ]
+    },
+    "add2boxplot": {
+        "inputs": [
+            {"name": "Y", "purpose": "Input data vector, matrix, or table", "kind": "required", "type": [["double"], ["single"], ["table"]]},
+            {"name": "g", "purpose": "Grouping variable", "kind": "ordered", "type": [["numeric", "vector"], ["char"], ["string"], ["cellstr"], ["categorical"]]}
+        ]
+    },
+    "crosstab2datamatrix": {
+        "inputs": [
+            {"name": "N", "purpose": "Contingency table", "kind": "required", "type": [["double"], ["single"], ["table"]]},
+            {"name": "Lr", "purpose": "Vector of row labels", "kind": "namevalue", "type": [["cellstr"], ["string"]]},
+            {"name": "Lc", "purpose": "Vector of column labels", "kind": "namevalue", "type": [["cellstr"], ["string"]]}
+        ]
+    },
+    "mahalCorAna": {
+        "inputs": [
+            {"name": "Y", "purpose": "Profile rows matrix", "kind": "required", "type": [["double"], ["single"]]},
+            {"name": "MU", "purpose": "Centroid vector", "kind": "required", "type": [["double", "vector"], ["single", "vector"]]}
+        ]
+    },
+    "mahalFS": {
+        "inputs": [
+            {"name": "Y", "purpose": "Input data matrix", "kind": "required", "type": [["double"], ["single"]]},
+            {"name": "MU", "purpose": "Centroid vector", "kind": "required", "type": [["double", "vector"], ["single", "vector"]]},
+            {"name": "SIGMA", "purpose": "Covariance matrix", "kind": "required", "type": [["double", "2d"], ["single", "2d"]]}
+        ]
+    },
+    "mdpattern": {
+        "inputs": [
+            {"name": "Y", "purpose": "Data matrix, table, or timetable", "kind": "required", "type": [["double"], ["single"], ["table"], ["timetable"]]},
+            {"name": "Lc", "purpose": "Vector of column labels", "kind": "namevalue", "type": [["cellstr"], ["string"]]},
+            {"name": "plots", "purpose": "Plot display options", "kind": "namevalue", "type": [["logical", "scalar"], ["numeric", "scalar"], ["struct"]]},
+            {"name": "dispresults", "purpose": "Display results on screen", "kind": "namevalue", "type": ["logical", "scalar"]}
+        ]
+    },
+    "tabulateFS": {
+        "inputs": [
+            {"name": "x", "purpose": "Vector for frequency table", "kind": "required", "type": [["double"], ["single"], ["categorical"], ["char"], ["cellstr"]]}
+        ]
+    },
+    "twdcdf": {
+        "inputs": [
+            {"name": "x", "purpose": "Values at which to evaluate cdf", "kind": "required", "type": ["double"]},
+            {"name": "alpha", "purpose": "Location parameter", "kind": "required", "type": ["double", "scalar"]},
+            {"name": "theta", "purpose": "Dispersion parameter", "kind": "required", "type": ["double", "scalar", ">0"]},
+            {"name": "delta", "purpose": "Power parameter", "kind": "required", "type": ["double", "scalar"]}
+        ]
     }
 }
