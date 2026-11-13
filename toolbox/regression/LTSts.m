@@ -707,7 +707,6 @@ function [out, varargout] = LTSts(y,varargin)
 %
 %<a href="matlab: docsearchFS('LTSts')">Link to the help function</a>
 %
-%$LastChangedDate:: 2019-12-15 21:09:21 #$: Date of the last commit
 
 % Examples:
 
@@ -2834,12 +2833,33 @@ end
 if trendHPYN || seasonalPenaltyActive
     % When either the HP trend or seasonal profile is penalized, candidate
     % level-shift positions are compared using the full penalized objective.
-    [~,minidx]=min(objectiveLSH(:,2));
-    if trendHPYN
-        trendHP=trendHProbLSH(:,minidx);
-    end
+    lshCriterion=objectiveLSH(:,2);
 else
-    [~,minidx]=min(numscale2LSH(:,2));
+    lshCriterion=numscale2LSH(:,2);
+end
+
+if lshiftYN==1
+    % A candidate position can remain at its zero initialization when no
+    % finite objective was obtained for a tentative level-shift location.
+    % Exclude such candidates before the local refinement below; otherwise
+    % the resulting zero position would be used as a MATLAB array index.
+    lshPosition=brobLSH(end,:)';
+    validLSH=isfinite(lshCriterion) & isfinite(lshPosition) & ...
+        lshPosition==round(lshPosition) & ...
+        lshPosition>=min(LSH) & lshPosition<=max(LSH);
+    if ~any(validLSH)
+        error('FSDA:LTSts:NoValidLevelShift', ...
+            ['No finite, valid level-shift solution was obtained. ' ...
+            'Check the level-shift range and the generated subsets.'])
+    end
+    validLSHIndexes=find(validLSH);
+    [~,minidxWithinValid]=min(lshCriterion(validLSH));
+    minidx=validLSHIndexes(minidxWithinValid);
+else
+    [~,minidx]=min(lshCriterion);
+end
+if trendHPYN
+    trendHP=trendHProbLSH(:,minidx);
 end
 brobbest=brobLSH(:,minidx);
 
@@ -2877,18 +2897,19 @@ if  lshiftYN==1
         huberc=2;
     end
 
-    tloc=bstar(end)-k:bstar(end)+k;
-    % Reduce width of tloc dynamically
+    % Keep the selected center within the candidate range before forming
+    % the local search window. This also protects the subsequent calls to
+    % lik, which use tloc as row indices into the design matrices.
     LSHmin=min(LSH);
     LSHmax=max(LSH);
-    % make sure that tloc is in the range LSHmin and LSHmax
-    while (max(tloc)>LSHmax  || min(tloc)<LSHmin )
-        if k==0
-            break
-        end
-        k=k-1;
-        tloc=bstar(end)-k:bstar(end)+k;
+    centerLS=bstar(end);
+    if ~isscalar(centerLS) || ~isfinite(centerLS) || ...
+            centerLS~=round(centerLS) || ...
+            centerLS<LSHmin || centerLS>LSHmax
+        error('FSDA:LTSts:InvalidLevelShiftPosition', ...
+            'The selected level-shift position is outside the valid range.')
     end
+    tloc=max(LSHmin,centerLS-k):min(LSHmax,centerLS+k);
 
 
 
@@ -2897,8 +2918,7 @@ if  lshiftYN==1
     if areMissing == true
         bsb=intersect(bsb,ynotmissing);
     end
-    disp('bsb')
-disp(bsb)
+
     Likloc=[tloc' zeros(length(tloc),3)];
     ij=0;
 
