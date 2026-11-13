@@ -1331,7 +1331,52 @@ function [out, varargout] = LTSts(y,varargin)
     outHPComponents=LTSts(y,'model',model,'nsamp',300,'h',100, ...
         'plots','components','msg',0);
 
-   
+    % Alternative: retain the HP trend but use penalized dummy seasonal
+    % profiles instead of the penalized harmonic profiles above.
+    model.seasonality=struct('type','dummy','evolution','penalized', ...
+        'lambda',20,'differenceOrder',2);
+    rng(1003)
+    outHPDummyComponents=LTSts(y,'model',model,'nsamp',300,'h',100, ...
+        'plots','components','msg',0);
+%}
+
+%{
+    % Penalized seasonal evolution with dummy and harmonic bases.
+    % Both fits use the same data. The annual seasonal profile changes
+    % gradually over time; a second-difference penalty encourages smooth
+    % evolution. The dummy basis allows a general zero-sum profile, whereas
+    % the harmonic basis uses the first two Fourier harmonics.
+    rng(1005)
+    s=12;
+    nYears=15;
+    T=s*nYears;
+    t=(1:T)';
+    year=floor((t-1)/s);
+    yearCoordinate=(year-mean(year))/(max(year)-min(year));
+
+    seasonalTrue=(2+0.5*yearCoordinate).*cos(2*pi*t/s)+ ...
+        (1-0.25*yearCoordinate).*sin(2*pi*t/s)+ ...
+        0.5*cos(4*pi*t/s);
+    y=5+0.04*t+seasonalTrue+0.35*randn(T,1);
+    bad=[50 145]';
+    y(bad)=y(bad)+[5 -6]';
+
+    model=struct('trend',1,'s',s,'seasonal',1,'lshift',0);
+
+    % Penalized dummy seasonality. The nested specification activates the
+    % dummy seasonal basis; lambda controls smoothness across annual profiles.
+    model.seasonality=struct('type','dummy','evolution','penalized', ...
+        'lambda',20,'differenceOrder',2);
+    rng(1006)
+    outPenDummy=LTSts(y,'model',model,'nsamp',300,'h',150, ...
+        'plots','components','msg',0);
+
+    % Penalized trigonometric (harmonic) seasonality with two harmonics.
+    model.seasonality=struct('type','harmonic','harmonics',2, ...
+        'evolution','penalized','lambda',20,'differenceOrder',2);
+    rng(1006)
+    outPenHarmonic=LTSts(y,'model',model,'nsamp',300,'h',150, ...
+        'plots','components','msg',0);
 %}
 
 %% Beginning of code
@@ -2561,10 +2606,11 @@ for ilsh=1:lLSH
             % unchanged, so the fit remains elemental.
             if length(bsb)>=requiredRank && rank(full(Aid))<requiredRank
                 if seasonalPenaltyActive
-                    [bsb,fullrankHP]=repairHPElementalSubset( ...
+                    [bsb,fullrankHP]=repairPenalizedElementalSubset( ...
                         bsb,Xfinal,lsh,Nhp);
                 else
-                    [bsb,fullrankHP]=repairHPElementalSubset(bsb,Xfinal,lsh);
+                    [bsb,fullrankHP]=repairPenalizedElementalSubset( ...
+                        bsb,Xfinal,lsh);
                 end
                 if fullrankHP
                     % Keep the internally stored elemental subset aligned
@@ -2595,7 +2641,31 @@ for ilsh=1:lLSH
         else
             % Existing polynomial-trend branch: ordinary least squares.
             if seasonalPenaltyActive
-                betaini=seasonalPenalizedFit(Xfinal(bsb,:),yin(bsb));
+                % A random elemental subset may omit one or more seasonal
+                % positions. Repair it so that the unpenalized subspace of
+                % the seasonal penalty is identified before fitting.
+                Nseasonal=seasonalNullBasisForDesign(size(Xfinal,2));
+                Aid=double(Xfinal(bsb,:)*Nseasonal);
+                requiredRank=size(Nseasonal,2);
+                if length(bsb)>=requiredRank && ...
+                        rank(full(Aid))<requiredRank
+                    [bsb,fullrankSeasonal]= ...
+                        repairPenalizedElementalSubset( ...
+                        bsb,Xfinal,lsh,Nseasonal,false);
+                    if fullrankSeasonal
+                        % Keep the stored elemental subset aligned with the
+                        % rows used for the penalized fit.
+                        index=bsb';
+                    end
+                else
+                    fullrankSeasonal=length(bsb)>=requiredRank;
+                end
+                if fullrankSeasonal
+                    betaini=seasonalPenalizedFit(Xfinal(bsb,:),yin(bsb));
+                else
+                    betaini=NaN(size(Xfinal,2),1);
+                    singsub=singsub+1;
+                end
             else
                 betaini=Xfinal(bsb,:)\yin(bsb);
             end
@@ -5189,30 +5259,33 @@ end
     end
 
 % -------------------------------------------------------------------
-% subfunction repairHPElementalSubset
+% subfunction repairPenalizedElementalSubset
 % -------------------------------------------------------------------
 
-    function [bsbout,fullrankHP]=repairHPElementalSubset( ...
-            bsbin,Xhp,lshCurrent,Nhp)
-        %repairHPElementalSubset repairs a singular HP elemental subset.
+    function [bsbout,fullrankSubset]=repairPenalizedElementalSubset( ...
+            bsbin,Xdesign,lshCurrent,Nhp,includeAffineHP)
+        %repairPenalizedElementalSubset repairs a rank-deficient elemental
+        %subset for an HP trend or penalized seasonal evolution.
         %
-        % The HP conditional fit is identifiable when the augmented design
-        % [1,t,Xhp] has rank size(Xhp,2)+2. Rich periodic designs can make a
-        % random minimal subset singular even when the complete design is
-        % identifiable. This routine keeps the original subset cardinality
-        % but exchanges redundant rows for non-missing observations until a
-        % full-rank elemental subset is obtained. Candidate rows are examined
-        % in random order so that repeated subsamples do not systematically
-        % favour particular time points.
+        % For an HP trend, the identifiable design is [1,t,Xdesign*Nhp].
+        % For a polynomial trend with penalized seasonality it is
+        % Xdesign*Nhp. Rich periodic designs can make a random minimal subset
+        % singular even when the complete design is identifiable. This
+        % routine preserves the subset size and exchanges redundant rows for
+        % non-missing observations until the required rank is attained.
+        % Candidate rows are examined in random order.
 
         bsbin=double(bsbin(:));
         targetSize=length(bsbin);
         if nargin<4 || isempty(Nhp)
-            Nhp=speye(size(Xhp,2));
+            Nhp=speye(size(Xdesign,2));
         end
-        targetRank=size(Nhp,2)+2;
+        if nargin<5 || isempty(includeAffineHP)
+            includeAffineHP=true;
+        end
+        targetRank=size(Nhp,2)+2*includeAffineHP;
         bsbout=bsbin;
-        fullrankHP=false;
+        fullrankSubset=false;
 
         if targetSize<targetRank
             return
@@ -5259,8 +5332,12 @@ end
                 continue
             end
             trial=[selected; cand];
-            Atrial=[ones(length(trial),1) double(trial) ...
-                double(Xhp(trial,:)*Nhp)];
+            if includeAffineHP
+                Atrial=[ones(length(trial),1) double(trial) ...
+                    double(Xdesign(trial,:)*Nhp)];
+            else
+                Atrial=double(Xdesign(trial,:)*Nhp);
+            end
             newRank=rank(full(Atrial));
             if newRank>currentRank
                 selected=trial;
@@ -5293,10 +5370,14 @@ end
             return
         end
 
-        Afinal=[ones(targetSize,1) double(selected) ...
-            double(Xhp(selected,:))];
-        fullrankHP=rank(full(Afinal))>=targetRank;
-        if fullrankHP
+        if includeAffineHP
+            Afinal=[ones(targetSize,1) double(selected) ...
+                double(Xdesign(selected,:)*Nhp)];
+        else
+            Afinal=double(Xdesign(selected,:)*Nhp);
+        end
+        fullrankSubset=rank(full(Afinal))>=targetRank;
+        if fullrankSubset
             bsbout=selected;
         end
     end
