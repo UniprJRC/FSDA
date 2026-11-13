@@ -2135,10 +2135,14 @@ end
 % adjust nsamp if it is greater than (n p)
 if nsamp_gt_ncomb
     if isscalar(options.nsamp)
-        disp(['It is reduced to (n p)=' num2str(ncomb)]);
+        if options.msg==true
+            disp(['It is reduced to (n p)=' num2str(ncomb)]);
+        end
         options.nsamp    = ncomb;
     elseif numel(options.nsamp) == 2
-        disp(['nsamp(1) reduced from ' num2str(options.nsamp(1)) ' to ' num2str(ncomb) ]);
+        if options.msg==true
+            disp(['nsamp(1) reduced from ' num2str(options.nsamp(1)) ' to ' num2str(ncomb) ]);
+        end
         options.nsamp(1) = min(options.nsamp(1) , ncomb);
     end
 end
@@ -2893,7 +2897,8 @@ if  lshiftYN==1
     if areMissing == true
         bsb=intersect(bsb,ynotmissing);
     end
-
+    disp('bsb')
+disp(bsb)
     Likloc=[tloc' zeros(length(tloc),3)];
     ij=0;
 
