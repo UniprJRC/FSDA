@@ -32,7 +32,8 @@ function kappa = kappaFS(r, p, newtonsteps)
 %               vectorized over r, so all groups can be processed at once.
 %            p: Dimension of the ambient space. Scalar. Data lie on
 %               S^(p-1), so Y has p columns. For the circular case p=2;
-%               for the spherical case p=3.
+%               for the spherical case p=3. p can be large (hundreds or
+%               thousands, as for document embeddings).
 %  newtonsteps: Number of Newton-Raphson refinement steps. Scalar.
 %               Default 2. With newtonsteps=0 kappaFS returns the raw
 %               Banerjee et al. (2005) approximation. Each additional
@@ -73,11 +74,14 @@ function kappa = kappaFS(r, p, newtonsteps)
 %
 %   A_p'(kappa) = 1 - A_p(kappa)^2 - ((p-1)/kappa)*A_p(kappa).
 %
-% Both A_p and its derivative are evaluated using scaled Bessel functions
-% (besseli with the 'exponentially scaled' flag) so that overflow does not
-% occur for large kappa; the scaling factors cancel in the ratio.
-% A safeguard reverts any Newton step that produces a non-positive or
-% non-finite result back to the Banerjee approximation for that element.
+% The ratio A_p is computed as exp(log I_{p/2}(kappa)-log I_{p/2-1}(kappa))
+% with the two logarithms given by logBesseliFS. In this way the ratio is
+% available also when the two Bessel functions overflow (large kappa) or
+% underflow (large p and moderate kappa: this is the usual situation for
+% embeddings in hundreds of dimensions, where the direct ratio of two
+% calls to besseli is 0/0). A safeguard reverts any Newton step that
+% produces a non-positive or non-finite result back to the Banerjee
+% approximation for that element.
 %
 % CLIPPING OF r NEAR 1
 %
@@ -103,7 +107,7 @@ function kappa = kappaFS(r, p, newtonsteps)
 %   Watson, G.S. (1983), Statistics on Spheres, Wiley, New York.
 %   (derivative of A_p; original result attributed to Watson 1944)
 %
-% See also: tclustvmf, restrKappaFS, vMFlogC
+% See also: tclustvmf, restrKappaFS, vMFlogC, logBesseliFS, vMFrnd
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -145,20 +149,35 @@ function kappa = kappaFS(r, p, newtonsteps)
 %}
 %
 %{
-    % Vectorized use across groups inside a clustering loop.
+    %% Estimation of kappa from simulated vMF data, for several groups at once.
     % kappaFS accepts a vector of mean resultant lengths r (one per group)
     % and returns a vector of kappa estimates in one call.
     rng(1)
     p = 3;
-    n1 = 100; n2 = 150; n3 = 80;
-    normalize_rows = @(X) X ./ vecnorm(X,2,2);
-    Y1 = normalize_rows(randn(n1,p) + [5 0 0]);
-    Y2 = normalize_rows(randn(n2,p) + [0 5 0]);
-    Y3 = normalize_rows(randn(n3,p) + [0 0 5]);
+    n1 = 1000; n2 = 1500; n3 = 800;
+    ktrue = [40 15 5];
+    Y1 = vMFrnd(n1, [1 0 0], ktrue(1));
+    Y2 = vMFrnd(n2, [0 1 0], ktrue(2));
+    Y3 = vMFrnd(n3, [0 0 1], ktrue(3));
     R = [norm(sum(Y1))/n1, norm(sum(Y2))/n2, norm(sum(Y3))/n3];
     kappa = kappaFS(R, p);
     fprintf('Group mean resultant lengths: %.3f %.3f %.3f\n', R);
+    fprintf('True kappa:                   %.2f  %.2f  %.2f\n', ktrue);
     fprintf('Estimated kappa:              %.2f  %.2f  %.2f\n', kappa);
+%}
+%
+%{
+    %% High dimension (p=1536, as for document embeddings).
+    % For this dimension and this value of kappa the two Bessel functions
+    % in A_p(kappa) underflow, and their direct ratio cannot be computed.
+    rng(2)
+    p = 1536; ktrue = 300;
+    Y = vMFrnd(2000, ones(1,p), ktrue);
+    r = norm(mean(Y,1));
+    fprintf('Direct ratio of Bessel functions at the true kappa: %g\n', ...
+        besseli(p/2,ktrue,1)/besseli(p/2-1,ktrue,1));
+    fprintf('kappa: true %g, Banerjee approximation %.3f, kappaFS %.3f\n', ...
+        ktrue, kappaFS(r,p,0), kappaFS(r,p));
 %}
 
 %% Beginning of code
@@ -178,7 +197,8 @@ nu = p/2 - 1;
 for it = 1:newtonsteps
     % kappaeval avoids a 0/0 evaluation of Ap at kappa=0 (uniform limit)
     kappaeval = max(kappa, 1e-8);
-    Apk = besseli(nu+1, kappaeval, 1) ./ besseli(nu, kappaeval, 1);
+    % A_p(kappa) through the logarithms of the two Bessel functions
+    Apk = exp(logBesseliFS(nu+1, kappaeval) - logBesseliFS(nu, kappaeval));
     derivAp = 1 - Apk.^2 - ((p-1)./kappaeval).*Apk;
     kappanew = kappa - (Apk - r) ./ derivAp;
     % safeguard: if a Newton step overshoots into non-positive territory,

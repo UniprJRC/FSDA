@@ -49,7 +49,10 @@ function kappa = restrKappaFS(kappaHat, r, niini, p, restrfactor, tol)
 %
 %  Optional input arguments:
 %
-%         tol: Tolerance passed to fminbnd. Scalar. Default 1e-08.
+%         tol: Tolerance of the optimiser. Scalar. Tolerance passed to
+%               fminbnd. The default is 1e-08.
+%                 Example - 1e-6
+%                 Data Types - double
 %
 %  Output:
 %
@@ -57,7 +60,7 @@ function kappa = restrKappaFS(kappaHat, r, niini, p, restrfactor, tol)
 %              size as kappaHat. max(kappa)/min(kappa) <= restrfactor
 %              among the originally non-empty groups.
 %
-% See also: restreigen, kappaFS, vMFlogC, tclustmvmf
+% See also: restreigen, kappaFS, vMFlogC, tclustvmf
 %
 % References:
 %

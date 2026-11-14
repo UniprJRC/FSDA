@@ -5,7 +5,7 @@ function logf = logvMFpdfFS(Y, mu, kappa)
 %
 %   logvMFpdfFS computes, for an n-by-p matrix Y of unit vectors (rows are
 %   points on the unit hypersphere S^(p-1) in R^p), the log-density of a
-%   single von Mises-Fisher (vMF) component with mean direction mu and
+%   von Mises-Fisher (vMF) component with mean direction mu and
 %   concentration kappa:
 %
 %       log f(y; mu, kappa) = log C_p(kappa) + kappa * mu' * y
@@ -18,11 +18,15 @@ function logf = logvMFpdfFS(Y, mu, kappa)
 %   order nu. Special cases: p=2 gives the von Mises distribution on the
 %   circle (I_{0}(kappa) in the denominator); p=3 gives the spherical vMF
 %   with C_3(kappa) = kappa / (4*pi*sinh(kappa)). The normalizing constant
-%   is evaluated entirely in log-space via vMFlogC, which uses the
-%   exponentially-scaled Bessel function besseli(...,1) to avoid overflow
-%   for large kappa or large p; the scaling factor cancels in the log. This
-%   is the vMF counterpart of the log-space evaluation performed by
-%   logmvnpdfFS for the Gaussian density used in tclust.
+%   is evaluated entirely in log-space via vMFlogC, which is reliable for
+%   large kappa and for large p. This is the vMF counterpart of the
+%   log-space evaluation performed by logmvnpdfFS for the Gaussian density
+%   used in tclust.
+%
+%   Several components can be evaluated in a single call: if mu is a
+%   k-by-p matrix and kappa a vector of length k, the output is the
+%   n-by-k matrix of the log-densities of the k components, computed with
+%   one matrix product. This is how tclustvmf computes the E-step.
 %
 %   The special case kappa=0 (or kappa<0, treated as 0) returns the
 %   log-density of the uniform distribution on S^(p-1), which equals
@@ -39,26 +43,30 @@ function logf = logvMFpdfFS(Y, mu, kappa)
 %               responsible for the unit-norm check, exactly as tclust
 %               checks Y once before the main loop rather than inside
 %               logmvnpdfFS.
-%           mu: Mean direction. Vector. 1-by-p unit vector specifying the
-%               centre of the vMF distribution on S^(p-1). Must have
-%               norm 1 (not enforced here; caller's responsibility).
-%        kappa: Concentration parameter. Scalar. Non-negative value.
-%               kappa=0 is the uniform distribution on S^(p-1). Larger
-%               kappa concentrates mass more tightly around mu: the
-%               distribution is approximately N(mu, (1/kappa)*I) on the
-%               tangent plane at mu for large kappa.
+%           mu: Mean direction(s). Vector of length p, or k-by-p matrix
+%               with one mean direction per row. Rows must have norm 1
+%               (not enforced here; caller's responsibility).
+%        kappa: Concentration parameter(s). Scalar, or vector of length k.
+%               Non-negative values. kappa=0 is the uniform distribution
+%               on S^(p-1). Larger kappa concentrates mass more tightly
+%               around mu: the distribution is approximately
+%               N(mu, (1/kappa)*I) on the tangent plane at mu for large
+%               kappa.
 %
 %  Optional input arguments:
 %
 % (none beyond what is listed above; all three arguments are positional)
 %
 %
-%  Output: 
+%  Output:
 %
-%        logf : Log-density values. Vector. n-by-1 vector containing
-%               log f(y_i; mu, kappa) for each row y_i of Y. When
-%               kappa<=0 all entries are equal to vMFlogC(0,p), the
-%               log-density of the uniform distribution on S^(p-1).
+%        logf : Log-density values. n-by-1 vector containing
+%               log f(y_i; mu, kappa) for each row y_i of Y, or n-by-k
+%               matrix whose column j refers to component j when k
+%               components are given. When kappa(j)<=0 all entries of
+%               column j are equal to vMFlogC(0,p), the log-density of
+%               the uniform distribution on S^(p-1). When kappa(j) is NaN
+%               column j is NaN.
 %
 % References:
 %
@@ -70,7 +78,7 @@ function logf = logvMFpdfFS(Y, mu, kappa)
 %   Distributions, Journal of Machine Learning Research, Vol. 6,
 %   pp. 1345-1382. (log-space evaluation of C_p(kappa))
 %
-% See also: tclustvmf, vMFlogC, kappaFS
+% See also: tclustvmf, vMFlogC, kappaFS, vMFrnd, vMFcap, sphereplot
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -83,7 +91,7 @@ function logf = logvMFpdfFS(Y, mu, kappa)
 %
 %{
     % Log-density of a circular (p=2) vMF distribution (von Mises).
-    % For p=2, kappa=5, mu=[1 0], evaluate log f at 50 points on the circle
+    % For p=2, kappa=5, mu=[1 0], evaluate log f at 200 points on the circle
     % and plot the density. The mode is at theta=0 (direction of mu).
     theta = linspace(0, 2*pi, 200)';
     Y = [cos(theta), sin(theta)];
@@ -97,14 +105,44 @@ function logf = logvMFpdfFS(Y, mu, kappa)
 %}
 %
 %{
-    % Spherical (p=3) vMF: compare two concentrations.
-    % A large kappa gives a tightly peaked density; kappa=0 is uniform.
-    % Evaluate log f at 1000 random unit vectors on S^2.
+    %% Log-density of simulated vMF data shown on the sphere.
+    % The units are divided into 4 groups according to the quartiles of
+    % their log-density: the groups are concentric circular rings around
+    % the mean direction.
+    rng(1)
+    n = 1000; mu = [1 0 0]; kappa = 20;
+    Y = vMFrnd(n, mu, kappa);
+    logf = logvMFpdfFS(Y, mu, kappa);
+    q = quantile(logf, [0.25 0.5 0.75]);
+    group = 1 + (logf<q(3)) + (logf<q(2)) + (logf<q(1));
+    sphereplot(Y, 'group', group, 'labels', ...
+        {'highest density','3rd quarter','2nd quarter','lowest density'});
+%}
+%
+%{
+    %% Several components in one call: discriminant analysis.
+    % Units generated from two vMF distributions are assigned to the
+    % component with the largest log-density. mu is a 2-by-3 matrix and
+    % kappa a vector of length 2; the output has two columns.
+    rng(2)
+    mu = [1 0 0; 0 1 0]; kappa = [30; 10];
+    Y = [vMFrnd(300, mu(1,:), kappa(1)); vMFrnd(300, mu(2,:), kappa(2))];
+    logf = logvMFpdfFS(Y, mu, kappa);
+    [~, group] = max(logf, [], 2);
+    truegroup = [ones(300,1); 2*ones(300,1)];
+    fprintf('Proportion of units correctly assigned: %.3f\n', mean(group==truegroup));
+    sphereplot(Y, 'group', group, 'cap', struct('mu', mu, 'kappa', kappa));
+%}
+%
+%{
+    % Spherical (p=3) vMF: compare different concentrations.
+    % The log-density is evaluated at 1000 units uniformly distributed on
+    % the sphere. A large kappa gives a tightly peaked density; kappa=0
+    % is the uniform density.
     rng(1)
     n = 1000;
-    Y = randn(n, 3);
-    Y = Y ./ vecnorm(Y, 2, 2);    % project to S^2
     mu = [0 0 1];                  % north pole
+    Y = vMFrnd(n, mu, 0);          % uniform on S^2
     for kappa = [0, 1, 10, 50]
         logf = logvMFpdfFS(Y, mu, kappa);
         fprintf('kappa=%3d: mean logf = %8.3f, range = [%.3f, %.3f]\n', ...
@@ -118,9 +156,8 @@ function logf = logvMFpdfFS(Y, mu, kappa)
     % where omega_{p-1} = 2*pi^(p/2)/Gamma(p/2) is the surface area of S^(p-1).
     rng(1)
     for p = [2, 3, 5, 10]
-        Y = randn(50, p);
-        Y = Y ./ vecnorm(Y, 2, 2);
         mu = eye(1, p);    % arbitrary unit vector
+        Y = vMFrnd(50, mu, 0);
         logf = logvMFpdfFS(Y, mu, 0);
         omega = 2 * pi^(p/2) / gamma(p/2);
         expected = -log(omega);
@@ -131,14 +168,31 @@ function logf = logvMFpdfFS(Y, mu, kappa)
 
 %% Beginning of code
 
-p = size(Y,2);
+[n, p] = size(Y);
 
-if kappa <= 0
-    logf = repmat(vMFlogC(kappa,p), size(Y,1), 1);
-    return
+% one component: mu can be a row or a column vector
+if isscalar(kappa) && isvector(mu)
+    mu = mu(:)';
+end
+kappa = kappa(:)';
+k = numel(kappa);
+if size(mu,1) ~= k || size(mu,2) ~= p
+    error('FSDA:logvMFpdfFS:WrongInput', ...
+        'mu must be a k-by-p matrix, where k is the number of elements of kappa and p the number of columns of Y')
 end
 
-logf = vMFlogC(kappa,p) + kappa * (Y * mu');
+% log C_p(kappa_j) in all the rows of column j (uniform density if
+% kappa_j<=0)
+logf = repmat(vMFlogC(kappa, p), n, 1);
+
+% kappa_j * mu_j' * y_i for the components with positive concentration
+pos = kappa > 0;
+if any(pos)
+    logf(:, pos) = logf(:, pos) + (Y*mu(pos,:)').*kappa(pos);
+end
+
+% components which are not defined
+logf(:, isnan(kappa)) = NaN;
 
 end
 %FScategory:CLUS-RobClaMULT

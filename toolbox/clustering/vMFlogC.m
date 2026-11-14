@@ -10,10 +10,11 @@ function logCp = vMFlogC(kappa,p)
 %       log C_p(kappa) = (p/2-1)*log(kappa) - (p/2)*log(2*pi) - log(I_{p/2-1}(kappa))
 %
 %   where I_nu denotes the modified Bessel function of the first kind of
-%   order nu. The Bessel function is evaluated in exponentially-scaled form
-%   (besseli(...,1)) to avoid overflow for large kappa or large p; the
-%   scaling factor is then absorbed back into the log via
-%   log(I_nu(kappa)) = log(besseli(nu,kappa,1)) + kappa.
+%   order nu. The logarithm of the Bessel function is computed by
+%   logBesseliFS, which uses the exponentially-scaled form besseli(...,1)
+%   to avoid overflow for large kappa, and an asymptotic expansion when
+%   the Bessel function underflows, as it happens for large p (see the
+%   section "Overflow and underflow protection" below).
 %
 %   Special case kappa=0 (or kappa<0, treated as 0): the vMF distribution
 %   degenerates to the uniform distribution on S^(p-1) with density
@@ -62,13 +63,19 @@ function logCp = vMFlogC(kappa,p)
 %
 % These can be verified against logvMFpdfFS output or computed directly.
 %
-% OVERFLOW PROTECTION
+% OVERFLOW AND UNDERFLOW PROTECTION
 %
 % For large kappa (e.g. kappa>700 in double precision), I_nu(kappa)
 % overflows to Inf. The scaled form besseli(nu,kappa,1)=exp(-kappa)*I_nu(kappa)
 % remains in [0,1] and is then un-scaled in log-space by adding kappa back.
-% This is the standard trick used throughout the FSDA directional-data
-% functions.
+% For large p the opposite problem arises: the order nu=p/2-1 is large
+% and I_nu(kappa) is smaller than the smallest positive double unless
+% kappa is also large (for example for p=768 and kappa=50, or p=1536 and
+% kappa=300). In this case besseli returns 0, its logarithm is -Inf and
+% the normalizing constant would be +Inf. logBesseliFS detects this case
+% and uses the uniform asymptotic expansion for large order, so that
+% vMFlogC can be used with embeddings in hundreds or thousands of
+% dimensions.
 %
 % References:
 %
@@ -80,7 +87,7 @@ function logCp = vMFlogC(kappa,p)
 %   Distributions, Journal of Machine Learning Research, Vol. 6,
 %   pp. 1345-1382. (log-space evaluation of C_p(kappa))
 %
-% See also: logvMFpdfFS, kappaFS, restrKappaFS
+% See also: logvMFpdfFS, kappaFS, restrKappaFS, logBesseliFS
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -135,6 +142,20 @@ function logCp = vMFlogC(kappa,p)
                    - kappa + 0.5*log(2*pi./kappa);
     fprintf('  large-kappa approx: %.4f\n', logCp_approx);
 %}
+%
+%{
+    %% High dimension: the constant is finite when the Bessel function underflows.
+    % p=1536 (dimension of common document embeddings). The value is
+    % checked by numerical integration: the density of t=mu'*y is
+    % C_p(kappa)*omega_{p-2}*exp(kappa*t)*(1-t^2)^((p-3)/2), where
+    % omega_{p-2} is the surface area of S^(p-2), and it integrates to 1.
+    p = 1536; kappa = 300;
+    logC = vMFlogC(kappa, p);
+    logomega = log(2) + ((p-1)/2)*log(pi) - gammaln((p-1)/2);
+    f = @(t) exp(logC + logomega + kappa*t + ((p-3)/2)*log1p(-t.^2));
+    fprintf('log C_p(kappa) = %.4f\n', logC);
+    fprintf('Integral of the density of mu''*y: %.8f\n', integral(f, 0, 0.5));
+%}
 
 %% Beginning of code
 
@@ -144,7 +165,9 @@ logCp = zeros(size(kappa));
 pos = kappa>0;
 if any(pos)
     kp = kappa(pos);
-    logIbessel = log(besseli(nu, kp, 1)) + kp;
+    % log(I_nu(kappa)): reliable also when I_nu(kappa) underflows (large
+    % p) or overflows (large kappa)
+    logIbessel = logBesseliFS(nu, kp);
     logCp(pos) = (p/2 - 1).*log(kp) - (p/2)*log(2*pi) - logIbessel;
 end
 if any(~pos)

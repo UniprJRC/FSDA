@@ -83,9 +83,28 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %               initialise a non-degenerate vMF estimate (direction from
 %               the resultant vector, kappa from the mean resultant
 %               length via kappaFS). Set nsamp=0 to enumerate all
-%               subsets.
+%               subsets. With init='kmeans++' it is the number of random
+%               starts (default 300), see init.
 %                 Example - 'nsamp',500
 %                 Data Types - double
+%        init : Initialisation of the starting solutions. Character, matrix,
+%               vector or cell array. 'auto' (default) uses 'subsets'
+%               unless k*(p+1) is larger than n/2 (typical of high
+%               dimensional data), in which case it uses 'kmeans++'.
+%               'subsets' starts each of the nsamp trials from an
+%               elemental subset of k*(p+1) random units, as in tclust.
+%               'kmeans++' starts each trial from k units chosen with the
+%               k-means++ rule on the cosine distance and from the
+%               partition obtained by assigning every unit to the closest
+%               of them. With 'kmeans++' nsamp must be positive and its
+%               default is 300. A user-guided start can be given as a
+%               k-by-p matrix of starting mean directions, or as a vector
+%               of n labels (0 for units which are not used, 1,...,k for
+%               the groups, k+1 for the noise units if noise=true); a
+%               cell array contains several of them, one per trial. In
+%               this case nsamp is ignored. See More About.
+%                 Example - 'init','kmeans++'
+%                 Data Types - char | double | cell
 %     refsteps: Number of concentration steps (CEM/EM iterations) run
 %               on each subsample before comparing objective values.
 %               Scalar. Default 15.
@@ -113,11 +132,11 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %                 Example - 'newtonsteps',5
 %                 Data Types - double
 %     conflev : Confidence level for the group caps returned in
-%               out.ellipse and, when plots=1, drawn as boundary circles.
-%               Scalar in (0,1). The cap is the region on S^(p-1) where
-%               the vMF density exceeds its (1-conflev) quantile, i.e.
-%               all directions within an angular radius theta_j of mu_j,
-%               where theta_j = arccos(1 + log(1-conflev)/kappa_j).
+%               out.ellipse and, when plots=1, drawn in the plot.
+%               Scalar in (0,1). The cap of group j is the region of
+%               S^(p-1) where the vMF density exceeds a threshold, i.e.
+%               the set of directions y with mu_j'*y>=t_j, whose
+%               probability under vMF(mu_j,kappa_j) is conflev.
 %               Default 0.95. See vMFcap.m.
 %                 Example - 'conflev',0.90
 %                 Data Types - double
@@ -144,12 +163,16 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %                 Example - 'Ysave',true
 %                 Data Types - logical
 %      plots  : Plot the resulting classification on the unit sphere.
-%               Scalar. Default 0. If plots=1, produces a 3D scatter
-%               with points and/or group confidence caps (see plottype),
-%               colored by final assignment (trimmed units in red, noise
-%               units in gray when noise=true). For p==3 this is the
-%               native space; for p~=3 a 3D view must be supplied via
-%               plotdims.
+%               Scalar. Default 0. If plots=1 the units are shown
+%               coloured by final assignment (trimmed units as red
+%               crosses, noise units in gray when noise=true), with
+%               and/or without the confidence caps of the groups (see
+%               plottype). The plot is produced by sphereplot when p=2
+%               (unit circle) or p=3 (unit sphere, which can be rotated
+%               with the mouse) and by sphereprojplot when p>3 (the data
+%               are projected on a 3-dimensional space, see plotdims).
+%               Call these two functions directly, with out.idx,
+%               out.muopt and out.kappaopt, to personalise the plot.
 %                 Example - 'plots',1
 %                 Data Types - double
 %    plottype : What to draw when plots=1. String, one of 'points'
@@ -157,18 +180,19 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %               omitted since they carry no group), or 'both'.
 %                 Example - 'plottype','both'
 %                 Data Types - char|string
-%    plotdims : 3D view of Y used for plotting when p~=3. Either a
+%    plotdims : 3-dimensional space used for the plot when p>3. It is
+%               passed to sphereprojplot as option proj. If it is empty
+%               (default) the space is chosen automatically: it is the
+%               space which contains the estimated mean directions of the
+%               groups, completed if k<3 with the principal directions of
+%               the data orthogonal to them. Otherwise it is either a
 %               vector of 3 distinct coordinate indices in 1:p (a simple
 %               selection of original variables), or a p-by-3 matrix
-%               (any linear projection, e.g. leading PCA loadings) used
-%               as Y*plotdims. Required if plots=1 and p~=3: which 3
-%               coordinates or which projection best represents the
-%               high-dimensional sphere is left to the user. When a
-%               projection is used, confidence caps are shown as an
-%               approximate projected point cloud (see vMFcap.m and
-%               "More About" below).
+%               which defines a linear projection, or one of the
+%               character vectors 'means' and 'pca' (see sphereprojplot).
+%               It is ignored when p<=3.
 %                 Example - 'plotdims',[3 7 42]
-%                 Data Types - double
+%                 Data Types - double | char
 %      nocheck: Skip the automated NaN/Inf check on Y. Scalar. Default 0.
 %               Set to 1 for speed when the data are guaranteed clean.
 %                 Example - 'nocheck',1
@@ -211,8 +235,8 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %                    the conflev confidence cap of group j in the native
 %                    p-dimensional space (see vMFcap.m): an exact circle
 %                    if p==3, a Monte Carlo sample of the boundary
-%                    (p-2)-sphere otherwise. Project via plotdims before
-%                    superimposing on a 3D view of Y.
+%                    (p-2)-sphere if p>3. It can be passed to sphereplot
+%                    or sphereprojplot as option cap.
 %      out.conflev = confidence level used for out.ellipse.
 %         out.siz  = matrix as returned by tabulate(out.idx): group id,
 %                    count, percentage. Rows for the noise group (k+1)
@@ -233,7 +257,8 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %                    computed as -2*sum_i log(sum_j pi_j*f(y_i;mu_j,kappa_j))
 %                    over the h units retained by the mixture trimming
 %                    criterion. This is the numerator of out.MIXMIX.
-%           out.bs = indices of the elemental subset which gave rise to
+%           out.bs = indices of the elemental subset (init='subsets') or of
+%                    the k seed units (init='kmeans++') which gave rise to
 %                    the best solution (the one maximising out.obj across
 %                    all nselected subsamples).
 %     out.fullsol  = nselected-by-1 vector of the objective function
@@ -288,6 +313,51 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %       resultant length r_j = ||R_j||/n_j via kappaFS.
 %  (iv) Restriction: apply restrKappaFS to enforce
 %       max(kappa_j)/min(kappa_j) <= restrfactor.
+%
+% INITIALISATION (OPTION init)
+
+% With init='auto' the choice is made on the number of units needed by an
+% elemental subset: if k*(p+1)>n/2 init='kmeans++' is used, because such
+% subsets are not a small random sample any more (and for k*(p+1)>n they
+% cannot be extracted). A line is displayed when msg>0.
+%
+% K-MEANS++ (init='kmeans++')
+%
+% Each of the nsamp trials is started as follows (function vmfseedkmpp,
+% at the end of this file):
+%  (a) the first seed is a unit chosen uniformly at random; the j-th seed
+%      is a unit chosen with probability proportional to d_i^2, where
+%      d_i=1-y_i'*s is the cosine distance of unit i from the closest
+%      seed s already chosen (seeds themselves have probability 0);
+%  (b) every unit is assigned to the seed with the largest cosine, which
+%      is the partition of one step of spherical k-means; the seeds
+%      belong to their own group;
+%  (c) mu_j is the direction of the resultant vector of group j and
+%      r_j=||R_j||/n_j, as in any M-step. The initial weights are
+%      n_j*h/n; with noise=true the noise component gets 10% of h and the
+%      groups share the other 90%.
+% USER-GUIDED START (init is a matrix, a vector or a cell array)
+%
+% If init is a k-by-p matrix each row is a starting mean direction (it is
+% normalised): the units are assigned to the closest direction as in step
+% (b) above, and (c) follows; a direction which attracts no unit starts
+% with r_j=0 and weight 1. If init is a vector with n elements the groups
+% are defined by the labels (0=ignored, j=1,...,k group j, k+1 noise
+% unit if noise=true) and step (c) follows, with weights proportional to
+% the number of units of each label (10% to the noise if no unit has
+% label k+1). Each group needs at least one unit. If init is a cell array
+% each element, of one of these two types, is a trial: nsamp is ignored
+% and the best trial is kept. out.bs is empty.
+%
+% From this point the trial is identical to a trial started from an
+% elemental subset (concentration steps, restriction, objective).
+% The cost of (a)-(b) is k matrix-vector products with Y, that is
+% O(n*p*k), against the O(k*p*p) work of the elemental subsets, and no
+% unit has to be exchanged with another group to obtain a valid start
+% even if p is of the order of n. Since the rule favours units which are
+% far from the seeds, trials whose seeds fall on outliers or noise are
+% possible: this is the role of the nsamp trials, and the best one is
+% kept, as in the subsets approach.
 %
 % PARAMETER COUNT AND INFORMATION CRITERIA
 %
@@ -353,16 +423,26 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 % noise component explicitly models contamination that is itself uniformly
 % spread over the sphere, without spending trimming budget on it.
 %
-% HIGH-DIMENSIONAL PLOTTING (p~=3)
+% HIGH-DIMENSIONAL PLOTTING (p>3)
 %
 % The clustering itself is entirely dimension-agnostic, but visualising
-% S^(p-1) in 3D is not. tclustvmf requires an explicit 'plotdims' (3
-% coordinate indices or a p-by-3 projection matrix) rather than picking
-% a view automatically; which 3 coordinates or which projection is most
-% informative is left to the user. When a linear projection is used,
-% points appear at their projected (generally sub-unit-norm) coordinates
-% and confidence caps are shown as approximate projected point clouds
-% rather than exact circles (see vMFcap.m).
+% S^(p-1) in 3D is not. When p>3 the plot is produced by sphereprojplot,
+% which projects the data orthogonally on a 3-dimensional space (by
+% default the one which contains the estimated mean directions; see
+% option plotdims). Differently from the case p<=3 this plot is not an
+% exact representation: the projected units lie inside the unit sphere,
+% the groups look tighter than they are because only 2 of the p-1
+% directions of within-group variability are visible, and each cap is
+% represented by the circle which delimits its projection. The title of
+% the plot reports the fraction of the squared length of the units which
+% is retained by the projection. See the help of sphereprojplot.
+%
+% HIGH-DIMENSIONAL COMPUTATIONS
+%
+% For p in the hundreds or thousands the Bessel functions which appear
+% in the normalizing constant and in the equation for kappa cannot be
+% represented in double precision. vMFlogC and kappaFS use logBesseliFS,
+% which returns their logarithm in all cases.
 %
 % References:
 %
@@ -392,7 +472,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %   Mardia, K.V. and Jupp, P.E. (2000), Directional Statistics, Wiley,
 %   Chichester. (vMF distribution, mean resultant length, kappa estimation)
 %
-% See also: tclust, tkmeans, logvMFpdfFS, kappaFS, restrKappaFS, vMFlogC, vMFcap
+% See also: tclust, tkmeans, tclustkent, sphereplot, sphereprojplot, vMFrnd, logvMFpdfFS, kappaFS, restrKappaFS, vMFlogC, vMFcap
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -411,10 +491,9 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     n1=150; n2=150; nnoise=30;
     mu1=[1 0 0]; kappa1=30;
     mu2=[0 1 0]; kappa2=15;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF(mu1,kappa1,n1); simplevMF(mu2,kappa2,n2)];
-    noisePts = normalize_rows(randn(nnoise,3));
+    Y = [vMFrnd(n1,mu1,kappa1); vMFrnd(n2,mu2,kappa2)];
+    % uniform noise on the sphere (vMF with kappa=0)
+    noisePts = vMFrnd(nnoise,[0 0 1],0);
     Y = [Y; noisePts];
     out = tclustvmf(Y,2,0.1,50,'plots',1,'plottype','both');
 %}
@@ -425,9 +504,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     % rather than estimated from the data.
     rng(1)
     n1=150; n2=150;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF([1 0 0],30,n1); simplevMF([0 1 0],15,n2)];
+    Y = [vMFrnd(n1,[1 0 0],30); vMFrnd(n2,[0 1 0],15)];
     out1 = tclustvmf(Y,2,0.05,20,'equalweights',false,'plots',0);
     out2 = tclustvmf(Y,2,0.05,20,'equalweights',true, 'plots',0);
     disp(out1.kappaopt); disp(out2.kappaopt);
@@ -439,9 +516,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     % for trimming and a soft M-step.
     rng(1)
     n1=150; n2=150;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF([1 0 0],20,n1); simplevMF([0 1 0],10,n2)];
+    Y = [vMFrnd(n1,[1 0 0],20); vMFrnd(n2,[0 1 0],10)];
     out0 = tclustvmf(Y,2,0.05,20,'mixt',0,'plots',0);
     out2 = tclustvmf(Y,2,0.05,20,'mixt',2,'plots',0);
     fprintf('mixt=0 obj=%.2f, mixt=2 obj=%.2f\n',out0.obj,out2.obj);
@@ -452,10 +527,39 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     % Increasing nsamp improves solution quality at the cost of runtime.
     rng(1)
     n1=200; n2=200;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];
+    Y = [vMFrnd(n1,[1 0 0],25); vMFrnd(n2,[0 1 0],12)];
     out = tclustvmf(Y,2,0.05,20,'nsamp',100,'plots',0);
+%}
+%
+%{
+    %% High dimension: starting solutions chosen with the cosine distance.
+    % With p=300 and k=3 an elemental subset would need k*(p+1)=903 units,
+    % more than the n=490 units of the sample: the default init='subsets'
+    % cannot be used, whereas init='kmeans++' needs k units per trial.
+    % The data are 3 vMF groups plus uniform noise. The first 3 axes of
+    % the space are used to show the result.
+    rng(1)
+    p=300;
+    mu=eye(p);
+    Y = [vMFrnd(150,mu(1,:),300); vMFrnd(150,mu(2,:),300); ...
+         vMFrnd(150,mu(3,:),300); vMFrnd(40,mu(1,:),0)];
+    out = tclustvmf(Y,3,0.05,20,'init','kmeans++','nsamp',50,'noise',true, ...
+        'plots',1,'plotdims',[1 2 3]);
+    disp(out.siz)
+%}
+%
+%{
+    %% User-guided start: starting directions and starting labels.
+    % init can be a k-by-p matrix of starting mean directions (here the
+    % first two axes of the space) or a vector with the n labels of an
+    % initial partition (0 for units which are not used). A cell array
+    % would contain several starts.
+    rng(1)
+    Y = [vMFrnd(200,[1 0 0],25); vMFrnd(200,[0 1 0],12)];
+    out1 = tclustvmf(Y,2,0.05,20,'init',[1 0 0; 0 1 0],'plots',0);
+    lab = zeros(400,1); lab(1:20)=1; lab(201:220)=2;
+    out2 = tclustvmf(Y,2,0.05,20,'init',lab,'plots',0);
+    fprintf('Objective: %.2f (directions), %.2f (labels)\n',out1.obj,out2.obj);
 %}
 %
 %{
@@ -463,9 +567,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     % Fewer steps speed up the loop; tighter tolerance improves convergence.
     rng(1)
     n1=150; n2=150;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];
+    Y = [vMFrnd(n1,[1 0 0],25); vMFrnd(n2,[0 1 0],12)];
     out = tclustvmf(Y,2,0.05,20,'refsteps',10,'reftol',1e-08,'plots',0);
 %}
 %
@@ -486,9 +588,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     % length into a concentration parameter (see kappaFS).
     rng(1)
     n1=150; n2=150;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];
+    Y = [vMFrnd(n1,[1 0 0],25); vMFrnd(n2,[0 1 0],12)];
     out = tclustvmf(Y,2,0.05,20,'newtonsteps',5,'plots',0);
 %}
 %
@@ -497,9 +597,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     % out.ellipse{j} contains the boundary of the conflev cap of group j.
     rng(1)
     n1=150; n2=150;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];
+    Y = [vMFrnd(n1,[1 0 0],25); vMFrnd(n2,[0 1 0],12)];
     out = tclustvmf(Y,2,0.05,20,'conflev',0.90,'plots',1,'plottype','ellipse');
 %}
 %
@@ -508,9 +606,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     % More points give a smoother circle when p==3.
     rng(1)
     n1=150; n2=150;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];
+    Y = [vMFrnd(n1,[1 0 0],25); vMFrnd(n2,[0 1 0],12)];
     out = tclustvmf(Y,2,0.05,20,'ellipsenpts',200,'plots',0);
     disp(size(out.ellipse{1}));
 %}
@@ -520,9 +616,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     % Increase it for small samples or high-resolution displays.
     rng(1)
     n1=100; n2=100;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];
+    Y = [vMFrnd(n1,[1 0 0],25); vMFrnd(n2,[0 1 0],12)];
     out = tclustvmf(Y,2,0.05,20,'plots',1,'markersize',20);
 %}
 %
@@ -531,9 +625,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     % msg=0 runs silently; msg=1 (default) prints basic progress.
     rng(1)
     n1=150; n2=150;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];
+    Y = [vMFrnd(n1,[1 0 0],25); vMFrnd(n2,[0 1 0],12)];
     out = tclustvmf(Y,2,0.05,20,'msg',0,'plots',0);
 %}
 %
@@ -541,9 +633,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     %% The Ysave option: store the (possibly normalised) data in out.Y.
     rng(1)
     n1=150; n2=150;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];
+    Y = [vMFrnd(n1,[1 0 0],25); vMFrnd(n2,[0 1 0],12)];
     out = tclustvmf(Y,2,0.05,20,'Ysave',true,'plots',0);
     disp(size(out.Y));
 %}
@@ -553,9 +643,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     % plots=1 opens a 3D sphere figure with the final assignment.
     rng(1)
     n1=150; n2=150;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];
+    Y = [vMFrnd(n1,[1 0 0],25); vMFrnd(n2,[0 1 0],12)];
     out = tclustvmf(Y,2,0.05,20,'plots',1);
 %}
 %
@@ -564,26 +652,29 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     % 'ellipse' draws only the confidence caps; 'both' adds the data points.
     rng(1)
     n1=150; n2=150;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];
+    Y = [vMFrnd(n1,[1 0 0],25); vMFrnd(n2,[0 1 0],12)];
     out = tclustvmf(Y,2,0.05,20,'plots',1,'plottype','both');
 %}
 %
 %{
-    %% The plotdims option: viewing high-dimensional data in 3D.
+    %% High-dimensional data and the plotdims option.
     % High-dimensional case (p=50, e.g. embeddings). The clustering
-    % itself needs nothing special; only plotting requires choosing a 3D
-    % view via 'plotdims', which is not picked automatically.
+    % itself needs nothing special. The plot is produced by
+    % sphereprojplot: by default the data are projected on the
+    % 3-dimensional space which contains the estimated mean directions
+    % of the groups; with option plotdims the user chooses 3 coordinates
+    % or supplies a projection matrix.
     rng(2)
     p=50; n1=200; n2=200; nnoise=40;
-    mu1=zeros(1,p); mu1(1)=1;   kappa1=25;
-    mu2=zeros(1,p); mu2(2)=1;   kappa2=15;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,p)/sqrt(kappa));
-    Y = [simplevMF(mu1,kappa1,n1); simplevMF(mu2,kappa2,n2)];
-    noisePts = normalize_rows(randn(nnoise,p));
+    mu1=zeros(1,p); mu1(1)=1;   kappa1=100;
+    mu2=zeros(1,p); mu2(2)=1;   kappa2=60;
+    Y = [vMFrnd(n1,mu1,kappa1); vMFrnd(n2,mu2,kappa2)];
+    % uniform noise on the hypersphere (vMF with kappa=0)
+    noisePts = vMFrnd(nnoise,mu1,0);
     Y = [Y; noisePts];
+    % default projection
+    out = tclustvmf(Y,2,0.1,50,'plots',1,'plottype','both');
+    % coordinates 1, 2 and 3
     out = tclustvmf(Y,2,0.1,50,'plots',1,'plottype','both','plotdims',[1 2 3]);
 %}
 %
@@ -592,9 +683,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     % Useful for speed when the data are guaranteed to be clean.
     rng(1)
     n1=150; n2=150;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF([1 0 0],25,n1); simplevMF([0 1 0],12,n2)];
+    Y = [vMFrnd(n1,[1 0 0],25); vMFrnd(n2,[0 1 0],12)];
     out = tclustvmf(Y,2,0.05,20,'nocheck',1,'plots',0);
 %}
 %
@@ -608,10 +697,9 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
     n1=150; n2=150; nnoise=60;
     mu1=[1 0 0]; kappa1=30;
     mu2=[0 1 0]; kappa2=15;
-    normalize_rows = @(X) X ./ max(vecnorm(X,2,2), eps);
-    simplevMF = @(mu,kappa,n) normalize_rows(mu + randn(n,3)/sqrt(kappa));
-    Y = [simplevMF(mu1,kappa1,n1); simplevMF(mu2,kappa2,n2)];
-    noiseY = normalize_rows(randn(nnoise,3));
+    Y = [vMFrnd(n1,mu1,kappa1); vMFrnd(n2,mu2,kappa2)];
+    % uniform noise on the sphere (vMF with kappa=0)
+    noiseY = vMFrnd(nnoise,[0 0 1],0);
     Y = [Y; noiseY];
     out = tclustvmf(Y,2,0.02,50,'noise',true,'plots',1,'plottype','both');
     fprintf('Estimated noise proportion: %.1f%%\n',100*out.noiseprop);
@@ -656,7 +744,7 @@ reftoldef=1e-06;
 options=struct('nsamp',nsampdef,'plots',0,'plottype','points','nocheck',0,'msg',1,'Ysave',0,...
     'refsteps',refstepsdef,'reftol',reftoldef,'equalweights',false,...
     'mixt',0,'normalize',false,'newtonsteps',2,'conflev',0.95,'ellipsenpts',100,...
-    'markersize',12,'plotdims',[],'noise',false);
+    'markersize',12,'plotdims',[],'noise',false,'init','auto');
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions=varargin(1:2:length(varargin));
@@ -676,11 +764,49 @@ if nargin>4
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    if options.nsamp>ncomb
-        disp('Number of subsets to extract greater than nchoosek(n,k*(p+1)). It is set to that value.');
-        options.nsamp=0;
-    elseif options.nsamp<0
-        error('FSDA:tclustvmf:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
+end
+
+% Initialisation: userinit is true if the starts are given by the user
+% (cell array startlist), kmpp is true if the starts are chosen with
+% k-means++, otherwise they are elemental subsets
+init=options.init;
+userinit=~ischar(init);
+kmpp=false;
+if userinit
+    if ~iscell(init)
+        init={init};
+    end
+    startlist=init(:);
+    for i=1:numel(startlist)
+        vmfcheckstart(startlist{i},n,p,k,options.noise);
+    end
+    options.nsamp=numel(startlist);
+else
+    if ~any(strcmpi(init,{'auto','subsets','kmeans++'}))
+        error('FSDA:tclustvmf:WrongInit','init must be ''auto'', ''subsets'', ''kmeans++'', a matrix, a vector or a cell array')
+    end
+    if strcmpi(init,'auto')
+        kmpp = elemsize>n/2;
+        if kmpp && options.msg>0
+            fprintf('init=''kmeans++'' chosen because k*(p+1)=%d is larger than n/2=%g\n',elemsize,n/2);
+        end
+    else
+        kmpp=strcmpi(init,'kmeans++');
+    end
+    if kmpp
+        % ncomb is not relevant: nsamp is the number of random starts
+        if ~any(strcmp(UserOptions,'nsamp'))
+            options.nsamp=300;
+        elseif ~(options.nsamp>0 && options.nsamp==fix(options.nsamp))
+            error('FSDA:tclustvmf:WrongNsamp','With init=''kmeans++'' nsamp must be a positive integer');
+        end
+    elseif nargin>4
+        if options.nsamp>ncomb
+            disp('Number of subsets to extract greater than nchoosek(n,k*(p+1)). It is set to that value.');
+            options.nsamp=0;
+        elseif options.nsamp<0
+            error('FSDA:tclustvmf:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
+        end
     end
 end
 
@@ -707,9 +833,8 @@ noise=options.noise;
 % k-long since the noise component has no mean direction or
 % concentration to estimate.
 kn=k+double(noise);
-if noise
-    lognoiseconst=vMFlogC(0,p);
-end
+% log-density of the uniform distribution on S^(p-1)
+lognoiseconst=vMFlogC(0,p);
 
 if conflev<=0 || conflev>=1
     error('FSDA:tclustvmf:WrongConflev','conflev must be a scalar in the interval (0,1)')
@@ -719,28 +844,20 @@ if ~any(strcmp(plottype,{'points','ellipse','both'}))
 end
 
 % Validate plotdims upfront (before the expensive clustering loop) if a
-% plot has actually been requested. plotdims lets you view data/caps
-% living in R^p (p possibly in the hundreds, e.g. embeddings) through
-% either 3 chosen coordinates or a linear (e.g. PCA) projection down to
-% 3 dimensions; tclustvmf does not choose this view for you -- for
-% p~=3 you must supply one.
-if plots==1
-    if isempty(plotdims)
-        if p~=3
-            error('FSDA:tclustvmf:PlotdimsRequired',['Y has p=%d columns (not 3): plotting requires a 3D view of the ' ...
-                'data, specified via the ''plotdims'' option, either as 3 coordinate indices (e.g. [1 2 3]) ' ...
-                'or as a %d-by-3 projection matrix'],p,p);
+% plot has actually been requested. plotdims is used only when p>3: it
+% is the 3-dimensional space on which sphereprojplot projects the data.
+% If it is empty the space is chosen by sphereprojplot.
+if plots==1 && p>3 && ~isempty(plotdims)
+    if ischar(plotdims)
+        if ~any(strcmpi(plotdims,{'auto','means','pca'}))
+            error('FSDA:tclustvmf:WrongPlotdims','As a character vector, plotdims must be ''auto'', ''means'' or ''pca''')
         end
     elseif isvector(plotdims)
         if numel(plotdims)~=3 || any(plotdims<1) || any(plotdims>p) || any(plotdims~=fix(plotdims)) || numel(unique(plotdims))~=3
             error('FSDA:tclustvmf:WrongPlotdims','As a vector, plotdims must contain 3 distinct integers between 1 and p')
         end
-    elseif ismatrix(plotdims)
-        if ~isequal(size(plotdims),[p 3])
-            error('FSDA:tclustvmf:WrongPlotdims','As a matrix, plotdims must be p-by-3 (p=%d)',p)
-        end
-    else
-        error('FSDA:tclustvmf:WrongPlotdims','plotdims must be either a vector of 3 coordinate indices or a p-by-3 projection matrix')
+    elseif ~isequal(size(plotdims),[p 3])
+        error('FSDA:tclustvmf:WrongPlotdims','As a matrix, plotdims must be p-by-3 (p=%d)',p)
     end
 end
 
@@ -763,7 +880,14 @@ else
 end
 
 %% Combinatorial part to extract the subsamples
-[C,nselected] = subsets(nsamp,n,elemsize,ncomb,msg);
+if kmpp || userinit
+    % nsamp random starts or starts given by the user: no elemental
+    % subsets are needed
+    C=[];
+    nselected=nsamp;
+else
+    [C,nselected] = subsets(nsamp,n,elemsize,ncomb,msg);
+end
 
 vopt=-1e+30;
 fullsol=zeros(nselected,1);
@@ -775,42 +899,42 @@ bs=[];
 
 for i=1:nselected
 
-    index=C(i,:);
+    if userinit
+        % starting groups given by the user (see vmfseeduser)
+        [muini,rini,niini]=vmfseeduser(Y,startlist{i},k,h,logical(noise));
+        index=[];
+        kappaini=kappaFS(rini,p,newtonsteps);
+    elseif kmpp
+        % k-means++ seeds on the cosine distance, partition of the units
+        % around them and its resultant vectors (see vmfseedkmpp)
+        [muini,rini,niini,index]=vmfseedkmpp(Y,k,h,noise);
+        kappaini=kappaFS(rini,p,newtonsteps);
+    else
+        index=C(i,:);
 
-    niini=zeros(kn,1);
-    muini=zeros(k,p);
-    kappaini=zeros(k,1);
-    rini=zeros(k,1);
-
-    for j=1:k
-        ilow=(j-1)*(p+1)+1;
-        iup=j*(p+1);
-        selj=index(ilow:iup);
-        Yselj=Y(selj,:);
-        Rj=sum(Yselj,1);
-        normRj=norm(Rj);
-        niini(j)=p+1;
-        if normRj>1e-12
-            muini(j,:)=Rj/normRj;
-        else
+        % Seeds. The elemental subset is made of k blocks of p+1 units: the
+        % resultant vectors of the k blocks are computed in one shot (row j
+        % of Rk is the sum of the units of block j).
+        Rk=reshape(sum(reshape(Y(index,:),p+1,k,p),1),k,p);
+        normR=sqrt(sum(Rk.^2,2));
+        muini=Rk./normR;
+        degen=normR<=1e-12;
+        if any(degen)
             % near-antipodal cancellation in the seed: fall back to the
-            % first unit of the elemental subset as the seed direction
-            muini(j,:)=Yselj(1,:);
+            % first unit of the block as the seed direction
+            muini(degen,:)=Y(index((find(degen)-1)*(p+1)+1),:);
         end
-        rini(j)=normRj/(p+1);
-        kappaini(j)=kappaFS(rini(j),p,newtonsteps);
-    end
+        rini=normR/(p+1);
+        kappaini=kappaFS(rini,p,newtonsteps);
 
-    if noise
-        % Seed the noise component's weight on the same footing as a
-        % real group's elemental subsample (p+1 units): with no
-        % dedicated seeding step of its own (there is nothing to seed --
-        % a uniform density has no free parameters), starting it at
+        % Each group starts with weight p+1. The noise component (if any) is
+        % seeded on the same footing: with no dedicated seeding step of its
+        % own (a uniform density has no free parameters), starting it at
         % niini(k+1)=0 would give it log(0/h)=-Inf in the very first
         % discriminant and it could never be chosen (a permanent,
-        % self-inflicted "empty component" from which hard/soft EM
-        % cannot recover).
-        niini(k+1)=p+1;
+        % self-inflicted "empty component" from which hard/soft EM cannot
+        % recover).
+        niini=repmat(p+1,kn,1);
     end
 
     kappaini=restrKappaFS(kappaini,rini,niini(1:k),p,restrfactor,tolrestreigen);
@@ -820,157 +944,129 @@ for i=1:nselected
     ind=zeros(n,1);
     postprob=zeros(n,kn);
     obj=0;
-    ll=zeros(n,kn);
-    groupind=[];
-    qq=[];
-    qqunassigned=[];
+    % needll = true if the matrix of log-discriminants has to be computed
+    % at the beginning of the iteration
+    needll=true;
 
     while (mudiff>reftol) && (iter<refsteps)
         iter=iter+1;
 
-        for j=1:k
-            if equalweights
-                ll(:,j)=logvMFpdfFS(Y,muini(j,:),kappaini(j));
-            else
-                ll(:,j)=log(niini(j)/h)+logvMFpdfFS(Y,muini(j,:),kappaini(j));
-            end
-        end
-        if noise
-            if equalweights
-                ll(:,k+1)=lognoiseconst;
-            else
-                ll(:,k+1)=log(niini(k+1)/h)+lognoiseconst;
-            end
+        % E-step: n-by-kn matrix of log-discriminants, computed with a
+        % single matrix product Y*muini'
+        if needll
+            ll=logdiscvmf(Y,muini,kappaini,niini,h,equalweights,noise,lognoiseconst);
         end
 
         if mixt==2
             postprobold=postprob;
             [~,postprob,disc]=estepFS(ll,verLess2016b);
-            [~,qq]=sort(disc,'descend');
-            qqunassigned=qq((h+1):n);
-            qq=qq(1:h);
-            postprob(qqunassigned,:)=0;
-            niini=(sum(postprob))';
         else
             indold=ind;
             [disc,ind]=max(ll,[],2);
+        end
+
+        % Trimming: the h units with the largest value of disc are kept
+        % (no sorting is needed if there is no trimming)
+        if h<n
             [~,qq]=sort(disc,'descend');
             qqunassigned=qq((h+1):n);
             qq=qq(1:h);
-            groupind=ind(qq);
-            ind(qqunassigned)=0;
+        else
+            qq=(1:n)';
+            qqunassigned=zeros(0,1);
         end
 
-        if mixt==1
-            postprobold=postprob;
-            [~,postprob]=estepFS(ll,verLess2016b);
+        if mixt==2
             postprob(qqunassigned,:)=0;
-            niini=(sum(postprob))';
-        end
-
-        % M-step
-        for j=1:k
-            if mixt>=1
-                % niini(j) was already updated above as sum(postprob(:,j))
-                if niini(j)>0
-                    Rj=sum(Y.*postprob(:,j),1);
-                else
-                    Rj=zeros(1,p);
-                end
-            else
-                % niini(j) must be refreshed here: it is NOT updated
-                % anywhere else in the crisp (mixt==0) path, unlike the
-                % mixt>=1 branches which recompute it from postprob just
-                % above. Without this line niini stays frozen at its
-                % seed value, so rj=norm(Rj)/niini(j) below would divide
-                % the resultant vector of the *current* (possibly much
-                % larger) group by the *original* seed size -- silently
-                % producing rj>>1 and, once clipped inside kappaFS, a
-                % spuriously huge kappa. This is the single most
-                % important line in the whole M-step.
-                niini(j)=sum(groupind==j);
-                if niini(j)>0
-                    Rj=sum(Y(qq(groupind==j),:),1);
-                else
-                    Rj=zeros(1,p);
-                end
-            end
-
-            % A group needs at least one untrimmed unit to update; with
-            % niini(j)==0 it is marked empty (NaN), exactly as tclust
-            % handles an empty component (cini becomes 0/0=NaN there;
-            % here norm(Rj)==0 plays the same role). Unlike tclust,
-            % nothing further is required from niini(j) alone: a group
-            % with very few units can still push its raw kappaHat to an
-            % enormous value (r landing close to 1 by chance, unlike a
-            % Gaussian covariance from few points which stays finite),
-            % but this is exactly what restrKappaFS is designed to rein
-            % in via the shared-likelihood restriction below, mirroring
-            % how tclust relies on restreigen alone (no extra minimum
-            % group size) to tame a near-zero eigenvalue from a small
-            % group.
-            if niini(j)>0 && norm(Rj)>1e-12
-                muini(j,:)=Rj/norm(Rj);
-                rini(j)=norm(Rj)/niini(j);
-                kappaini(j)=kappaFS(rini(j),p,newtonsteps);
-            else
-                muini(j,:)=NaN(1,p);
-                kappaini(j)=NaN;
-                rini(j)=NaN;
-                niini(j)=0;
+            niini=(sum(postprob,1))';
+        else
+            ind(qqunassigned)=0;
+            if mixt==1
+                postprobold=postprob;
+                [~,postprob]=estepFS(ll,verLess2016b);
+                postprob(qqunassigned,:)=0;
+                niini=(sum(postprob,1))';
             end
         end
 
-        if noise && mixt==0
-            % For mixt>=1, niini(k+1) was already refreshed above (as
-            % part of niini=(sum(postprob))', which spans all kn
-            % columns); the crisp path is the only one that needs an
-            % explicit update here, since its per-group M-step loop above
-            % only ever touches j=1:k. Unlike a real group, niini(k+1)==0
-            % is not treated as a failure requiring the whole candidate
-            % to be discarded -- it simply means this particular
-            % configuration finds no evidence of background noise, which
-            % is a perfectly valid outcome, not a degenerate one.
-            niini(k+1)=sum(groupind==(k+1));
+        % M-step: resultant vectors of all the groups (row j of Rk)
+        if mixt>=1
+            % niini was already updated above as sum(postprob,1)
+            Rk=postprob(:,1:k)'*Y;
+        else
+            % Z is the n-by-kn sparse indicator matrix of the groups of
+            % the untrimmed units. The sizes niini MUST be refreshed
+            % here, because in the crisp (mixt==0) path they are not
+            % updated anywhere else: with the sizes frozen at their seed
+            % value, rini below would be the norm of the resultant of
+            % the current group divided by the size of the seed.
+            % niini(k+1), the size of the noise component, is refreshed
+            % too. Unlike a real group, niini(k+1)==0 is not a failure:
+            % it simply means that this configuration finds no evidence
+            % of background noise.
+            rows = qq(:);
+            cols = ind(rows);
+            if any(cols < 1 | cols > kn | isnan(cols))
+                error('FSDA:tclustvmf:WrongGroupIndex', ...
+                    'Cluster labels must be integers between 1 and %d', kn);
+            end
+            Z = sparse(rows, cols, 1, n, kn);
+            niini=full(sum(Z,1))';
+            Rk=full(Z(:,1:k)'*Y);
         end
+        normR=sqrt(sum(Rk.^2,2));
+        nik=niini(1:k);
+
+        % A group needs at least one untrimmed unit to update; with
+        % nik(j)==0 it is marked empty (NaN), exactly as tclust handles
+        % an empty component. Nothing further is required from nik(j)
+        % alone: a group with very few units can still push its raw
+        % kappa to an enormous value (r close to 1 by chance), but this
+        % is exactly what restrKappaFS is designed to rein in, mirroring
+        % how tclust relies on restreigen alone to tame a near-zero
+        % eigenvalue from a small group.
+        okg=nik>0 & normR>1e-12;
+        muini=NaN(k,p);
+        rini=NaN(k,1);
+        kappaini=NaN(k,1);
+        muini(okg,:)=Rk(okg,:)./normR(okg);
+        rini(okg)=normR(okg)./nik(okg);
+        kappaini(okg)=kappaFS(rini(okg),p,newtonsteps);
+        nik(~okg)=0;
+        niini(1:k)=nik;
 
         kappaini=restrKappaFS(kappaini,rini,niini(1:k),p,restrfactor,tolrestreigen);
 
         % Objective function
-        Ytri=Y(qq,:);
-        obj=0;
         if mixt>=1
-            log_lh=zeros(h,kn);
-            for j=1:k
-                if ~isnan(kappaini(j))
-                    log_lh(:,j)=log(niini(j)/h)+logvMFpdfFS(Ytri,muini(j,:),kappaini(j));
-                else
-                    log_lh(:,j)=-Inf;
-                end
+            % The log-discriminants with the new parameters are needed
+            % for the objective function, and they are the same which
+            % are needed by the E-step of the next iteration: they are
+            % computed only once.
+            ll=logdiscvmf(Y,muini,kappaini,niini,h,equalweights,noise,lognoiseconst);
+            needll=false;
+            llobj=ll(qq,:);
+            if equalweights
+                % as in tclust, the mixture likelihood of the k groups is
+                % computed with the estimated sizes also when the
+                % weights are not used in the E-step
+                llobj(:,1:k)=llobj(:,1:k)+log(niini(1:k)'/h);
             end
-            if noise
-                if equalweights
-                    log_lh(:,k+1)=lognoiseconst;
-                else
-                    log_lh(:,k+1)=log(niini(k+1)/h)+lognoiseconst;
-                end
-            end
-            obj=estepFS(log_lh,verLess2016b);
+            obj=estepFS(llobj,verLess2016b);
         else
-            for j=1:k
-                if niini(j)>0 && ~isnan(kappaini(j))
-                    Ytri_j=Y(qq(groupind==j),:);
-                    if equalweights
-                        obj=obj+sum(logvMFpdfFS(Ytri_j,muini(j,:),kappaini(j)));
-                    else
-                        obj=obj+niini(j)*log(niini(j)/h)+sum(logvMFpdfFS(Ytri_j,muini(j,:),kappaini(j)));
-                    end
-                end
+            % Classification likelihood in closed form. mu_j is the
+            % direction of the resultant vector R_j of group j, therefore
+            % the sum over the units of the group of kappa_j*mu_j'*y_i is
+            % kappa_j*norm(R_j), and the contribution of group j is
+            % n_j*log(n_j/h) + n_j*log C_p(kappa_j) + kappa_j*norm(R_j).
+            okg=okg & ~isnan(kappaini);
+            obj=sum(nik(okg).*vMFlogC(kappaini(okg),p) + kappaini(okg).*normR(okg));
+            if ~equalweights
+                obj=obj+sum(nik(okg).*log(nik(okg)/h));
             end
             if noise && niini(k+1)>0
                 % Every noise-assigned unit contributes the same constant
-                % log-density, so the sum over niini(k+1) of them
-                % collapses to a plain product.
+                % log-density
                 if equalweights
                     obj=obj+niini(k+1)*lognoiseconst;
                 else
@@ -1012,23 +1108,7 @@ if nselected>0 && noconv/nselected>0.1
 end
 
 %% Final assignment with the optimal parameters
-ll=zeros(n,kn);
-if equalweights
-    for j=1:k
-        ll(:,j)=logvMFpdfFS(Y,muopt(j,:),kappaopt(j));
-    end
-else
-    for j=1:k
-        ll(:,j)=log(nopt(j)/h)+logvMFpdfFS(Y,muopt(j,:),kappaopt(j));
-    end
-end
-if noise
-    if equalweights
-        ll(:,k+1)=lognoiseconst;
-    else
-        ll(:,k+1)=log(nopt(k+1)/h)+lognoiseconst;
-    end
-end
+ll=logdiscvmf(Y,muopt,kappaopt,nopt,h,equalweights,noise,lognoiseconst);
 
 [~,postprob,logpdf]=estepFS(ll,verLess2016b);
 [disc,idx]=max(ll,[],2);
@@ -1119,109 +1199,167 @@ end
 
 %% Plots
 if plots==1
-    % Fixed discrete palette: MATLAB's default axes colors (its
-    % dark-red 7th color swapped for dark gray) plus a few extra
-    % well-separated RGB colors, cycled across the groups found by
-    % the algorithm (there are typically few); red is reserved
-    % exclusively for the trimmed/outlier group (idx==0).
-    palette = [0.0000 0.4470 0.7410   % blue
-               0.8500 0.3250 0.0980   % orange
-               0.9290 0.6940 0.1250   % yellow
-               0.4940 0.1840 0.5560   % purple
-               0.4660 0.6740 0.1880   % green
-               0.3010 0.7450 0.9330   % light blue
-               0.2500 0.2500 0.2500   % dark gray
-               0.0000 0.5000 0.5000   % teal
-               0.6000 0.4000 0.2000   % brown
-               0.5000 0.0000 0.5000   % violet
-               0.5000 0.5000 0.0000   % olive
-               0.0000 0.0000 0.5000   % navy
-               1.0000 0.6000 0.7840   % pink
-               0.0000 0.5000 0.0000]; % dark green
-    outlierColor = [1 0 0];
-    noiseColor = [0.6 0.6 0.6];
-
-    idxplot=out.idx;
-    if noise
-        groupsplot=setdiff(unique(idxplot(:))',[0,k+1]);
+    % The plot is produced by sphereplot (p<=3) or by sphereprojplot
+    % (p>3). The caps are computed from the estimated parameters.
+    if strcmp(plottype,'points')
+        capplot=[];
     else
-        groupsplot=setdiff(unique(idxplot(:))',0);
+        capplot=struct('mu',muopt,'kappa',kappaopt);
     end
-
-    pointColors=zeros(n,3);
-    pointColors(idxplot==0,:)=repmat(outlierColor,sum(idxplot==0),1);
     if noise
-        pointColors(idxplot==(k+1),:)=repmat(noiseColor,sum(idxplot==(k+1)),1);
-    end
-    groupColors=zeros(numel(groupsplot),3);
-    for j=1:numel(groupsplot)
-        groupColors(j,:)=palette(mod(j-1,size(palette,1))+1,:);
-        pointColors(idxplot==groupsplot(j),:)=repmat(groupColors(j,:),sum(idxplot==groupsplot(j)),1);
-    end
-
-    % View: identity for native p==3 with no explicit plotdims, coordinate
-    % selection if plotdims is a 3-element index vector, or a linear
-    % projection if plotdims is a p-by-3 matrix. tclustvmf does not pick
-    % this view for you when p~=3 (plotdims is then required, checked
-    % above): which 3 coordinates or which projection best represents
-    % high-dimensional directional data (e.g. embeddings) is left open.
-    if isempty(plotdims)
-        Yview=Y;
-        capview=out.ellipse;
-        isnativeview=true;
-        axlabels={'X','Y','Z'};
-    elseif isvector(plotdims)
-        Yview=Y(:,plotdims);
-        capview=cellfun(@(P) P(:,plotdims), out.ellipse, 'UniformOutput', false);
-        isnativeview=(p==3);
-        axlabels={sprintf('dim %d',plotdims(1)),sprintf('dim %d',plotdims(2)),sprintf('dim %d',plotdims(3))};
-    else
-        Yview=Y*plotdims;
-        capview=cellfun(@(P) P*plotdims, out.ellipse, 'UniformOutput', false);
-        isnativeview=false;
-        axlabels={'proj 1','proj 2','proj 3'};
-    end
-
-    figure;
-    [sx,sy,sz]=sphere(60);
-    surf(sx,sy,sz,'FaceColor',[0.9 0.9 1],'EdgeColor','none','FaceAlpha',0.25);
-    hold on
-    if any(strcmp(plottype,{'points','both'}))
-        scatter3(Yview(:,1),Yview(:,2),Yview(:,3),markersize,pointColors,'filled');
-    end
-    if any(strcmp(plottype,{'ellipse','both'}))
-        for j=1:numel(groupsplot)
-            Pcap=capview{j};
-            if isnativeview
-                % exact, ordered circle: draw as a closed curve
-                plot3(Pcap(:,1),Pcap(:,2),Pcap(:,3),'-','Color',groupColors(j,:),'LineWidth',2);
-            else
-                % projected/high-dimensional case: Pcap is an unordered
-                % Monte Carlo sample of the boundary, and/or the
-                % projection has left the sphere, so it is shown as a
-                % point cloud (its "shadow") rather than a connected
-                % curve -- an approximate view of the confidence region,
-                % exact only when isnativeview is true.
-                scatter3(Pcap(:,1),Pcap(:,2),Pcap(:,3),6,groupColors(j,:),'filled');
-            end
-        end
-    end
-    axis equal
-    view(3)
-    xlabel(axlabels{1}); ylabel(axlabels{2}); zlabel(axlabels{3});
-    if noise
+        noiseid=k+1;
         noisestr=sprintf(', noise prop.=%.1f%% (gray)',100*out.noiseprop);
     else
+        noiseid=[];
         noisestr='';
     end
-    if isnativeview
-        title(sprintf('%d groups found by tclustvmf for alpha=%.2f, restrfactor=%.0f%s',numel(groupsplot),alpha,restrfactor,noisestr));
+    ngroups=numel(setdiff(unique(out.idx(:))',[0,k+1]));
+    maintitle=sprintf('%d groups found by tclustvmf for alpha=%.2f, restrfactor=%.0f%s',ngroups,alpha,restrfactor,noisestr);
+    plotopt={'group',out.idx,'noisegroup',noiseid,'cap',capplot,'conflev',conflev, ...
+        'markersize',markersize,'showpoints',~strcmp(plottype,'ellipse')};
+
+    if p<=3
+        hplot=sphereplot(Y,plotopt{:});
+        title(hplot,maintitle);
     else
-        title(sprintf(['%d groups found by tclustvmf for alpha=%.2f, restrfactor=%.0f%s\n' ...
-            '(p=%d, showing a 3D view via ''plotdims''; caps are approximate/projected)'],numel(groupsplot),alpha,restrfactor,noisestr,p));
+        if isempty(plotdims)
+            plotdims='auto';
+        end
+        [hplot,outproj]=sphereprojplot(Y,'proj',plotdims,'plottitle',false,plotopt{:});
+        title(hplot,{maintitle, sprintf(['p=%d projected on 3 dimensions (%s): %.1f%% of the ' ...
+            'squared length of the units retained'],p,outproj.type,100*outproj.retained)});
     end
-    hold off
 end
 
+end
+
+function vmfcheckstart(start,n,p,k,noise)
+%vmfcheckstart checks one user-guided start (see init in tclustvmf)
+if isnumeric(start) && isequal(size(start),[k p])
+    if any(~isfinite(start(:))) || any(sum(start.^2,2)==0)
+        error('FSDA:tclustvmf:WrongInit','A matrix of starting directions must contain finite rows which are not null')
+    end
+elseif isnumeric(start) && isvector(start) && numel(start)==n
+    kn=k+logical(noise);
+    lab=start(:);
+    if any(lab~=fix(lab)) || any(lab<0) || any(lab>kn)
+        error('FSDA:tclustvmf:WrongInit','The labels of init must be integers between 0 and %d',kn)
+    end
+    cnt=accumarray(lab(lab>0),1,[kn 1]);
+    if any(cnt(1:k)==0)
+        error('FSDA:tclustvmf:WrongInit','Each of the groups 1,...,%d must contain at least one unit in init',k)
+    end
+else
+    error('FSDA:tclustvmf:WrongInit','init must be a k-by-p matrix (k=%d, p=%d) or a vector with n=%d labels',k,p,n)
+end
+end
+
+function [muini,rini,niini]=vmfseeduser(Y,start,k,h,noise)
+%vmfseeduser starting values from a user-guided start (see init in
+%tclustvmf): a k-by-p matrix of directions or a vector of n labels
+n=size(Y,1);
+if size(start,1)==k && size(start,2)==size(Y,2)
+    % directions: assignment to the closest one (spherical k-means step)
+    mu0=start./sqrt(sum(start.^2,2));
+    [~,g]=max(Y*mu0',[],2);
+    cnt=accumarray(g,1,[k 1]);
+else
+    % labels
+    lab=start(:);
+    g=lab;
+    cnt=accumarray(lab(lab>0),1,[k+double(noise) 1]);
+end
+used=g>0 & g<=k;
+Z=sparse(find(used),g(used),1,n,k);
+Rk=full(Z'*Y);
+normR=sqrt(sum(Rk.^2,2));
+sz=full(sum(Z,1))';
+muini=Rk./normR;
+rini=normR./sz;
+empty=sz==0;
+if any(empty)
+    % only possible with directions: the group starts from the direction
+    % given by the user, with r=0 and weight 1
+    muini(empty,:)=mu0(empty,:);
+    rini(empty)=0;
+    sz(empty)=1;
+end
+% initial weights (see More About, INITIALISATION)
+if noise
+    if numel(cnt)==k+1 && cnt(k+1)>0
+        w=[sz; cnt(k+1)];
+        w=w/sum(w);
+    else
+        w=[0.9*sz/sum(sz); 0.1];
+    end
+else
+    w=sz/sum(sz);
+end
+niini=h*w;
+end
+
+function [muini,rini,niini,seedidx]=vmfseedkmpp(Y,k,h,noise)
+%vmfseedkmpp starting values by k-means++ on the cosine distance
+%
+%  Y: n-by-p matrix of unit vectors; k: number of groups; h: number of
+%  untrimmed units; noise: true if there is a uniform noise component.
+%  muini: k-by-p mean directions; rini: k-by-1 mean resultant lengths;
+%  niini: (k+noise)-by-1 initial weights; seedidx: k-by-1 seed units.
+%  The steps (a)-(c) are those described in the help of tclustvmf
+%  (More About, K-MEANS++ INITIALISATION).
+n=size(Y,1);
+seedidx=zeros(k,1);
+seedidx(1)=randi(n);
+% cosine distance of every unit from the closest seed, in [0,2]
+dmin=max(1-Y*Y(seedidx(1),:)',0);
+for j=2:k
+    w=dmin.^2;
+    w(seedidx(1:j-1))=0;
+    if ~(sum(w)>0)
+        % all the units coincide with the seeds: uniform choice among
+        % the remaining ones
+        w=ones(n,1);
+        w(seedidx(1:j-1))=0;
+    end
+    cw=cumsum(w);
+    seedidx(j)=min(find(cw>=rand*cw(end),1),n);
+    dmin=min(dmin,max(1-Y*Y(seedidx(j),:)',0));
+end
+% (b) assignment to the seed with the largest cosine; seeds keep their
+% own group
+[~,g]=max(Y*Y(seedidx,:)',[],2);
+g(seedidx)=(1:k)';
+Z=sparse((1:n)',g,1,n,k);
+sz=full(sum(Z,1))';
+% (c) resultant vectors
+Rk=full(Z'*Y);
+normR=sqrt(sum(Rk.^2,2));
+muini=Rk./normR;
+rini=normR./sz;
+if noise
+    niini=[0.9*h*sz/n; 0.1*h];
+else
+    niini=h*sz/n;
+end
+end
+
+function ll=logdiscvmf(Y,mu,kappa,ni,h,equalweights,noise,lognoiseconst)
+% n-by-kn matrix of log-discriminants: column j (j=1,...,k) contains
+% log(ni(j)/h)+log f(y_i; mu_j,kappa_j), without the first term if
+% equalweights is true. Empty groups (kappa=NaN) have -Inf. If noise is
+% true the last column refers to the uniform component.
+k=numel(kappa);
+ll=logvMFpdfFS(Y,mu,kappa);
+if ~equalweights
+    ll=ll+log(ni(1:k)'/h);
+end
+ll(:,isnan(kappa(:)') | any(isnan(mu),2)')=-Inf;
+if noise
+    if equalweights
+        ll=[ll, repmat(lognoiseconst,size(Y,1),1)];
+    else
+        ll=[ll, repmat(log(ni(k+1)/h)+lognoiseconst,size(Y,1),1)];
+    end
+end
 end
 %FScategory:CLUS-RobClaMULT

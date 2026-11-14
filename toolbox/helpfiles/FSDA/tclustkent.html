@@ -1,0 +1,277 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>tclustkent</title><meta content="refpage" name="chunktype"><meta content="function:tclustkent" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tclustkent computes trimmed clustering for spherical data using mixtures of Kent distribution." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/x-mathjax-config">MathJax.Hub.Config({jax: ["input/TeX", "output/HTML-CSS"],extensions: ["tex2jax.js", "TeX/AMSeqnum.js"],tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},TeX: {extensions: ["AMSsymbols.js"],equationNumbers: { autoNumber: "AMS" }}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">tclustkent</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">tclustkent on two elliptical groups with uniform contamination.</a></li><li><a class="intrnllnk" href="#Example_2">The noise option: uniform background component.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Comparison with tclustvmf when the groups are elongated.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Effect of the restriction factor.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Three elliptical groups with different orientation.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">The mixt option: classification versus mixture likelihood.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">The confidence regions stored in out.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li><li><a class="intrnllnk" href="#input_argument_k">k</a></li><li><a class="intrnllnk" href="#input_argument_alpha">alpha</a></li><li><a class="intrnllnk" href="#input_argument_restrfactor">restrfactor</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_equalweights">equalweights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_mixt">mixt</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_normalize">normalize</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ellipsenpts">ellipsenpts</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_markersize">markersize</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Ysave">Ysave</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plottype">plottype</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_noise">noise</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_mstepiter">mstepiter</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">tclustkent</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">tclustkent computes trimmed clustering for spherical data using mixtures of Kent distribution</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=tclustkent(Y, k, alpha, restrfactor)</code><span class="syntax_example"><a class="intrnllnk" href="tclustkent.html#Example_1">example</a></span></li><li><code class="synopsis">out=tclustkent(Y, k, alpha, restrfactor,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="tclustkent.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>tclustkent partitions the points in the n-by-3 data matrix Y, where
+   each row is assumed to be a unit vector on the unit sphere S^2 in R^3,
+   into k clusters modelled by Kent (Fisher-Bingham FB5) distributions.</p> <p>
+   It is the Kent-distribution counterpart of tclustvmf, in exactly the
+   same way that tclustvmf is the vMF counterpart of tclust.</p> <p>
+
+   The Kent distribution Kent(kappa,beta,Gamma) on S^2 has density
+
+     f(x; kappa,beta,Gamma) = (1/c(kappa,beta)) *
+         exp{ kappa*(gamma3'*x) + beta*[(gamma1'*x)^2 - (gamma2'*x)^2] }
+
+   where:</p> <p>
+     gamma3  is the mean direction (pole), a unit vector in R^3,
+     gamma1  is the major-axis direction (orthogonal to gamma3),
+     gamma2  is the minor-axis direction (= cross(gamma3,gamma1)),
+     kappa&gt;=0 controls concentration (the vMF parameter),
+     beta&gt;=0  controls ovalness of contours (0 &lt;= beta &lt; kappa/2),
+     c(kappa,beta) is the normalizing constant (see KentlogC).</p> <p>
+
+   beta=0 reduces the Kent density to the vMF density with parameter
+   kappa, and setting restrfactor=1 with beta=0 reduces tclustkent to
+   trimmed spherical k-means (like tclustvmf with restrfactor=1).</p> <p>
+
+   The Kent distribution is STRICTLY for S^2 (p=3 ambient dimension).</p> <p>
+   For higher-dimensional spherical data use tclustvmf instead.</p><p>
+
+   Robustness is achieved via the same impartial trimming device used by
+   tclust and tclustvmf: at most n-h observations are left unassigned,
+   where h = fix(n*(1-alpha)). A constraint on max(kappa_j)/min(kappa_j)
+   prevents the classification likelihood from becoming unbounded as a
+   cluster collapses to a point (the vMF/Kent analogue of tclust's
+   eigenvalue restriction). An optional uniform noise component models
+   background contamination uniformly distributed on S^2.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustkent.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustkent(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_alpha"><code>alpha</code></a>,<a class="intrnllnk" href="#inputarg_restrfactor"><code> restrfactor</code></a>)</code></span>tclustkent on two elliptical groups with uniform contamination.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustkent.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustkent(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_alpha"><code>alpha</code></a>,<a class="intrnllnk" href="#inputarg_restrfactor"><code>restrfactor</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>The noise option: uniform background component.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> tclustkent on two elliptical groups with uniform contamination.</li></span></a></span></h3><div class="collapse"><p>.
+     The two groups are generated from Kent distributions (elliptical
+     caps): the first has pole [1 0 0] and is elongated along [0 0 1],
+     the second has pole [0 1 0] and is elongated along [1 0 0]. 40
+     units uniformly distributed on the sphere are added. Trimming level
+     is 10 per cent. The 95 per cent confidence regions are drawn.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+n1=200; n2=200; nnoise=40;
+Y1 = Kentrnd(n1, 100, 40, [1 0 0], [0 0 1]);
+Y2 = Kentrnd(n2,  50, 15, [0 1 0], [1 0 0]);
+% uniform noise on the sphere (vMF with kappa=0)
+Ynoise = vMFrnd(nnoise, [0 0 1], 0);
+Y = [Y1; Y2; Ynoise];
+out = tclustkent(Y, 2, 0.1, 20, 'plots', 1, 'plottype', 'both');
+% Estimated parameters (true values: kappa 100 and 50, beta 40 and 15)
+disp(array2table([out.kappaopt out.betaopt], 'VariableNames', {'kappa','beta'}))
+disp('Estimated poles'); disp(out.gamma3)
+disp('Estimated major axes (defined up to sign)'); disp(out.gamma1)</pre></div></div><pre class="codeoutput">    kappa      beta 
+    ______    ______
+
+    115.88     45.74
+     51.93    16.592
+
+Estimated poles
+    1.0000   -0.0067    0.0050
+    0.0250    0.9996    0.0132
+
+Estimated major axes (defined up to sign)
+    0.0053    0.0499   -0.9987
+    0.9992   -0.0246   -0.0319
+
+</pre>
+            <a href='http://rosa.unipr.it/fsda/tclustkent.html#Example_1'><img vspace="5" hspace="5" src="images/tclustkent_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)."> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>The noise option: uniform background component.</li></span></a></span></h3><div class="collapse"><p>.
+     Same two elliptical groups as above, with 60 units uniformly
+     distributed on the sphere. An extra component with uniform density
+     is added and a small trimming level (2 per cent) is used: most of
+     the contamination is captured by the noise component (out.idx==3,
+     in gray) rather than by trimming (out.idx==0, in red).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(2)
+n1=200; n2=200; nnoise=60;
+Y1 = Kentrnd(n1, 100, 40, [1 0 0], [0 0 1]);
+Y2 = Kentrnd(n2,  50, 15, [0 1 0], [1 0 0]);
+% uniform noise on the sphere (vMF with kappa=0)
+Ynoise = vMFrnd(nnoise, [0 0 1], 0);
+Y = [Y1; Y2; Ynoise];
+out = tclustkent(Y, 2, 0.02, 20, 'noise', true, 'plots', 1, 'plottype', 'both');
+fprintf('Estimated noise proportion: %.1f%%\n', 100*out.noiseprop);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Comparison with tclustvmf when the groups are elongated.</li></span></a></span></h3><div class="collapse"><p>     Two strongly elongated groups, parallel to each other, whose poles     are only 20 degrees apart. The groups are well separated along     their minor axis but each of them is much longer than the distance     between the two. The vMF model can only describe circular caps and     cannot recover this structure, while the Kent model does.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(3)    n = 200;    pole2 = [cosd(20) sind(20) 0];    Y = [Kentrnd(n, 200, 90, [1 0 0], [0 0 1]);         Kentrnd(n, 200, 90, pole2,   [0 0 1])];    truelab = [ones(n,1); 2*ones(n,1)];    outK = tclustkent(Y, 2, 0, 20, 'msg', 0);    outV = tclustvmf(Y, 2, 0, 20, 'msg', 0);    figure    sphereplot(Y, 'group', outK.idx, 'cap', outK.ellipse, 'center', outK.gamma3, ...        'h', subplot(1,2,1));    title('tclustkent')    sphereplot(Y, 'group', outV.idx, 'h', subplot(1,2,2), ...        'cap', struct('mu', outV.muopt, 'kappa', outV.kappaopt));    title('tclustvmf')    fprintf('Adjusted Rand index: tclustkent %.3f, tclustvmf %.3f\n', ...        RandIndexFS(truelab, outK.idx), RandIndexFS(truelab, outV.idx));</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Effect of the restriction factor.</li></span></a></span></h3><div class="collapse"><p>     A very concentrated and a very dispersed elliptical group (true     kappa 200 and 10). With restrfactor=1 the two groups are forced to     have the same kappa; with restrfactor=50 the two concentrations are     free to differ. In both cases the ratios beta/kappa, i.e. the     shapes of the groups, are estimated separately for each group.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(4)    n = 300;    Y = [Kentrnd(n, 200, 80, [1 0 0], [0 0 1]);         Kentrnd(n,  10,  3, [0 1 0], [0 0 1])];    out1  = tclustkent(Y, 2, 0.05,  1, 'msg', 0);    out50 = tclustkent(Y, 2, 0.05, 50, 'msg', 0, 'plots', 1, 'plottype', 'both');    disp('restrfactor=1:  kappa and beta');  disp([out1.kappaopt out1.betaopt])    disp('restrfactor=50: kappa and beta');  disp([out50.kappaopt out50.betaopt])</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Three elliptical groups with different orientation.</li></span></a></span></h3><div class="collapse"><p>     Posterior probabilities and group sizes.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(5)    n = 150;    Y = [Kentrnd(n, 120, 50, [1 0 0], [0 1 1]);         Kentrnd(n,  80, 30, [0 1 0], [1 0 0]);         Kentrnd(n,  60, 10, [0 0 1], [1 1 0])];    out = tclustkent(Y, 3, 0.05, 20, 'plots', 1, 'plottype', 'both');    disp(out.siz)</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>The mixt option: classification versus mixture likelihood.</li></span></a></span></h3><div class="collapse"><p>     mixt=0 (default) is the crisp CEM algorithm; mixt=2 uses the     mixture likelihood both for trimming and for the M-step.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(6)    n = 200;    Y = [Kentrnd(n, 100, 40, [1 0 0], [0 0 1]);         Kentrnd(n,  50, 15, [0 1 0], [1 0 0])];    out0 = tclustkent(Y, 2, 0.05, 20, 'mixt', 0, 'msg', 0);    out2 = tclustkent(Y, 2, 0.05, 20, 'mixt', 2, 'msg', 0);    fprintf('mixt=0: obj=%.2f, CLACLA=%.2f\n', out0.obj, out0.CLACLA);    fprintf('mixt=2: obj=%.2f, MIXMIX=%.2f, MIXCLA=%.2f\n', out2.obj, out2.MIXMIX, out2.MIXCLA);</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>The confidence regions stored in out.</li></span></a></span></h3><div class="collapse"><p>ellipse.     out.ellipse{j} contains the points of the boundary of the region,     ordered along the contour. Here the regions at level 0.5 are     requested and the proportion of units of each group which fall     inside its region is computed.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(7)    n = 1000;    Y = [Kentrnd(n, 100, 40, [1 0 0], [0 0 1]);         Kentrnd(n,  50, 15, [0 1 0], [1 0 0])];    out = tclustkent(Y, 2, 0, 20, 'conflev', 0.5, 'msg', 0, 'plots', 1, 'plottype', 'both');    for j = 1:2        % threshold of the log-density = its value on the boundary        thr = mean(logKentpdfFS(out.ellipse{j}, out.gamma1(j,:), out.gamma2(j,:), ...            out.gamma3(j,:), out.kappaopt(j), out.betaopt(j)));        Yj = Y(out.idx==j,:);        inside = logKentpdfFS(Yj, out.gamma1(j,:), out.gamma2(j,:), ...            out.gamma3(j,:), out.kappaopt(j), out.betaopt(j)) &gt;= thr;        fprintf('Group %d: %.1f%% of the units inside the 50%% region\n', j, 100*mean(inside));    end</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n-by-3 matrix of unit vectors on S^2.</p> <p>
+               Use option 'normalize' to rescale automatically.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; Number of groups. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Positive integer.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alpha" class="clearfix"> </div> <h3 id="input_argument_alpha" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alpha</code> &#8212; Global trimming level. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>0&lt;=alpha&lt;1 (fraction) or
+               integer &gt;=1 (count). alpha=0 means no trimming.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restrfactor" class="clearfix"> </div> <h3 id="input_argument_restrfactor" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restrfactor</code> &#8212; Restriction factor. </span>  </a><span class="example_desc">Scalar &gt;= 1.</span></span></h3> <div class="collapse"> <p>Constrains the ratio
+               max(kappa_j)/min(kappa_j). restrfactor=1 forces a common
+               kappa. See restrKentFS.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'equalweights',true
+</code>,<code> 'mixt',2
+</code>,<code> 'nsamp',500
+</code>,<code> 'refsteps',10
+</code>,<code> 'reftol',1e-08
+</code>,<code> 'normalize',true
+</code>,<code> 'conflev',0.90
+</code>,<code> 'ellipsenpts',300
+</code>,<code> 'markersize',20
+</code>,<code> 'msg',0
+</code>,<code> 'Ysave',true
+</code>,<code> 'plots',1
+</code>,<code> 'plottype','both'
+</code>,<code> 'nocheck',1
+</code>,<code> 'noise',true
+</code>,<code> 'mstepiter',100
+</code></code></span></div><div class="expandableContent"><div id="inputarg_equalweights" class="clearfix"></div><h3 id="input_argument_namevalue_equalweights" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>equalweights</code> &#8212;Cluster weights in the assignment.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>If false
+               (default) the mixing proportions pi_j are estimated and
+               enter the discriminant. If true all pi_j are fixed to 1/k
+               (or 1/kn with noise).</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'equalweights',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_mixt" class="clearfix"></div><h3 id="input_argument_namevalue_mixt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mixt</code> &#8212;Mixture modelling or crisp assignment.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>mixt=0
+               (default) is the crisp CEM algorithm. mixt=2 is the EM
+               algorithm (soft trimming). mixt=1 is a hybrid (crisp
+               trimming, soft M-step).</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'mixt',2
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of subsamples of
+               observations which are extracted to initialise the
+               algorithm. The default is min(300, nchoosek). Each
+               subsample contains 4 observations per cluster, which is
+               the minimum needed to seed a non-degenerate Kent
+               estimate in 3D.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',500
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_refsteps" class="clearfix"></div><h3 id="input_argument_namevalue_refsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refsteps</code> &#8212;Number of refining iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of
+               concentration steps applied to each subsample. The
+               default is 15.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refsteps',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftol" class="clearfix"></div><h3 id="input_argument_namevalue_reftol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftol</code> &#8212;Tolerance of the refining iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Convergence
+               tolerance of the concentration steps. The default is
+               1e-06.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftol',1e-08
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_normalize" class="clearfix"></div><h3 id="input_argument_namevalue_normalize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>normalize</code> &#8212;Rescaling of the rows.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>If true each row of Y is
+               rescaled to unit norm. If false (default) an error is
+               thrown when the rows are not unit-norm.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'normalize',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence level of the confidence regions.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Value
+               in (0,1), the default is 0.95. The confidence region of a
+               group is the region of S^2 delimited by the contour of
+               the fitted Kent density which contains probability
+               conflev (an oval around the pole, elongated along the
+               major axis).</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.90
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ellipsenpts" class="clearfix"></div><h3 id="input_argument_namevalue_ellipsenpts" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ellipsenpts</code> &#8212;Points of the confidence regions.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of
+               points used to represent the boundary of each confidence
+               region. The default is 200. The points are ordered along
+               the contour (see More About).</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ellipsenpts',300
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_markersize" class="clearfix"></div><h3 id="input_argument_namevalue_markersize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>markersize</code> &#8212;Marker size.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Marker size for the scatter plots.</p> <p>
+               The default is 12.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'markersize',20
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default is 1 (basic
+               progress). Use 0 for silent execution and 2 for more
+               detail.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',0
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Ysave" class="clearfix"></div><h3 id="input_argument_namevalue_Ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ysave</code> &#8212;Save of the data.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>If true Y is stored in out.Y.</p> <p>
+               The default is false.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Ysave',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the sphere.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1 the classification is
+               shown on the unit sphere with function sphereplot: units
+               coloured by group, trimmed units as red crosses, units of
+               the noise component in gray, and (see plottype) the
+               confidence regions of the groups. The sphere can be
+               rotated with the mouse. The default is 0. Call sphereplot
+               directly, using out.idx, out.ellipse and out.gamma3, to
+               personalise the plot.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plottype" class="clearfix"></div><h3 id="input_argument_namevalue_plottype" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plottype</code> &#8212;Content of the plot.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>'points' (default) shows
+               the units only, 'ellipse' the confidence regions only and
+               'both' the units and the confidence regions.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plottype','both'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check of the data.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1 the check for NaN/Inf is
+               skipped. The default is 0.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_noise" class="clearfix"></div><h3 id="input_argument_namevalue_noise" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>noise</code> &#8212;Uniform noise component.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>If true an extra
+               (k+1)-th uniform-on-S^2 component is added to model
+               background noise. The default is false. The uniform
+               density on S^2 is 1/(4*pi), fixed (no free parameters).</p> <p>
+               Its mixing proportion is estimated jointly with the k
+               cluster proportions.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'noise',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_mstepiter" class="clearfix"></div><h3 id="input_argument_namevalue_mstepiter" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mstepiter</code> &#8212;Iterations of the M-step.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Maximum number of
+               iterations of the numerical optimiser inside KentMstepFS
+               (kappa/beta estimation per M-step). The default is 50.</p> <p>
+               Reduce for speed, increase for accuracy in
+               high-concentration cases.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'mstepiter',100
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>A structure with the following fields:</p> <p>
+
+ </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>idx</code></td><td><p>n-by-1 vector of cluster assignments. Trimmed units
+                    have idx=0. Noise units have idx=k+1 (if noise=true).</p></td></tr><tr valign="top"><td><code>gamma1</code></td><td><p>k-by-3 matrix: estimated major-axis directions,
+                    one row per group.</p></td></tr><tr valign="top"><td><code>gamma2</code></td><td><p>k-by-3 matrix: estimated minor-axis directions.</p></td></tr><tr valign="top"><td><code>gamma3</code></td><td><p>k-by-3 matrix: estimated mean directions (poles).</p></td></tr><tr valign="top"><td><code>kappaopt</code></td><td><p>k-by-1 vector of estimated (restricted) kappa values.</p></td></tr><tr valign="top"><td><code>betaopt</code></td><td><p>k-by-1 vector of estimated beta values.</p></td></tr><tr valign="top"><td><code>postprob</code></td><td><p>n-by-kn posterior probability matrix (kn=k or k+1).</p></td></tr><tr valign="top"><td><code>ellipse</code></td><td><p>k-by-1 cell array; out.ellipse{j} is an
+                    ellipsenpts-by-3 matrix of points on the boundary of
+                    the conflev Kent confidence region of group j,
+                    ordered along the (closed) contour, so that it can
+                    be drawn with plot3.</p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p>confidence level used for out.ellipse.</p></td></tr><tr valign="top"><td><code>siz</code></td><td><p>tabulate(out.idx).</p></td></tr><tr valign="top"><td><code>h</code></td><td><p>number of untrimmed observations.</p></td></tr><tr valign="top"><td><code>obj</code></td><td><p>maximised trimmed log-likelihood.</p></td></tr><tr valign="top"><td><code>NlogL</code></td><td><p>-2 times classification log-likelihood of retained units.</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p>elemental subset that gave the best solution.</p></td></tr><tr valign="top"><td><code>fullsol</code></td><td><p>nselected-by-1 vector of objective values per subsample.</p></td></tr><tr valign="top"><td><code>notconver</code></td><td><p>fraction of subsamples without convergence.</p></td></tr><tr valign="top"><td><code>equalweights</code></td><td><p>logical, as input option.</p></td></tr><tr valign="top"><td><code>mixt</code></td><td><p>scalar, as input option.</p></td></tr><tr valign="top"><td><code>noise</code></td><td><p>logical, as input option.</p></td></tr><tr valign="top"><td><code>noiseprop</code></td><td><p>(only if noise=true) estimated noise mixing proportion.</p></td></tr><tr valign="top"><td><code>CLACLA</code></td><td><p>(only if mixt==0) classification BIC: out.NlogL + nParam*log(h).</p></td></tr><tr valign="top"><td><code>MIXMIX</code></td><td><p>(only if mixt&gt;0) mixture BIC: out.NlogLmixt + nParam*log(h).</p></td></tr><tr valign="top"><td><code>MIXCLA</code></td><td><p>(only if mixt&gt;0) classification BIC at mixture estimates.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>(only if Ysave=true) the (possibly row-normalised) data.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p> CONCENTRATION STEPS (CEM/EM ALGORITHM ON S^2)
+
+ Each subsample runs the following loop:</p> <p>
+  (i)  E-step: compute log-discriminants
+         d_{ij} = log(pi_j) - log c(kappa_j,beta_j)
+                  + kappa_j*(gamma3_j'*y_i)
+                  + beta_j*[(gamma1_j'*y_i)^2 - (gamma2_j'*y_i)^2]
+       for each unit i and group j; add the uniform noise term if noise=true.</p> <p>
+  (ii) Trimming: retain the h units with the largest discriminant (or
+       mixture log-density for mixt=2).</p> <p>
+  (iii)M-step: re-estimate (kappa_j, beta_j, Gamma_j) for each group
+       via KentMstepFS (closed-form Gamma, numerical kappa/beta).</p> <p>
+  (iv) Restriction: apply restrKentFS to enforce
+       max(kappa_j)/min(kappa_j) &lt;= restrfactor.</p> <p>
+
+ SUBSAMPLE SEEDING
+
+ Each elemental subset draws k*4 observations (4 per cluster). With 4
+ points on S^2 we can form a non-degenerate mean vector and second-moment
+ matrix, so KentMstepFS can produce a valid seed. Using fewer points
+ risks degenerate second-moment matrices with coincident eigenvalues.</p> <p>
+
+ PARAMETER COUNT AND INFORMATION CRITERIA
+
+ A Kent distribution on S^2 has 5 free parameters: kappa (1), beta (1),
+ and 3 rotation angles for Gamma (5 total). The uniform noise component
+ is parameter-free (density = 1/(4*pi) everywhere on S^2). With kn total
+ components and estimated mixing proportions:</p> <p>
+
+   nParam = k*5 + (kn-1)   [equalweights=false]
+          = k*5             [equalweights=true]
+
+ where kn=k (noise=false) or kn=k+1 (noise=true). The three information
+ criteria are identical in structure to those of tclustvmf:</p> <p>
+   CLACLA = -2*CLA_CLA + nParam*log(h)   [mixt=0]
+   MIXMIX = -2*MIX_MIX + nParam*log(h)   [mixt&gt;0]
+   MIXCLA = -2*MIX_CLA + nParam*log(h)   [mixt&gt;0]
+
+ KENT CONFIDENCE REGION (out.ellipse)
+
+ The vMF confidence region is a spherical cap (a circle around the mean
+ direction). The contours of the Kent density are instead ovals: the
+ confidence region of group j is the set of points whose fitted density
+ is larger than a threshold t_j, chosen in such a way that the region
+ has probability conflev under Kent(kappa_j,beta_j,Gamma_j). In the
+ canonical frame, with colatitude theta and longitude phi measured from
+ the major axis, the log-density (up to the normalizing constant) is
+
+   kappa*cos(theta) + beta*sin(theta)^2*cos(2*phi).</p> <p>
+
+ The boundary of the region is computed by function Kentcap, which
+ can also be called directly. The angular semi-axes of the region are
+ approximately proportional to 1/sqrt(kappa-2*beta) (major) and
+ 1/sqrt(kappa+2*beta) (minor).</p> <p>
+
+ RESTRICTION
+
+ The restriction acts on the concentrations kappa_j. When restrKentFS
+ modifies kappa_j, beta_j is rescaled so that beta_j/kappa_j (the shape
+ of the contours of group j) does not change.</p> <p>
+
+ References:</p> <p>
+
+   Kent, J.T. (1982), The Fisher-Bingham distribution on the sphere,
+   J. Roy. Statist. Soc., B, Vol. 44, pp. 71-80.</p> <p>
+
+   Mardia, K.V., Barber, S., Burdett, P.M., Kent, J.T. and Hamelryck, T.</p> <p>
+   (2021), Mixture models for spherical data with applications to protein
+   bioinformatics, arXiv:2104.13140.</p> <p>
+
+   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A.</p> <p>
+   (2008), A General Trimming Approach to Robust Cluster Analysis,
+   Annals of Statistics, Vol. 36, pp. 1324-1345.</p> <p>
+
+   Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani, M.</p> <p>
+   (2017), Finding the Number of Groups in Model-Based Clustering via
+   Constrained Likelihoods, J. Computational and Graphical Statistics,
+   Vol. 27, pp. 404-416.</p> <p>
+
+   Dong, A. and Melnykov, V. (2024), Contaminated Kent mixture model for
+   clustering non-spherical directional data with heavy tails or scatter,
+   Statistics and Probability Letters, Vol. 208, 110058.</p><p>
+
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Kent, J.T. (1982), The Fisher-Bingham distribution on the sphere,
+   J. Roy. Statist. Soc., B, Vol. 44, pp. 71-80.</p></div><div><p><p>Mardia, K.V., Barber, S., Burdett, P.M., Kent, J.T. and Hamelryck, T.</p> <p>
+   (2021), Mixture models for spherical data with applications to protein
+   bioinformatics, arXiv:2104.13140.</p></p></div><div><p><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A.</p> <p>
+   (2008), A General Trimming Approach to Robust Cluster Analysis,
+   Annals of Statistics, Vol. 36, pp. 1324-1345.</p></p></div><div><p>(2017), Finding the Number of Groups in Model-Based Clustering via
+   Constrained Likelihoods, J. Computational and Graphical Statistics,
+   Vol. 27, pp. 404-416.</p></div><div><p>Dong, A. and Melnykov, V. (2024), Contaminated Kent mixture model for
+   clustering non-spherical directional data with heavy tails or scatter,
+   Statistics and Probability Letters, Vol. 208, 110058.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustvmf.html" itemprop="url"><span itemprop="name"><code>tclustvmf</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="sphereplot.html" itemprop="url"><span itemprop="name"><code>sphereplot</code></span></a></span> | <span itemprop="seealso"><a href="Kentrnd.html" itemprop="url"><span itemprop="name"><code>Kentrnd</code></span></a></span> | <span itemprop="seealso"><a href="Kentcap.html" itemprop="url"><span itemprop="name"><code>Kentcap</code></span></a></span> | <span itemprop="seealso"><a href="logKentpdfFS.html" itemprop="url"><span itemprop="name"><code>logKentpdfFS</code></span></a></span> | <span itemprop="seealso"><a href="KentMstepFS.html" itemprop="url"><span itemprop="name"><code>KentMstepFS</code></span></a></span> | <span itemprop="seealso"><a href="restrKentFS.html" itemprop="url"><span itemprop="name"><code>restrKentFS</code></span></a></span> | <span itemprop="seealso"><a href="KentlogC.html" itemprop="url"><span itemprop="name"><code>KentlogC</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
