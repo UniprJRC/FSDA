@@ -19,8 +19,8 @@ function kappa = restrKappaFS(kappaHat, r, niini, p, restrfactor, tol)
 %   (minus the average vMF log-likelihood of group j, r_j being its mean
 %   resultant length) is convex in kappa -- its second derivative equals
 %   Ap'(kappa) > 0, where Ap is the Bessel-ratio function inverted by
-%   kappaFS -- with unconstrained minimizer exactly kappaHat_j =
-%   kappaFS(r_j,p). Unlike the Gaussian eigenvalue case handled by
+%   vMFkappa -- with unconstrained minimizer exactly kappaHat_j =
+%   vMFkappa(r_j,p). Unlike the Gaussian eigenvalue case handled by
 %   restreigen, where the analogous per-direction loss log(e)+d/e is
 %   simple enough that the optimal shared floor m has a closed-form
 %   algebraic solution, log Cp(kappa) involves a modified Bessel
@@ -34,7 +34,7 @@ function kappa = restrKappaFS(kappaHat, r, niini, p, restrfactor, tol)
 %  Required input arguments:
 %
 %    kappaHat: Raw (unrestricted) concentration MLEs. Vector. k-by-1,
-%              typically kappaFS(r,p).
+%              typically vMFkappa(r,p).
 %           r: Mean resultant lengths. Vector. k-by-1, one per group,
 %              used (together with p) to evaluate the vMF loss; NOT
 %              recoverable from kappaHat alone without redundant Bessel
@@ -60,7 +60,7 @@ function kappa = restrKappaFS(kappaHat, r, niini, p, restrfactor, tol)
 %              size as kappaHat. max(kappa)/min(kappa) <= restrfactor
 %              among the originally non-empty groups.
 %
-% See also: restreigen, kappaFS, vMFlogC, tclustvmf
+% See also: restreigen, vMFkappa, vMFlogC, tclustvmf
 %
 % References:
 %

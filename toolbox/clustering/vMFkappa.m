@@ -1,9 +1,9 @@
-function kappa = kappaFS(r, p, newtonsteps)
-%kappaFS estimates the von Mises-Fisher concentration parameter from the mean resultant length
+function kappa = vMFkappa(r, p, newtonsteps)
+%vMFkappa estimates the von Mises-Fisher concentration parameter from the mean resultant length
 %
-%<a href="matlab: docsearchFS('kappaFS')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('vMFkappa')">Link to the help page for this function</a>
 %
-%   kappaFS inverts the equation
+%   vMFkappa inverts the equation
 %
 %       A_p(kappa) = I_{p/2}(kappa) / I_{p/2-1}(kappa) = r
 %
@@ -20,7 +20,7 @@ function kappa = kappaFS(r, p, newtonsteps)
 %   This is the vMF-mixture counterpart of the covariance-matrix update
 %   inside the concentration steps of tclust: exactly as tclust recomputes
 %   sigmaini(:,:,j) from the current group of untrimmed units, tclustvmf
-%   recomputes kappaini(j) by calling kappaFS on the mean resultant length
+%   recomputes kappaini(j) by calling vMFkappa on the mean resultant length
 %   of the units currently assigned to group j.
 %
 %  Required input arguments:
@@ -28,14 +28,14 @@ function kappa = kappaFS(r, p, newtonsteps)
 %            r: Mean resultant length(s). Vector or scalar. Values in
 %               [0,1); each entry is typically norm(sum(Y_j,1))/n_j for
 %               one group of n_j unit vectors (the row-sum of the group
-%               matrix normalised by its size). kappaFS is fully
+%               matrix normalised by its size). vMFkappa is fully
 %               vectorized over r, so all groups can be processed at once.
 %            p: Dimension of the ambient space. Scalar. Data lie on
 %               S^(p-1), so Y has p columns. For the circular case p=2;
 %               for the spherical case p=3. p can be large (hundreds or
 %               thousands, as for document embeddings).
 %  newtonsteps: Number of Newton-Raphson refinement steps. Scalar.
-%               Default 2. With newtonsteps=0 kappaFS returns the raw
+%               Default 2. With newtonsteps=0 vMFkappa returns the raw
 %               Banerjee et al. (2005) approximation. Each additional
 %               step roughly doubles the number of correct significant
 %               digits; 2 steps give a relative error below 1e-5
@@ -112,22 +112,22 @@ function kappa = kappaFS(r, p, newtonsteps)
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('kappaFS')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('vMFkappa')">Link to the help page for this function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %
 % Examples:
 %
 %{
-    % Recovery check: for known kappa, verify that kappaFS inverts A_p correctly.
+    % Recovery check: for known kappa, verify that vMFkappa inverts A_p correctly.
     % For p=5 and several values of kappa, compute r=A_p(kappa) and check
-    % that kappaFS(r,p) recovers kappa to within 1e-5 relative error.
+    % that vMFkappa(r,p) recovers kappa to within 1e-5 relative error.
     p = 5;
     nu = p/2 - 1;
     Ap = @(k) besseli(nu+1,k,1)./besseli(nu,k,1); % scaled ratio: scaling cancels
     ktrue = [0.5 3 10 50 200];
     r = Ap(ktrue);
-    khat = kappaFS(r,p);
+    khat = vMFkappa(r,p);
     relErr = abs(khat - ktrue)./ktrue;
     disp(array2table([ktrue; khat; relErr],'RowNames',{'kTrue','kHat','relErr'}))
 %}
@@ -142,7 +142,7 @@ function kappa = kappaFS(r, p, newtonsteps)
     ktrue = logspace(-1, 3, 50);    % 50 values from 0.1 to 1000
     r = Ap(ktrue);
     for ns = 0:3
-        khat = kappaFS(r, p, ns);
+        khat = vMFkappa(r, p, ns);
         maxRelErr = max(abs(khat - ktrue)./ktrue);
         fprintf('newtonsteps=%d: max relative error = %.2e\n', ns, maxRelErr);
     end
@@ -150,7 +150,7 @@ function kappa = kappaFS(r, p, newtonsteps)
 %
 %{
     %% Estimation of kappa from simulated vMF data, for several groups at once.
-    % kappaFS accepts a vector of mean resultant lengths r (one per group)
+    % vMFkappa accepts a vector of mean resultant lengths r (one per group)
     % and returns a vector of kappa estimates in one call.
     rng(1)
     p = 3;
@@ -160,7 +160,7 @@ function kappa = kappaFS(r, p, newtonsteps)
     Y2 = vMFrnd(n2, [0 1 0], ktrue(2));
     Y3 = vMFrnd(n3, [0 0 1], ktrue(3));
     R = [norm(sum(Y1))/n1, norm(sum(Y2))/n2, norm(sum(Y3))/n3];
-    kappa = kappaFS(R, p);
+    kappa = vMFkappa(R, p);
     fprintf('Group mean resultant lengths: %.3f %.3f %.3f\n', R);
     fprintf('True kappa:                   %.2f  %.2f  %.2f\n', ktrue);
     fprintf('Estimated kappa:              %.2f  %.2f  %.2f\n', kappa);
@@ -176,8 +176,8 @@ function kappa = kappaFS(r, p, newtonsteps)
     r = norm(mean(Y,1));
     fprintf('Direct ratio of Bessel functions at the true kappa: %g\n', ...
         besseli(p/2,ktrue,1)/besseli(p/2-1,ktrue,1));
-    fprintf('kappa: true %g, Banerjee approximation %.3f, kappaFS %.3f\n', ...
-        ktrue, kappaFS(r,p,0), kappaFS(r,p));
+    fprintf('kappa: true %g, Banerjee approximation %.3f, vMFkappa %.3f\n', ...
+        ktrue, vMFkappa(r,p,0), vMFkappa(r,p));
 %}
 
 %% Beginning of code

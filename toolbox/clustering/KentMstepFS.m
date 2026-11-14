@@ -6,7 +6,7 @@ function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstepFS(Y, w, kappa0
 %   KentMstepFS estimates the parameters of a Kent(kappa,beta,Gamma)
 %   distribution from a weighted sample of unit vectors on S^2. It is
 %   called once per group at each M-step of the tclustkent concentration
-%   loop, and it plays the role that kappaFS (together with the resultant
+%   loop, and it plays the role that vMFkappa (together with the resultant
 %   vector) plays in tclustvmf.
 %
 %   The estimation proceeds in two stages (Kent, 1982, Section 4;

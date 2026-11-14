@@ -87,7 +87,7 @@ function logCp = vMFlogC(kappa,p)
 %   Distributions, Journal of Machine Learning Research, Vol. 6,
 %   pp. 1345-1382. (log-space evaluation of C_p(kappa))
 %
-% See also: logvMFpdfFS, kappaFS, restrKappaFS, logBesseliFS
+% See also: logvMFpdfFS, vMFkappa, restrKappaFS, logBesseliFS
 %
 % Copyright 2008-2025.
 % Written by FSDA team

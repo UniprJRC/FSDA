@@ -77,7 +77,7 @@ function Y = vMFrnd(n, mu, kappa)
 %   Mardia, K.V. and Jupp, P.E. (2000), Directional Statistics, Wiley,
 %   Chichester.
 %
-% See also: Kentrnd, sphereplot, tclustvmf, logvMFpdfFS, kappaFS, vMFcap
+% See also: Kentrnd, sphereplot, tclustvmf, logvMFpdfFS, vMFkappa, vMFcap
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -109,7 +109,7 @@ function Y = vMFrnd(n, mu, kappa)
 %{
     % Check in high dimension: the mean resultant length.
     % The length of the mean vector of the sample is close to
-    % A_p(kappa)=I_{p/2}(kappa)/I_{p/2-1}(kappa), and kappaFS recovers
+    % A_p(kappa)=I_{p/2}(kappa)/I_{p/2-1}(kappa), and vMFkappa recovers
     % kappa from it.
     rng(3)
     p = 50; kappa = 100;
@@ -118,7 +118,7 @@ function Y = vMFrnd(n, mu, kappa)
     r = norm(mean(Y,1));
     Ap = besseli(p/2,kappa,1)/besseli(p/2-1,kappa,1);
     fprintf('Mean resultant length: %.4f, A_p(kappa): %.4f\n', r, Ap);
-    fprintf('kappa: true %g, estimated with kappaFS %.2f\n', kappa, kappaFS(r,p));
+    fprintf('kappa: true %g, estimated with vMFkappa %.2f\n', kappa, vMFkappa(r,p));
 %}
 %
 %{

@@ -14,7 +14,7 @@ function logI = logBesseliFS(nu, x)
 %   this quantity is smaller than the smallest positive double, so that
 %   besseli returns 0 and its logarithm is -Inf.
 %
-%   logBesseliFS is used by vMFlogC (normalizing constant) and by kappaFS
+%   logBesseliFS is used by vMFlogC (normalizing constant) and by vMFkappa
 %   (ratio of Bessel functions A_p(kappa)).
 %
 %  Required input arguments:
@@ -59,7 +59,7 @@ function logI = logBesseliFS(nu, x)
 %   Abramowitz, M. and Stegun, I.A. (1964), Handbook of Mathematical
 %   Functions, National Bureau of Standards, Washington.
 %
-% See also: vMFlogC, kappaFS, logvMFpdfFS
+% See also: vMFlogC, vMFkappa, logvMFpdfFS
 %
 % Copyright 2008-2025.
 % Written by FSDA team

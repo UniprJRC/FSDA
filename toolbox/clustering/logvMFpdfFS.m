@@ -78,7 +78,7 @@ function logf = logvMFpdfFS(Y, mu, kappa)
 %   Distributions, Journal of Machine Learning Research, Vol. 6,
 %   pp. 1345-1382. (log-space evaluation of C_p(kappa))
 %
-% See also: tclustvmf, vMFlogC, kappaFS, vMFrnd, vMFcap, sphereplot
+% See also: tclustvmf, vMFlogC, vMFkappa, vMFrnd, vMFcap, sphereplot
 %
 % Copyright 2008-2025.
 % Written by FSDA team

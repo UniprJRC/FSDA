@@ -82,7 +82,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %               k*(p+1) observations (p+1 per cluster), enough to
 %               initialise a non-degenerate vMF estimate (direction from
 %               the resultant vector, kappa from the mean resultant
-%               length via kappaFS). Set nsamp=0 to enumerate all
+%               length via vMFkappa). Set nsamp=0 to enumerate all
 %               subsets. With init='kmeans++' it is the number of random
 %               starts (default 300), see init.
 %                 Example - 'nsamp',500
@@ -123,11 +123,11 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %               data.
 %                 Example - 'normalize',true
 %                 Data Types - logical
-%  newtonsteps: Number of Newton-Raphson steps used by kappaFS to invert
+%  newtonsteps: Number of Newton-Raphson steps used by vMFkappa to invert
 %               the mean resultant length r into the concentration
 %               parameter kappa (solving A_p(kappa)=r, where A_p is the
 %               ratio of Bessel functions I_{p/2}(kappa)/I_{p/2-1}(kappa)).
-%               Scalar. Default 2 (see kappaFS for accuracy figures; 2
+%               Scalar. Default 2 (see vMFkappa for accuracy figures; 2
 %               steps give about 1e-6 relative error for most r in (0,1)).
 %                 Example - 'newtonsteps',5
 %                 Data Types - double
@@ -310,7 +310,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %       (or largest log-mixture-density for mixt=2).
 %  (iii)M-step: re-estimate mu_j as the direction of the resultant
 %       vector R_j = sum_{i in group j} y_i, and kappa_j from the mean
-%       resultant length r_j = ||R_j||/n_j via kappaFS.
+%       resultant length r_j = ||R_j||/n_j via vMFkappa.
 %  (iv) Restriction: apply restrKappaFS to enforce
 %       max(kappa_j)/min(kappa_j) <= restrfactor.
 %
@@ -441,7 +441,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %
 % For p in the hundreds or thousands the Bessel functions which appear
 % in the normalizing constant and in the equation for kappa cannot be
-% represented in double precision. vMFlogC and kappaFS use logBesseliFS,
+% represented in double precision. vMFlogC and vMFkappa use logBesseliFS,
 % which returns their logarithm in all cases.
 %
 % References:
@@ -472,7 +472,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %   Mardia, K.V. and Jupp, P.E. (2000), Directional Statistics, Wiley,
 %   Chichester. (vMF distribution, mean resultant length, kappa estimation)
 %
-% See also: tclust, tkmeans, tclustkent, sphereplot, sphereprojplot, vMFrnd, logvMFpdfFS, kappaFS, restrKappaFS, vMFlogC, vMFcap
+% See also: tclust, tkmeans, tclustkent, sphereplot, sphereprojplot, vMFrnd, logvMFpdfFS, vMFkappa, restrKappaFS, vMFlogC, vMFcap
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -585,7 +585,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %{
     %% The newtonsteps option: Newton-Raphson steps for kappa estimation.
     % More steps give a more accurate inversion of the mean resultant
-    % length into a concentration parameter (see kappaFS).
+    % length into a concentration parameter (see vMFkappa).
     rng(1)
     n1=150; n2=150;
     Y = [vMFrnd(n1,[1 0 0],25); vMFrnd(n2,[0 1 0],12)];
@@ -903,12 +903,12 @@ for i=1:nselected
         % starting groups given by the user (see vmfseeduser)
         [muini,rini,niini]=vmfseeduser(Y,startlist{i},k,h,logical(noise));
         index=[];
-        kappaini=kappaFS(rini,p,newtonsteps);
+        kappaini=vMFkappa(rini,p,newtonsteps);
     elseif kmpp
         % k-means++ seeds on the cosine distance, partition of the units
         % around them and its resultant vectors (see vmfseedkmpp)
         [muini,rini,niini,index]=vmfseedkmpp(Y,k,h,noise);
-        kappaini=kappaFS(rini,p,newtonsteps);
+        kappaini=vMFkappa(rini,p,newtonsteps);
     else
         index=C(i,:);
 
@@ -925,7 +925,7 @@ for i=1:nselected
             muini(degen,:)=Y(index((find(degen)-1)*(p+1)+1),:);
         end
         rini=normR/(p+1);
-        kappaini=kappaFS(rini,p,newtonsteps);
+        kappaini=vMFkappa(rini,p,newtonsteps);
 
         % Each group starts with weight p+1. The noise component (if any) is
         % seeded on the same footing: with no dedicated seeding step of its
@@ -1031,7 +1031,7 @@ for i=1:nselected
         kappaini=NaN(k,1);
         muini(okg,:)=Rk(okg,:)./normR(okg);
         rini(okg)=normR(okg)./nik(okg);
-        kappaini(okg)=kappaFS(rini(okg),p,newtonsteps);
+        kappaini(okg)=vMFkappa(rini(okg),p,newtonsteps);
         nik(~okg)=0;
         niini(1:k)=nik;
 
