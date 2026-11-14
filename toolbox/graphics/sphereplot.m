@@ -290,7 +290,7 @@ function hax = sphereplot(Y, varargin)
     rng(6)
     n = 500;
     Y = Kentrnd(n, 80, 30, [1 0 0], [0 1 1]);
-    [g1,g2,g3,kap,bet] = KentMstepFS(Y, ones(n,1));
+    [g1,g2,g3,kap,bet] = KentMstep(Y, ones(n,1));
     [P, thresh] = Kentcap(g1, g2, g3, kap, bet, 0.95);
     inside = logKentpdfFS(Y, g1, g2, g3, kap, bet) >= thresh;
     sphereplot(Y, 'group', 2 - inside, 'cap', {P}, 'center', g3, ...

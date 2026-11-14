@@ -140,7 +140,7 @@ function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
 %                 Example - 'noise',true
 %                 Data Types - logical
 %  mstepiter : Iterations of the M-step. Scalar. Maximum number of
-%               iterations of the numerical optimiser inside KentMstepFS
+%               iterations of the numerical optimiser inside KentMstep
 %               (kappa/beta estimation per M-step). The default is 50.
 %               Reduce for speed, increase for accuracy in
 %               high-concentration cases.
@@ -195,7 +195,7 @@ function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
 %  (ii) Trimming: retain the h units with the largest discriminant (or
 %       mixture log-density for mixt=2).
 %  (iii)M-step: re-estimate (kappa_j, beta_j, Gamma_j) for each group
-%       via KentMstepFS (closed-form Gamma, numerical kappa/beta).
+%       via KentMstep (closed-form Gamma, numerical kappa/beta).
 %  (iv) Restriction: apply restrKentFS to enforce
 %       max(kappa_j)/min(kappa_j) <= restrfactor.
 %
@@ -203,7 +203,7 @@ function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
 %
 % Each elemental subset draws k*4 observations (4 per cluster). With 4
 % points on S^2 we can form a non-degenerate mean vector and second-moment
-% matrix, so KentMstepFS can produce a valid seed. Using fewer points
+% matrix, so KentMstep can produce a valid seed. Using fewer points
 % risks degenerate second-moment matrices with coincident eigenvalues.
 %
 % PARAMETER COUNT AND INFORMATION CRITERIA
@@ -267,7 +267,7 @@ function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
 %   clustering non-spherical directional data with heavy tails or scatter,
 %   Statistics and Probability Letters, Vol. 208, 110058.
 %
-% See also: tclustvmf, tclust, sphereplot, Kentrnd, Kentcap, logKentpdfFS, KentMstepFS, restrKentFS, KentlogC
+% See also: tclustvmf, tclust, sphereplot, Kentrnd, Kentcap, logKentpdfFS, KentMstep, restrKentFS, KentlogC
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -572,9 +572,9 @@ for i = 1:nselected
         selj = index(ilow:iup);
         Yselj = Y(selj, :);
 
-        % Seed from elemental subset via KentMstepFS with unit weights
+        % Seed from elemental subset via KentMstep with unit weights
         wj = ones(4, 1);
-        [g1j, g2j, g3j, kapj, betj, rj, dqj] = KentMstepFS(Yselj, wj, [], [], mstepiter);
+        [g1j, g2j, g3j, kapj, betj, rj, dqj] = KentMstep(Yselj, wj, [], [], mstepiter);
 
         if isnan(kapj) || kapj <= 0
             % Degenerate seed: use the resultant as pole, set beta=0
@@ -683,7 +683,7 @@ for i = 1:nselected
             end
 
             if nj > 0
-                [g1j, g2j, g3j, kapj, betj, rj, dqj] = KentMstepFS(Y, wj, kapini(j), betaini(j), mstepiter);
+                [g1j, g2j, g3j, kapj, betj, rj, dqj] = KentMstep(Y, wj, kapini(j), betaini(j), mstepiter);
                 if isnan(kapj)
                     g1ini(j,:) = NaN(1,3); g2ini(j,:) = NaN(1,3); g3ini(j,:) = NaN(1,3);
                     kapini(j) = NaN; betaini(j) = NaN; niini(j) = 0;

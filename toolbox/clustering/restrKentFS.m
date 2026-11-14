@@ -24,22 +24,22 @@ function [kappaout, betaout] = restrKentFS(kappa, beta, r, dq, ni, restrfactor, 
 %   minimisation of the (minus) log-likelihood (see "More About").
 %
 %   When restrfactor=1 all kappa_j are set to the same value. Groups with
-%   NaN kappa (empty/degenerate groups, as flagged by KentMstepFS) are
+%   NaN kappa (empty/degenerate groups, as flagged by KentMstep) are
 %   passed through unchanged and do not take part in the restriction.
 %
 %  Required input arguments:
 %
 %       kappa: Concentration parameters. k-by-1 vector. Unrestricted
-%              estimates from KentMstepFS. Entries may be NaN (empty
+%              estimates from KentMstep. Entries may be NaN (empty
 %              group).
 %        beta: Ovalness parameters. k-by-1 vector. Unrestricted estimates
-%              from KentMstepFS.
+%              from KentMstep.
 %           r: Mean resultant lengths. k-by-1 vector. r(j) is the
 %              (weighted) mean of gamma3_j'*y over the units of group j,
-%              as returned by KentMstepFS (6th output).
+%              as returned by KentMstep (6th output).
 %          dq: Differences of second moments. k-by-1 vector. dq(j) is the
 %              (weighted) mean of (gamma1_j'*y)^2-(gamma2_j'*y)^2 over
-%              the units of group j, as returned by KentMstepFS (7th
+%              the units of group j, as returned by KentMstep (7th
 %              output). r and dq are the sufficient statistics of
 %              (kappa_j,beta_j) for given orientation.
 %          ni: Group sizes. k-by-1 vector. Number of units (or sum of the
@@ -103,7 +103,7 @@ function [kappaout, betaout] = restrKentFS(kappa, beta, r, dq, ni, restrfactor, 
 %   algorithm for robust constrained clustering, Computational Statistics
 %   and Data Analysis, Vol. 61, pp. 124-136.
 %
-% See also: tclustkent, KentMstepFS, KentlogC, restrKappaFS
+% See also: tclustkent, KentMstep, KentlogC, restrKappaFS
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -123,8 +123,8 @@ function [kappaout, betaout] = restrKentFS(kappa, beta, r, dq, ni, restrfactor, 
     n = 300;
     Y1 = Kentrnd(n, 200, 80, [1 0 0], [0 0 1]);
     Y2 = Kentrnd(n,  10,  3, [0 1 0], [0 0 1]);
-    [~,~,~,k1,b1,r1,dq1] = KentMstepFS(Y1, ones(n,1));
-    [~,~,~,k2,b2,r2,dq2] = KentMstepFS(Y2, ones(n,1));
+    [~,~,~,k1,b1,r1,dq1] = KentMstep(Y1, ones(n,1));
+    [~,~,~,k2,b2,r2,dq2] = KentMstep(Y2, ones(n,1));
     kappa = [k1; k2]; beta = [b1; b2];
     [ko, bo] = restrKentFS(kappa, beta, [r1; r2], [dq1; dq2], [n; n], 5);
     disp(array2table([kappa ko beta bo beta./kappa bo./ko], 'VariableNames', ...
@@ -139,10 +139,10 @@ function [kappaout, betaout] = restrKentFS(kappa, beta, r, dq, ni, restrfactor, 
     Y1 = Kentrnd(n, 100, 30, [1 0 0], [0 0 1]);
     Y2 = Kentrnd(n,  40, 15, [0 1 0], [0 0 1]);
     Y3 = Kentrnd(n,  20,  2, [0 0 1], [1 0 0]);
-    [~,~,~,k1,b1,r1,dq1] = KentMstepFS(Y1, ones(n,1));
-    [~,~,~,k2,b2,r2,dq2] = KentMstepFS(Y2, ones(n,1));
-    [~,~,~,k3,b3,r3,dq3] = KentMstepFS(Y3, ones(n,1));
-    [ko, bo] = restrKentFS([k1;k2;k3], [b1;b2;b3], [r1;r2;r3], [dq1;dq2;dq3], [n;n;n], 1);
+    [~,~,~,k1,b1,r1,dq1] = KentMstep(Y1, ones(n,1));
+    [~,~,~,k2,b2,r2,dq2] = KentMstep(Y2, ones(n,1));
+    [~,~,~,k3,b3,r3,dq3] = KentMstep(Y3, ones(n,1));
+    [ko, bo] = KentMstep([k1;k2;k3], [b1;b2;b3], [r1;r2;r3], [dq1;dq2;dq3], [n;n;n], 1);
     disp('Unrestricted kappa'); disp([k1 k2 k3])
     disp('Restricted kappa (restrfactor=1)'); disp(ko')
 %}

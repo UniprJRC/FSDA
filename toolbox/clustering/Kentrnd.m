@@ -83,7 +83,7 @@ function [Y, Gamma] = Kentrnd(n, kappa, beta, gamma3, gamma1)
 %   distributions, Journal of Computational and Graphical Statistics,
 %   Vol. 27, pp. 291-301.
 %
-% See also: vMFrnd, sphereplot, Kentcap, tclustkent, logKentpdfFS, KentMstepFS, KentlogC
+% See also: vMFrnd, sphereplot, Kentcap, tclustkent, logKentpdfFS, KentMstep, KentlogC
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -135,10 +135,10 @@ function [Y, Gamma] = Kentrnd(n, kappa, beta, gamma3, gamma1)
 %}
 %
 %{
-    % The parameters used for the simulation are recovered by KentMstepFS.
+    % The parameters used for the simulation are recovered by KentMstep.
     rng(4)
     Y = Kentrnd(2000, 50, 18, [0 1 0], [1 0 0]);
-    [g1,g2,g3,kap,bet] = KentMstepFS(Y, ones(2000,1));
+    [g1,g2,g3,kap,bet] = KentMstep(Y, ones(2000,1));
     fprintf('kappa: true 50, estimated %.2f\n', kap);
     fprintf('beta:  true 18, estimated %.2f\n', bet);
     disp('Estimated pole and major axis (up to sign)'); disp([g3; g1])

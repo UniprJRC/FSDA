@@ -1,9 +1,9 @@
 function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstep(Y, w, kappa0, beta0, maxiter, tol)
-%KentMstepFS estimates the parameters of a Kent distribution from a (weighted) sample
+%KentMstep estimates the parameters of a Kent distribution from a (weighted) sample
 %
-%<a href="matlab: docsearchFS('KentMstepFS')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('KentMstep')">Link to the help page for this function</a>
 %
-%   KentMstepFS estimates the parameters of a Kent(kappa,beta,Gamma)
+%   KentMstep estimates the parameters of a Kent(kappa,beta,Gamma)
 %   distribution from a weighted sample of unit vectors on S^2. It is
 %   called once per group at each M-step of the tclustkent concentration
 %   loop, and it plays the role that vMFkappa (together with the resultant
@@ -125,7 +125,7 @@ function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstep(Y, w, kappa0, 
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('KentMstepFS')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('KentMstep')">Link to the help page for this function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %
@@ -138,7 +138,7 @@ function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstep(Y, w, kappa0, 
     rng(1)
     n = 2000; kappa_true = 50; beta_true = 18;
     Y = Kentrnd(n, kappa_true, beta_true, [0 1 0], [1 0 0]);
-    [g1,g2,g3,kap,bet] = KentMstepFS(Y, ones(n,1));
+    [g1,g2,g3,kap,bet] = KentMstep(Y, ones(n,1));
     fprintf('kappa: true=%g, est=%.2f\n', kappa_true, kap);
     fprintf('beta:  true=%g, est=%.2f\n', beta_true, bet);
     disp('Estimated pole (true [0 1 0])'); disp(g3)
@@ -152,7 +152,7 @@ function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstep(Y, w, kappa0, 
     rng(2)
     n = 500;
     Y = Kentrnd(n, 80, 30, [1 0 0], [0 1 1]);
-    [g1,g2,g3,kap,bet] = KentMstepFS(Y, ones(n,1));
+    [g1,g2,g3,kap,bet] = KentMstep(Y, ones(n,1));
     [P, thresh] = Kentcap(g1, g2, g3, kap, bet, 0.95);
     inside = logKentpdfFS(Y,g1,g2,g3,kap,bet) >= thresh;
     sphereplot(Y, 'group', 2-inside, 'cap', {P}, 'center', g3, ...
@@ -170,7 +170,7 @@ function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstep(Y, w, kappa0, 
     Y2 = Kentrnd(300,  50, 15, [0 1 0], [1 0 0]);
     Y = [Y1; Y2];
     w = [ones(300,1); zeros(300,1)];
-    [g1,g2,g3,kap,bet] = KentMstepFS(Y, w);
+    [g1,g2,g3,kap,bet] = KentMstep(Y, w);
     fprintf('Group 1: kappa=%.1f (true 100), beta=%.1f (true 40)\n', kap, bet);
 %}
 %
@@ -180,14 +180,14 @@ function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstep(Y, w, kappa0, 
     rng(4)
     n = 2000;
     Y = Kentrnd(n, 30, 0, [0 0 1]);
-    [g1,g2,g3,kap,bet] = KentMstepFS(Y, ones(n,1));
+    [g1,g2,g3,kap,bet] = KentMstep(Y, ones(n,1));
     fprintf('Circular group: kappa=%.2f (true 30), beta=%.3f (true 0)\n', kap, bet);
 %}
 %
 %{
     % Degenerate case: empty group (all weights zero) -> NaN output.
     Y = Kentrnd(50, 20, 5);
-    [g1,g2,g3,kap,bet] = KentMstepFS(Y, zeros(50,1));
+    [g1,g2,g3,kap,bet] = KentMstep(Y, zeros(50,1));
     fprintf('Empty group: kappa=%.4f (should be NaN)\n', kap);
 %}
 
@@ -195,8 +195,8 @@ function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstep(Y, w, kappa0, 
 
 [n, p] = size(Y);
 if p ~= 3
-    error('FSDA:KentMstepFS:WrongDim', ...
-        'KentMstepFS requires 3-column data (Kent distribution is defined on S^2 only)')
+    error('FSDA:KentMstep:WrongDim', ...
+        'KentMstep requires 3-column data (Kent distribution is defined on S^2 only)')
 end
 
 if nargin < 2 || isempty(w)

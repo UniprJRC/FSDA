@@ -96,7 +96,7 @@ function logf = logKentpdfFS(Y, gamma1, gamma2, gamma3, kappa, beta)
 %   clustering non-spherical directional data with heavy tails or scatter,
 %   Statistics and Probability Letters, Vol. 208, 110058.
 %
-% See also: tclustkent, KentlogC, KentMstepFS, restrKentFS, Kentrnd, Kentcap, sphereplot
+% See also: tclustkent, KentlogC, KentMstep, restrKentFS, Kentrnd, Kentcap, sphereplot
 %
 % Copyright 2008-2025.
 % Written by FSDA team
