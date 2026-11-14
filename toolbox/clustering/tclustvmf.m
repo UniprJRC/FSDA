@@ -54,7 +54,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %               max(kappa_j)/min(kappa_j) across the k groups.
 %               restrfactor=1 forces a common kappa (trimmed spherical
 %               k-means); larger values allow groups of increasingly
-%               different concentration. See restrKappaFS.m.
+%               different concentration. See restrKappa.
 %
 %  Optional input arguments:
 %
@@ -311,7 +311,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %  (iii)M-step: re-estimate mu_j as the direction of the resultant
 %       vector R_j = sum_{i in group j} y_i, and kappa_j from the mean
 %       resultant length r_j = ||R_j||/n_j via vMFkappa.
-%  (iv) Restriction: apply restrKappaFS to enforce
+%  (iv) Restriction: apply restrKappa to enforce
 %       max(kappa_j)/min(kappa_j) <= restrfactor.
 %
 % INITIALISATION (OPTION init)
@@ -396,14 +396,14 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 % minimises a Gaussian log-likelihood-consistent weighted loss to find,
 % analytically, the optimal common floor m. That formula is tied to the
 % Gaussian likelihood and cannot be applied to kappa_j directly.
-% restrKappaFS.m instead uses the vMF-consistent loss
+% restrKappa instead uses the vMF-consistent loss
 %   L(kappa) = -logC_p(kappa) - kappa*r_j
 % (the per-group vMF log-likelihood as a function of kappa for fixed r_j),
 % which is convex in kappa for the same reason the Gaussian loss is
 % convex in the eigenvalue. For fixed m, the constrained optimum of each
 % kappa_j in [m, restrfactor*m] is again the unconstrained estimate
 % clipped to that interval; the optimal m is found by 1-D minimisation
-% (Bessel function involved, no closed form). See restrKappaFS.m.
+% (Bessel function involved, no closed form). See restrKappa.
 %
 % NOISE COMPONENT AND RELATIONSHIP WITH BANFIELD-RAFTERY (1993)
 %
@@ -472,7 +472,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %   Mardia, K.V. and Jupp, P.E. (2000), Directional Statistics, Wiley,
 %   Chichester. (vMF distribution, mean resultant length, kappa estimation)
 %
-% See also: tclust, tkmeans, tclustkent, sphereplot, sphereprojplot, vMFrnd, logvMFpdfFS, vMFkappa, restrKappaFS, vMFlogC, vMFcap
+% See also: tclust, tkmeans, tclustkent, sphereplot, sphereprojplot, vMFrnd, logvMFpdfFS, vMFkappa, restrKappa, vMFlogC, vMFcap
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -937,7 +937,7 @@ for i=1:nselected
         niini=repmat(p+1,kn,1);
     end
 
-    kappaini=restrKappaFS(kappaini,rini,niini(1:k),p,restrfactor,tolrestreigen);
+    kappaini=restrKappa(kappaini,rini,niini(1:k),p,restrfactor,tolrestreigen);
 
     iter=0;
     mudiff=1e+15;
@@ -1022,7 +1022,7 @@ for i=1:nselected
         % an empty component. Nothing further is required from nik(j)
         % alone: a group with very few units can still push its raw
         % kappa to an enormous value (r close to 1 by chance), but this
-        % is exactly what restrKappaFS is designed to rein in, mirroring
+        % is exactly what restrKappa is designed to rein in, mirroring
         % how tclust relies on restreigen alone to tame a near-zero
         % eigenvalue from a small group.
         okg=nik>0 & normR>1e-12;
@@ -1035,7 +1035,7 @@ for i=1:nselected
         nik(~okg)=0;
         niini(1:k)=nik;
 
-        kappaini=restrKappaFS(kappaini,rini,niini(1:k),p,restrfactor,tolrestreigen);
+        kappaini=restrKappa(kappaini,rini,niini(1:k),p,restrfactor,tolrestreigen);
 
         % Objective function
         if mixt>=1

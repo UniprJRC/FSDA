@@ -3,7 +3,7 @@ function [kappaout, betaout] = restrKentFS(kappa, beta, r, dq, ni, restrfactor, 
 %
 %<a href="matlab: docsearchFS('restrKentFS')">Link to the help page for this function</a>
 %
-%   restrKentFS is the Kent-distribution analogue of restrKappaFS: it
+%   restrKentFS is the Kent-distribution analogue of restrKappa.m: it
 %   enforces the constraint
 %
 %       max_j(kappa_j) / min_j(kappa_j)  <=  restrfactor
@@ -18,7 +18,7 @@ function [kappaout, betaout] = restrKentFS(kappa, beta, r, dq, ni, restrfactor, 
 %   orientation untouched.
 %
 %   If the unrestricted estimates already satisfy the constraint they are
-%   returned unchanged. Otherwise, exactly as in restrKappaFS, the
+%   returned unchanged. Otherwise, exactly as in restrKappa.m, the
 %   restricted estimates are the unrestricted ones truncated to an
 %   interval [m, restrfactor*m], and the optimal m is found by a 1-D
 %   minimisation of the (minus) log-likelihood (see "More About").
@@ -103,7 +103,7 @@ function [kappaout, betaout] = restrKentFS(kappa, beta, r, dq, ni, restrfactor, 
 %   algorithm for robust constrained clustering, Computational Statistics
 %   and Data Analysis, Vol. 61, pp. 124-136.
 %
-% See also: tclustkent, KentMstep, KentlogC, restrKappaFS
+% See also: tclustkent, KentMstep, KentlogC, restrKappa.m
 %
 % Copyright 2008-2025.
 % Written by FSDA team

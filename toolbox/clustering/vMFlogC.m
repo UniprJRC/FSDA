@@ -26,7 +26,7 @@ function logCp = vMFlogC(kappa,p)
 %
 %   This function factors out the normalizing-constant computation shared
 %   by logvMFpdfFS (which needs it once per group per E-step iteration)
-%   and restrKappaFS (which needs it to evaluate the vMF-consistent
+%   and restrKappa.m (which needs it to evaluate the vMF-consistent
 %   per-group profile-likelihood loss used to restrict the concentration
 %   parameters).
 %
@@ -87,7 +87,7 @@ function logCp = vMFlogC(kappa,p)
 %   Distributions, Journal of Machine Learning Research, Vol. 6,
 %   pp. 1345-1382. (log-space evaluation of C_p(kappa))
 %
-% See also: logvMFpdfFS, vMFkappa, restrKappaFS, logBesseliFS
+% See also: logvMFpdfFS, vMFkappa, restrKappa.m, logBesseliFS
 %
 % Copyright 2008-2025.
 % Written by FSDA team

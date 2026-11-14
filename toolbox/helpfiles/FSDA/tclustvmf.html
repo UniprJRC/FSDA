@@ -84,7 +84,7 @@ disp(out1.kappaopt); disp(out2.kappaopt);</pre></div></div><pre class="codeoutp
                max(kappa_j)/min(kappa_j) across the k groups.</p> <p>
                restrfactor=1 forces a common kappa (trimmed spherical
                k-means); larger values allow groups of increasingly
-               different concentration. See <a href="restrKappaFS.html">restrKappaFS</a>.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'equalweights',true
+               different concentration. See restrKappa.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'equalweights',true
 </code>,<code> 'mixt',2
 </code>,<code> 'nsamp',500
 </code>,<code> 'init','kmeans++'
@@ -297,7 +297,7 @@ disp(out1.kappaopt); disp(out2.kappaopt);</pre></div></div><pre class="codeoutp
   (iii)M-step: re-estimate mu_j as the direction of the resultant
        vector R_j = sum_{i in group j} y_i, and kappa_j from the mean
        resultant length r_j = ||R_j||/n_j via vMFkappa.</p> <p>
-  (iv) Restriction: apply restrKappaFS to enforce
+  (iv) Restriction: apply restrKappa to enforce
        max(kappa_j)/min(kappa_j) &lt;= restrfactor.</p> <p>
 
  INITIALISATION (OPTION init)
@@ -382,14 +382,14 @@ disp(out1.kappaopt); disp(out2.kappaopt);</pre></div></div><pre class="codeoutp
  minimises a Gaussian log-likelihood-consistent weighted loss to find,
  analytically, the optimal common floor m. That formula is tied to the
  Gaussian likelihood and cannot be applied to kappa_j directly.</p> <p>
- <a href="restrKappaFS.html">restrKappaFS</a> instead uses the vMF-consistent loss
+ restrKappa instead uses the vMF-consistent loss
    L(kappa) = -logC_p(kappa) - kappa*r_j
  (the per-group vMF log-likelihood as a function of kappa for fixed r_j),
  which is convex in kappa for the same reason the Gaussian loss is
  convex in the eigenvalue. For fixed m, the constrained optimum of each
  kappa_j in [m, restrfactor*m] is again the unconstrained estimate
  clipped to that interval; the optimal m is found by 1-D minimisation
- (Bessel function involved, no closed form). See <a href="restrKappaFS.html">restrKappaFS</a>.</p> <p>
+ (Bessel function involved, no closed form). See restrKappa.</p> <p>
 
  NOISE COMPONENT AND RELATIONSHIP WITH BANFIELD-RAFTERY (1993)
 
@@ -471,4 +471,4 @@ disp(out1.kappaopt); disp(out2.kappaopt);</pre></div></div><pre class="codeoutp
    (tclust: the Euclidean parent of tclustvmf)</p></p></div><div><p><p>Hennig, C. (2004), Breakdown Points for Maximum Likelihood Estimators
    of Location-Scale Mixtures, Annals of Statistics, Vol. 32, 1313-1340.</p> <p>
    (limitations of the Banfield-Raftery noise component)</p></p></div><div><p>Mardia, K.V. and Jupp, P.E. (2000), Directional Statistics, Wiley,
-   Chichester. (vMF distribution, mean resultant length, kappa estimation)</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="tclustkent.html" itemprop="url"><span itemprop="name"><code>tclustkent</code></span></a></span> | <span itemprop="seealso"><a href="sphereplot.html" itemprop="url"><span itemprop="name"><code>sphereplot</code></span></a></span> | <span itemprop="seealso"><a href="sphereprojplot.html" itemprop="url"><span itemprop="name"><code>sphereprojplot</code></span></a></span> | <span itemprop="seealso"><a href="vMFrnd.html" itemprop="url"><span itemprop="name"><code>vMFrnd</code></span></a></span> | <span itemprop="seealso"><a href="logvMFpdfFS.html" itemprop="url"><span itemprop="name"><code>logvMFpdfFS</code></span></a></span> | <span itemprop="seealso"><a href="vMFkappa.html" itemprop="url"><span itemprop="name"><code>vMFkappa</code></span></a></span> | <span itemprop="seealso"><a href="restrKappaFS.html" itemprop="url"><span itemprop="name"><code>restrKappaFS</code></span></a></span> | <span itemprop="seealso"><a href="vMFlogC.html" itemprop="url"><span itemprop="name"><code>vMFlogC</code></span></a></span> | <span itemprop="seealso"><a href="vMFcap.html" itemprop="url"><span itemprop="name"><code>vMFcap</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+   Chichester. (vMF distribution, mean resultant length, kappa estimation)</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="tclustkent.html" itemprop="url"><span itemprop="name"><code>tclustkent</code></span></a></span> | <span itemprop="seealso"><a href="sphereplot.html" itemprop="url"><span itemprop="name"><code>sphereplot</code></span></a></span> | <span itemprop="seealso"><a href="sphereprojplot.html" itemprop="url"><span itemprop="name"><code>sphereprojplot</code></span></a></span> | <span itemprop="seealso"><a href="vMFrnd.html" itemprop="url"><span itemprop="name"><code>vMFrnd</code></span></a></span> | <span itemprop="seealso"><a href="logvMFpdfFS.html" itemprop="url"><span itemprop="name"><code>logvMFpdfFS</code></span></a></span> | <span itemprop="seealso"><a href="vMFkappa.html" itemprop="url"><span itemprop="name"><code>vMFkappa</code></span></a></span> | <span itemprop="seealso"><a href="restrKappa.html" itemprop="url"><span itemprop="name"><code>restrKappa</code></span></a></span> | <span itemprop="seealso"><a href="vMFlogC.html" itemprop="url"><span itemprop="name"><code>vMFlogC</code></span></a></span> | <span itemprop="seealso"><a href="vMFcap.html" itemprop="url"><span itemprop="name"><code>vMFcap</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

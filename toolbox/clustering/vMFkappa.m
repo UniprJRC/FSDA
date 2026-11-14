@@ -88,9 +88,9 @@ function kappa = vMFkappa(r, p, newtonsteps)
 % Values of r very close to 1 (near-degenerate groups) are clipped to
 % 1-1e-10 before inversion. This keeps kappa large but finite, which is
 % required for the subsequent concentration-parameter restriction step
-% restrKappaFS to operate correctly (a kappa of Inf would make the ratio
+% restrKappa.m to operate correctly (a kappa of Inf would make the ratio
 % max/min kappa undefined and the numerical minimisation inside
-% restrKappaFS fail).
+% restrKappa.m fail).
 %
 % References:
 %
@@ -107,7 +107,7 @@ function kappa = vMFkappa(r, p, newtonsteps)
 %   Watson, G.S. (1983), Statistics on Spheres, Wiley, New York.
 %   (derivative of A_p; original result attributed to Watson 1944)
 %
-% See also: tclustvmf, restrKappaFS, vMFlogC, logBesseliFS, vMFrnd
+% See also: tclustvmf, restrKappa.m, vMFlogC, logBesseliFS, vMFrnd
 %
 % Copyright 2008-2025.
 % Written by FSDA team

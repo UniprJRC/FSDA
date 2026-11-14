@@ -1,9 +1,9 @@
-function kappa = restrKappaFS(kappaHat, r, niini, p, restrfactor, tol)
-%restrKappaFS restricts the vMF concentration parameters across groups
+function kappa = restrKappa(kappaHat, r, niini, p, restrfactor, tol)
+%restrKappa restricts the vMF concentration parameters across groups
 %
-%<a href="matlab: docsearchFS('restrKappaFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('restrKappa')">Link to the help function</a>
 %
-%   restrKappaFS is the von Mises-Fisher analogue of restreigen: given
+%   restrKappa is the von Mises-Fisher analogue of restreigen: given
 %   raw (unconstrained MLE) concentration parameters kappaHat_j for each
 %   of k groups, it returns restricted values with
 %   max(kappa)/min(kappa) <= restrfactor, chosen to maximize the total
@@ -24,7 +24,7 @@ function kappa = restrKappaFS(kappaHat, r, niini, p, restrfactor, tol)
 %   restreigen, where the analogous per-direction loss log(e)+d/e is
 %   simple enough that the optimal shared floor m has a closed-form
 %   algebraic solution, log Cp(kappa) involves a modified Bessel
-%   function of kappa, so there is no closed form here: restrKappaFS
+%   function of kappa, so there is no closed form here: restrKappa
 %   finds the optimal m by direct 1-D numerical minimization of the
 %   total weighted loss over log(m) (log-space keeps the search
 %   well-scaled even when a near-singleton group pushes the raw kappaHat
@@ -71,7 +71,7 @@ function kappa = restrKappaFS(kappaHat, r, niini, p, restrfactor, tol)
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('restrKappaFS')">Link to the help function</a>
+%<a href="matlab: docsearchFS('restrKappa')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 
@@ -80,11 +80,25 @@ function kappa = restrKappaFS(kappaHat, r, niini, p, restrfactor, tol)
 %{
     % A tight, spurious near-singleton group (kappa artificially huge)
     % gets pulled back towards the other groups.
+% publishToday.m
+rootFolder = pwd;   % change this if needed
+
+files = dir(fullfile(rootFolder, '*.m'));
+today0 = dateshift(datetime('today'), 'start', 'day');
+
+for k = 1:numel(files)
+    fileDate = dateshift(datetime(files(k).datenum, 'ConvertFrom', 'datenum'), 'start', 'day');
+    if fileDate == today0
+        filePath = fullfile(rootFolder, files(k).name);
+        fprintf('Publishing %s\n', files(k).name);
+        publishFS(filePath);
+    end
+end
     kappaHat = [8000; 25; 30];
     r        = [0.9999; 0.85; 0.87];
     niini    = [3; 140; 150];
     p = 3;
-    kappa = restrKappaFS(kappaHat,r,niini,p,20);
+    kappa = restrKappa(kappaHat,r,niini,p,20);
     disp(kappa')
     disp(max(kappa)/min(kappa))
 %}
