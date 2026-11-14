@@ -1,4 +1,4 @@
-function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstepFS(Y, w, kappa0, beta0, maxiter, tol)
+function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstep(Y, w, kappa0, beta0, maxiter, tol)
 %KentMstepFS estimates the parameters of a Kent distribution from a (weighted) sample
 %
 %<a href="matlab: docsearchFS('KentMstepFS')">Link to the help page for this function</a>

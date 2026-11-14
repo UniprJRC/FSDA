@@ -84,7 +84,7 @@ function logc = KentlogC(kappa, beta, mterms)
 %   (2021), Mixture models for spherical data with applications to protein
 %   bioinformatics, arXiv:2104.13140.
 %
-% See also: logKentpdfFS, KentMstepFS, restrKentFS, tclustkent, Kentrnd
+% See also: logKentpdfFS, KentMstep, restrKentFS, tclustkent, Kentrnd
 %
 % Copyright 2008-2025.
 % Written by FSDA team
