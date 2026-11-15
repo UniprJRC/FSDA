@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?><mscript xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd"><version>26.1</version><release>2026a</release><date>2026-11-15</date><cell style="overview"><count>1</count><cellOutputTarget>1</cellOutputTarget></cell><cell><count>2</count><steptitle>Ex1</steptitle><mcode>rng(1)
+mu = [1 0 0]; kappa = 30;
+Y = vMFrnd(500, mu, kappa);
+sphereplot(Y, 'cap', struct('mu',mu,'kappa',kappa));</mcode><mcode-xmlized><mwsh:code xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd" xml:space="preserve">rng(1)
+mu = [1 0 0]; kappa = 30;
+Y = vMFrnd(500, mu, kappa);
+sphereplot(Y, <mwsh:strings xml:space="preserve">'cap'</mwsh:strings>, struct(<mwsh:strings xml:space="preserve">'mu'</mwsh:strings>,mu,<mwsh:strings xml:space="preserve">'kappa'</mwsh:strings>,kappa));</mwsh:code></mcode-xmlized><mcode-count>1</mcode-count><cellOutputTarget>2</cellOutputTarget><img src="images/vMFrnd_01.png"/></cell><cell><count>3</count><steptitle>ExExtra1</steptitle><mcode>rng(2)
+    mu = [1 1]; kappa = 8;
+    Y = vMFrnd(300, mu, kappa);
+    sphereplot(Y, 'cap', struct('mu',mu,'kappa',kappa));</mcode><mcode-xmlized><mwsh:code xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd" xml:space="preserve">rng(2)
+    mu = [1 1]; kappa = 8;
+    Y = vMFrnd(300, mu, kappa);
+    sphereplot(Y, <mwsh:strings xml:space="preserve">'cap'</mwsh:strings>, struct(<mwsh:strings xml:space="preserve">'mu'</mwsh:strings>,mu,<mwsh:strings xml:space="preserve">'kappa'</mwsh:strings>,kappa));</mwsh:code></mcode-xmlized><mcode-count>2</mcode-count><cellOutputTarget>3</cellOutputTarget><img src="images/vMFrnd_02.png"/></cell><originalCode>&#xD;%% Ex1&#xD;rng(1)&#xD;
+mu = [1 0 0]; kappa = 30;&#xD;
+Y = vMFrnd(500, mu, kappa);&#xD;
+sphereplot(Y, 'cap', struct('mu',mu,'kappa',kappa));&#xD;%% ExExtra1&#xD;rng(2)&#xD;    mu = [1 1]; kappa = 8;&#xD;    Y = vMFrnd(300, mu, kappa);&#xD;    sphereplot(Y, 'cap', struct('mu',mu,'kappa',kappa));</originalCode></mscript>
