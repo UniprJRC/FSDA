@@ -1,9 +1,9 @@
-function logf = logvMFpdfFS(Y, mu, kappa)
-%logvMFpdfFS computes the log-density of the von Mises-Fisher distribution
+function logf = logvMFpdf(Y, mu, kappa)
+%logvMFpdf computes the log-density of the von Mises-Fisher distribution
 %
-%<a href="matlab: docsearchFS('logvMFpdfFS')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('logvMFpdf')">Link to the help page for this function</a>
 %
-%   logvMFpdfFS computes, for an n-by-p matrix Y of unit vectors (rows are
+%   logvMFpdf computes, for an n-by-p matrix Y of unit vectors (rows are
 %   points on the unit hypersphere S^(p-1) in R^p), the log-density of a
 %   von Mises-Fisher (vMF) component with mean direction mu and
 %   concentration kappa:
@@ -83,7 +83,7 @@ function logf = logvMFpdfFS(Y, mu, kappa)
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('logvMFpdfFS')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('logvMFpdf')">Link to the help page for this function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %
@@ -97,7 +97,7 @@ function logf = logvMFpdfFS(Y, mu, kappa)
     Y = [cos(theta), sin(theta)];
     mu = [1 0];
     kappa = 5;
-    logf = logvMFpdfFS(Y, mu, kappa);
+    logf = logvMFpdf(Y, mu, kappa);
     figure;
     plot(theta, exp(logf), 'b-', 'LineWidth', 1.5);
     xlabel('theta'); ylabel('density');
@@ -112,7 +112,7 @@ function logf = logvMFpdfFS(Y, mu, kappa)
     rng(1)
     n = 1000; mu = [1 0 0]; kappa = 20;
     Y = vMFrnd(n, mu, kappa);
-    logf = logvMFpdfFS(Y, mu, kappa);
+    logf = logvMFpdf(Y, mu, kappa);
     q = quantile(logf, [0.25 0.5 0.75]);
     group = 1 + (logf<q(3)) + (logf<q(2)) + (logf<q(1));
     sphereplot(Y, 'group', group, 'labels', ...
@@ -127,7 +127,7 @@ function logf = logvMFpdfFS(Y, mu, kappa)
     rng(2)
     mu = [1 0 0; 0 1 0]; kappa = [30; 10];
     Y = [vMFrnd(300, mu(1,:), kappa(1)); vMFrnd(300, mu(2,:), kappa(2))];
-    logf = logvMFpdfFS(Y, mu, kappa);
+    logf = logvMFpdf(Y, mu, kappa);
     [~, group] = max(logf, [], 2);
     truegroup = [ones(300,1); 2*ones(300,1)];
     fprintf('Proportion of units correctly assigned: %.3f\n', mean(group==truegroup));
@@ -144,7 +144,7 @@ function logf = logvMFpdfFS(Y, mu, kappa)
     mu = [0 0 1];                  % north pole
     Y = vMFrnd(n, mu, 0);          % uniform on S^2
     for kappa = [0, 1, 10, 50]
-        logf = logvMFpdfFS(Y, mu, kappa);
+        logf = logvMFpdf(Y, mu, kappa);
         fprintf('kappa=%3d: mean logf = %8.3f, range = [%.3f, %.3f]\n', ...
             kappa, mean(logf), min(logf), max(logf));
     end
@@ -158,7 +158,7 @@ function logf = logvMFpdfFS(Y, mu, kappa)
     for p = [2, 3, 5, 10]
         mu = eye(1, p);    % arbitrary unit vector
         Y = vMFrnd(50, mu, 0);
-        logf = logvMFpdfFS(Y, mu, 0);
+        logf = logvMFpdf(Y, mu, 0);
         omega = 2 * pi^(p/2) / gamma(p/2);
         expected = -log(omega);
         fprintf('p=%2d: logf (all equal) = %.6f, expected = %.6f\n', ...
@@ -177,7 +177,7 @@ end
 kappa = kappa(:)';
 k = numel(kappa);
 if size(mu,1) ~= k || size(mu,2) ~= p
-    error('FSDA:logvMFpdfFS:WrongInput', ...
+    error('FSDA:logvMFpdf:WrongInput', ...
         'mu must be a k-by-p matrix, where k is the number of elements of kappa and p the number of columns of Y')
 end
 
@@ -195,4 +195,4 @@ end
 logf(:, isnan(kappa)) = NaN;
 
 end
-%FScategory:CLUS-RobClaMULT
+%FScategory:CLUS-Sphere

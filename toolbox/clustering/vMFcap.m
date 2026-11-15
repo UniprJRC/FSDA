@@ -126,7 +126,7 @@ function [P, talpha] = vMFcap(mu,kappa,conflev,npts)
 %   Distributions, Journal of Machine Learning Research, Vol. 6,
 %   pp. 1345-1382.
 %
-% See also: Kentcap, sphereplot, sphereprojplot, vMFrnd, tclustvmf, logvMFpdfFS, vMFkappa
+% See also: Kentcap, sphereplot, sphereprojplot, vMFrnd, tclustvmf, logvMFpdf, vMFkappa
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -323,4 +323,4 @@ for i=1:n
     end
 end
 end
-%FScategory:CLUS-RobClaMULT
+%FScategory:CLUS-Sphere

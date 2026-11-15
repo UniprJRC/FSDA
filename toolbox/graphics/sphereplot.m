@@ -292,7 +292,7 @@ function hax = sphereplot(Y, varargin)
     Y = Kentrnd(n, 80, 30, [1 0 0], [0 1 1]);
     [g1,g2,g3,kap,bet] = KentMstep(Y, ones(n,1));
     [P, thresh] = Kentcap(g1, g2, g3, kap, bet, 0.95);
-    inside = logKentpdfFS(Y, g1, g2, g3, kap, bet) >= thresh;
+    inside = logKentpdf(Y, g1, g2, g3, kap, bet) >= thresh;
     sphereplot(Y, 'group', 2 - inside, 'cap', {P}, 'center', g3, ...
         'labels', {'inside','outside'});
     title(sprintf('%.1f%% of the units inside the fitted 95%% region', 100*mean(inside)))
@@ -842,4 +842,4 @@ if iscell(labels) && idx >= 1 && idx <= numel(labels) && idx == fix(idx) ...
 end
 end
 
-%FScategory:VIS-Clu
+%FScategory:VIS-Sphere

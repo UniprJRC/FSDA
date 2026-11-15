@@ -25,7 +25,7 @@ function [P, thresh] = Kentcap(gamma1, gamma2, gamma3, kappa, beta, conflev, npt
 %       gamma2: Minor axis. Vector of length 3 or empty value. If it is
 %               empty, gamma2=cross(gamma3,gamma1) is used. It is
 %               supplied only to have the same list of arguments as
-%               logKentpdfFS: the region does not depend on its sign.
+%               logKentpdf: the region does not depend on its sign.
 %       gamma3: Mean direction (pole). Vector of length 3.
 %        kappa: Concentration parameter. Scalar. kappa>=0.
 %         beta: Ovalness parameter. Scalar. 0<=beta<kappa/2. With beta=0
@@ -48,7 +48,7 @@ function [P, thresh] = Kentcap(gamma1, gamma2, gamma3, kappa, beta, conflev, npt
 %               plot3(P(:,1),P(:,2),P(:,3)) or pass it to sphereplot.
 %       thresh: Value of the log-density on the boundary. Scalar. A point
 %               y is inside the region if
-%               logKentpdfFS(y,gamma1,gamma2,gamma3,kappa,beta)>=thresh.
+%               logKentpdf(y,gamma1,gamma2,gamma3,kappa,beta)>=thresh.
 %
 % More About:
 %
@@ -76,7 +76,7 @@ function [P, thresh] = Kentcap(gamma1, gamma2, gamma3, kappa, beta, conflev, npt
 %   Kent, J.T. (1982), The Fisher-Bingham distribution on the sphere,
 %   J. Roy. Statist. Soc., B, Vol. 44, pp. 71-80.
 %
-% See also: vMFcap, Kentrnd, sphereplot, logKentpdfFS, tclustkent
+% See also: vMFcap, Kentrnd, sphereplot, logKentpdf, tclustkent
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -109,7 +109,7 @@ function [P, thresh] = Kentcap(gamma1, gamma2, gamma3, kappa, beta, conflev, npt
     [Y, Gamma] = Kentrnd(100000, kappa, beta, g3, g1);
     for conflev = [0.5 0.9 0.95 0.99]
         [~, thresh] = Kentcap(g1, [], g3, kappa, beta, conflev);
-        logf = logKentpdfFS(Y, Gamma(:,1), Gamma(:,2), Gamma(:,3), kappa, beta);
+        logf = logKentpdf(Y, Gamma(:,1), Gamma(:,2), Gamma(:,3), kappa, beta);
         fprintf('conflev=%.2f: proportion inside %.4f\n', conflev, mean(logf>=thresh));
     end
 %}
@@ -193,4 +193,4 @@ sb = sqrt(1 - cb.^2);
 P = cb*g3 + (sb.*cos(phi))*g1 + (sb.*sin(phi))*g2;
 
 end
-%FScategory:CLUS-RobClaMULT
+%FScategory:CLUS-Sphere

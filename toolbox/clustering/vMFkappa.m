@@ -75,7 +75,7 @@ function kappa = vMFkappa(r, p, newtonsteps)
 %   A_p'(kappa) = 1 - A_p(kappa)^2 - ((p-1)/kappa)*A_p(kappa).
 %
 % The ratio A_p is computed as exp(log I_{p/2}(kappa)-log I_{p/2-1}(kappa))
-% with the two logarithms given by logBesseliFS. In this way the ratio is
+% with the two logarithms given by logBesseli. In this way the ratio is
 % available also when the two Bessel functions overflow (large kappa) or
 % underflow (large p and moderate kappa: this is the usual situation for
 % embeddings in hundreds of dimensions, where the direct ratio of two
@@ -107,7 +107,7 @@ function kappa = vMFkappa(r, p, newtonsteps)
 %   Watson, G.S. (1983), Statistics on Spheres, Wiley, New York.
 %   (derivative of A_p; original result attributed to Watson 1944)
 %
-% See also: tclustvmf, restrKappa.m, vMFlogC, logBesseliFS, vMFrnd
+% See also: tclustvmf, restrKappa.m, vMFlogC, logBesseli, vMFrnd
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -198,7 +198,7 @@ for it = 1:newtonsteps
     % kappaeval avoids a 0/0 evaluation of Ap at kappa=0 (uniform limit)
     kappaeval = max(kappa, 1e-8);
     % A_p(kappa) through the logarithms of the two Bessel functions
-    Apk = exp(logBesseliFS(nu+1, kappaeval) - logBesseliFS(nu, kappaeval));
+    Apk = exp(logBesseli(nu+1, kappaeval) - logBesseli(nu, kappaeval));
     derivAp = 1 - Apk.^2 - ((p-1)./kappaeval).*Apk;
     kappanew = kappa - (Apk - r) ./ derivAp;
     % safeguard: if a Newton step overshoots into non-positive territory,
@@ -209,4 +209,4 @@ for it = 1:newtonsteps
 end
 
 end
-%FScategory:CLUS-RobClaMULT
+%FScategory:CLUS-Sphere

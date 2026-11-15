@@ -82,7 +82,7 @@ function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstep(Y, w, kappa0, 
 %           dq: Second order statistic. Scalar. Weighted mean of
 %               (gamma1'*y)^2-(gamma2'*y)^2. Together with r it forms the
 %               pair of sufficient statistics of (kappa,beta) for the
-%               estimated orientation, and it is needed by restrKentFS.
+%               estimated orientation, and it is needed by restrKent.
 %
 % More About:
 %
@@ -120,7 +120,7 @@ function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstep(Y, w, kappa0, 
 %   (2021), Mixture models for spherical data with applications to protein
 %   bioinformatics, arXiv:2104.13140.
 %
-% See also: tclustkent, KentlogC, logKentpdfFS, restrKentFS, Kentrnd, Kentcap, sphereplot
+% See also: tclustkent, KentlogC, logKentpdf, restrKent, Kentrnd, Kentcap, sphereplot
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -154,7 +154,7 @@ function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstep(Y, w, kappa0, 
     Y = Kentrnd(n, 80, 30, [1 0 0], [0 1 1]);
     [g1,g2,g3,kap,bet] = KentMstep(Y, ones(n,1));
     [P, thresh] = Kentcap(g1, g2, g3, kap, bet, 0.95);
-    inside = logKentpdfFS(Y,g1,g2,g3,kap,bet) >= thresh;
+    inside = logKentpdf(Y,g1,g2,g3,kap,bet) >= thresh;
     sphereplot(Y, 'group', 2-inside, 'cap', {P}, 'center', g3, ...
         'labels', {'inside','outside'});
     title(sprintf('%.1f%% of the units inside the fitted 95%% region',100*mean(inside)))
@@ -329,4 +329,4 @@ kappa = min(max(xopt(1), 0), kappamax);
 beta  = max(min(xopt(2), kappa/2*(1-1e-8)), 0);
 
 end
-%FScategory:CLUS-RobClaMULT
+%FScategory:CLUS-Sphere

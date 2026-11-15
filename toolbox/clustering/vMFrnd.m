@@ -77,7 +77,7 @@ function Y = vMFrnd(n, mu, kappa)
 %   Mardia, K.V. and Jupp, P.E. (2000), Directional Statistics, Wiley,
 %   Chichester.
 %
-% See also: Kentrnd, sphereplot, tclustvmf, logvMFpdfFS, vMFkappa, vMFcap
+% See also: Kentrnd, sphereplot, tclustvmf, logvMFpdf, vMFkappa, vMFcap
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -203,4 +203,4 @@ if normu > 1e-12
 end
 
 end
-%FScategory:CLUS-RobClaMULT
+%FScategory:CLUS-Sphere

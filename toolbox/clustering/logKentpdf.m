@@ -1,9 +1,9 @@
-function logf = logKentpdfFS(Y, gamma1, gamma2, gamma3, kappa, beta)
-%logKentpdfFS computes the log-density of the Kent distribution on S^2
+function logf = logKentpdf(Y, gamma1, gamma2, gamma3, kappa, beta)
+%logKentpdf computes the log-density of the Kent distribution on S^2
 %
-%<a href="matlab: docsearchFS('logKentpdfFS')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('logKentpdf')">Link to the help page for this function</a>
 %
-%   logKentpdfFS evaluates, for an n-by-3 matrix Y of unit vectors on S^2,
+%   logKentpdf evaluates, for an n-by-3 matrix Y of unit vectors on S^2,
 %   the log-density of a single Kent (Fisher-Bingham FB5) component:
 %
 %       log f(x; kappa, beta, Gamma) = -log c(kappa,beta)
@@ -23,12 +23,12 @@ function logf = logKentpdfFS(Y, gamma1, gamma2, gamma3, kappa, beta)
 %     gamma2 = minor axis  (direction of minimum secondary concentration)
 %     gamma3 = mean direction / pole
 %
-%   This is the Kent-distribution counterpart of logvMFpdfFS: it plays the
-%   same role in tclustkent that logvMFpdfFS plays in tclustvmf — it
+%   This is the Kent-distribution counterpart of logvMFpdf: it plays the
+%   same role in tclustkent that logvMFpdf plays in tclustvmf — it
 %   provides the per-unit log-discriminant values that enter the E-step.
 %
 %   The special case beta=0 reduces to the vMF density with parameter kappa:
-%   the quadratic term vanishes and the formula coincides with logvMFpdfFS
+%   the quadratic term vanishes and the formula coincides with logvMFpdf
 %   (up to a constant difference from the different normalizing constants,
 %   which is absorbed into logc(kappa,0); see KentlogC).
 %
@@ -96,12 +96,12 @@ function logf = logKentpdfFS(Y, gamma1, gamma2, gamma3, kappa, beta)
 %   clustering non-spherical directional data with heavy tails or scatter,
 %   Statistics and Probability Letters, Vol. 208, 110058.
 %
-% See also: tclustkent, KentlogC, KentMstep, restrKentFS, Kentrnd, Kentcap, sphereplot
+% See also: tclustkent, KentlogC, KentMstep, restrKent, Kentrnd, Kentcap, sphereplot
 %
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('logKentpdfFS')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('logKentpdf')">Link to the help page for this function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %
@@ -112,22 +112,22 @@ function logf = logKentpdfFS(Y, gamma1, gamma2, gamma3, kappa, beta)
     % the vMF term is kappa. So logf(gamma3) = -logc + kappa.
     kappa = 20; beta = 5;
     gamma3 = [0 0 1]; gamma1 = [1 0 0]; gamma2 = [0 1 0];
-    logf_mode = logKentpdfFS(gamma3, gamma1, gamma2, gamma3, kappa, beta);
+    logf_mode = logKentpdf(gamma3, gamma1, gamma2, gamma3, kappa, beta);
     logf_expected = -KentlogC(kappa,beta) + kappa;
     fprintf('logf at mode = %.6f, expected = %.6f\n', logf_mode, logf_expected);
 %}
 %
 %{
     % For beta=0 the Kent density reduces to the vMF density.
-    % Check that logKentpdfFS and logvMFpdfFS agree (after accounting for
+    % Check that logKentpdf and logvMFpdf agree (after accounting for
     % the different normalizing constants).
     rng(1)
     n = 100; kappa = 15; beta = 0;
     % points uniformly distributed on the sphere (vMF with kappa=0)
     Y = vMFrnd(n, [0 0 1], 0);
     gamma3 = [0 0 1]; gamma1 = [1 0 0]; gamma2 = [0 1 0];
-    logf_kent = logKentpdfFS(Y, gamma1, gamma2, gamma3, kappa, beta);
-    logf_vmf  = logvMFpdfFS(Y, gamma3, kappa);
+    logf_kent = logKentpdf(Y, gamma1, gamma2, gamma3, kappa, beta);
+    logf_vmf  = logvMFpdf(Y, gamma3, kappa);
     % should agree to machine precision
     fprintf('max|logf_kent - logf_vmf| = %.2e\n', max(abs(logf_kent - logf_vmf)));
 %}
@@ -141,7 +141,7 @@ function logf = logKentpdfFS(Y, gamma1, gamma2, gamma3, kappa, beta)
     Y = vMFrnd(n, [0 0 1], 0);
     gamma3 = [0 0 1]; gamma1 = [1 0 0]; gamma2 = [0 1 0];
     for beta = [0 5 10 14]
-        logf = logKentpdfFS(Y, gamma1, gamma2, gamma3, kappa, beta);
+        logf = logKentpdf(Y, gamma1, gamma2, gamma3, kappa, beta);
         fprintf('beta=%2d: mean logf=%.3f, range=[%.3f %.3f]\n', ...
             beta, mean(logf), min(logf), max(logf));
     end
@@ -154,7 +154,7 @@ function logf = logKentpdfFS(Y, gamma1, gamma2, gamma3, kappa, beta)
     rng(3)
     n = 1000; kappa = 40; beta = 15;
     [Y, Gamma] = Kentrnd(n, kappa, beta, [1 0 0], [0 0 1]);
-    logf = logKentpdfFS(Y, Gamma(:,1), Gamma(:,2), Gamma(:,3), kappa, beta);
+    logf = logKentpdf(Y, Gamma(:,1), Gamma(:,2), Gamma(:,3), kappa, beta);
     q = quantile(logf, [0.25 0.5 0.75]);
     group = 1 + (logf<q(3)) + (logf<q(2)) + (logf<q(1));
     sphereplot(Y, 'group', group, 'labels', ...
@@ -186,4 +186,4 @@ dot2 = Y * g2;          % n-by-1: gamma2' * x_i
 logf = -logc + kappa * dot3 + beta * (dot1.^2 - dot2.^2);
 
 end
-%FScategory:CLUS-RobClaMULT
+%FScategory:CLUS-Sphere

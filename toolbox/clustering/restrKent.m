@@ -1,9 +1,9 @@
-function [kappaout, betaout] = restrKentFS(kappa, beta, r, dq, ni, restrfactor, tol)
-%restrKentFS applies the concentration restriction to a set of Kent mixture components
+function [kappaout, betaout] = restrKent(kappa, beta, r, dq, ni, restrfactor, tol)
+%restrKent applies the concentration restriction to a set of Kent mixture components
 %
-%<a href="matlab: docsearchFS('restrKentFS')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('restrKent')">Link to the help page for this function</a>
 %
-%   restrKentFS is the Kent-distribution analogue of restrKappa.m: it
+%   restrKent is the Kent-distribution analogue of restrKappa.m: it
 %   enforces the constraint
 %
 %       max_j(kappa_j) / min_j(kappa_j)  <=  restrfactor
@@ -108,7 +108,7 @@ function [kappaout, betaout] = restrKentFS(kappa, beta, r, dq, ni, restrfactor, 
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('restrKentFS')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('restrKent')">Link to the help page for this function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %
@@ -126,7 +126,7 @@ function [kappaout, betaout] = restrKentFS(kappa, beta, r, dq, ni, restrfactor, 
     [~,~,~,k1,b1,r1,dq1] = KentMstep(Y1, ones(n,1));
     [~,~,~,k2,b2,r2,dq2] = KentMstep(Y2, ones(n,1));
     kappa = [k1; k2]; beta = [b1; b2];
-    [ko, bo] = restrKentFS(kappa, beta, [r1; r2], [dq1; dq2], [n; n], 5);
+    [ko, bo] = restrKent(kappa, beta, [r1; r2], [dq1; dq2], [n; n], 5);
     disp(array2table([kappa ko beta bo beta./kappa bo./ko], 'VariableNames', ...
         {'kappa','kappaRestr','beta','betaRestr','shape','shapeRestr'}))
     fprintf('Ratio between restricted kappas: %.4f\n', max(ko)/min(ko));
@@ -155,7 +155,7 @@ function [kappaout, betaout] = restrKentFS(kappa, beta, r, dq, ni, restrfactor, 
     r     = [0.96; NaN; 0.93];
     dq    = [0.02; NaN; 0.03];
     ni    = [100; 0; 100];
-    [ko, bo] = restrKentFS(kappa, beta, r, dq, ni, 3);
+    [ko, bo] = restrKent(kappa, beta, r, dq, ni, 3);
     disp([kappa ko beta bo])
 %}
 
@@ -211,4 +211,4 @@ kappaout(active) = kc;
 betaout(active)  = ea.*kc;
 
 end
-%FScategory:CLUS-RobClaMULT
+%FScategory:CLUS-Sphere

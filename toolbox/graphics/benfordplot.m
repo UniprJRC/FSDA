@@ -1124,4 +1124,4 @@ grid(ax2, 'on')
 title(tl, sprintf('Lacunary test, m = %d mantissa digits', L.m));
 end
 
-%FScategory:UTISTAT
+%FScategory:VIS-Benf

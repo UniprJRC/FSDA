@@ -83,7 +83,7 @@ function [Y, Gamma] = Kentrnd(n, kappa, beta, gamma3, gamma1)
 %   distributions, Journal of Computational and Graphical Statistics,
 %   Vol. 27, pp. 291-301.
 %
-% See also: vMFrnd, sphereplot, Kentcap, tclustkent, logKentpdfFS, KentMstep, KentlogC
+% See also: vMFrnd, sphereplot, Kentcap, tclustkent, logKentpdf, KentMstep, KentlogC
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -212,4 +212,4 @@ end
 Y = X(:,1)*g1 + X(:,2)*g2 + X(:,3)*g3;
 
 end
-%FScategory:CLUS-RobClaMULT
+%FScategory:CLUS-Sphere

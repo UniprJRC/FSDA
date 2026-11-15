@@ -46,7 +46,7 @@ function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
 %               integer >=1 (count). alpha=0 means no trimming.
 %  restrfactor: Restriction factor. Scalar >= 1. Constrains the ratio
 %               max(kappa_j)/min(kappa_j). restrfactor=1 forces a common
-%               kappa. See restrKentFS.
+%               kappa. See restrKent.
 %
 %  Optional input arguments:
 %
@@ -196,7 +196,7 @@ function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
 %       mixture log-density for mixt=2).
 %  (iii)M-step: re-estimate (kappa_j, beta_j, Gamma_j) for each group
 %       via KentMstep (closed-form Gamma, numerical kappa/beta).
-%  (iv) Restriction: apply restrKentFS to enforce
+%  (iv) Restriction: apply restrKent to enforce
 %       max(kappa_j)/min(kappa_j) <= restrfactor.
 %
 % SUBSAMPLE SEEDING
@@ -241,7 +241,7 @@ function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
 %
 % RESTRICTION
 %
-% The restriction acts on the concentrations kappa_j. When restrKentFS
+% The restriction acts on the concentrations kappa_j. When restrKent
 % modifies kappa_j, beta_j is rescaled so that beta_j/kappa_j (the shape
 % of the contours of group j) does not change.
 %
@@ -267,7 +267,7 @@ function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
 %   clustering non-spherical directional data with heavy tails or scatter,
 %   Statistics and Probability Letters, Vol. 208, 110058.
 %
-% See also: tclustvmf, tclust, sphereplot, Kentrnd, Kentcap, logKentpdfFS, KentMstep, restrKentFS, KentlogC
+% See also: tclustvmf, tclust, sphereplot, Kentrnd, Kentcap, logKentpdf, KentMstep, restrKent, KentlogC
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -399,10 +399,10 @@ function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
     out = tclustkent(Y, 2, 0, 20, 'conflev', 0.5, 'msg', 0, 'plots', 1, 'plottype', 'both');
     for j = 1:2
         % threshold of the log-density = its value on the boundary
-        thr = mean(logKentpdfFS(out.ellipse{j}, out.gamma1(j,:), out.gamma2(j,:), ...
+        thr = mean(logKentpdf(out.ellipse{j}, out.gamma1(j,:), out.gamma2(j,:), ...
             out.gamma3(j,:), out.kappaopt(j), out.betaopt(j)));
         Yj = Y(out.idx==j,:);
-        inside = logKentpdfFS(Yj, out.gamma1(j,:), out.gamma2(j,:), ...
+        inside = logKentpdf(Yj, out.gamma1(j,:), out.gamma2(j,:), ...
             out.gamma3(j,:), out.kappaopt(j), out.betaopt(j)) >= thr;
         fprintf('Group %d: %.1f%% of the units inside the 50%% region\n', j, 100*mean(inside));
     end
@@ -561,7 +561,7 @@ for i = 1:nselected
     g3ini   = zeros(k, 3);
     kapini  = zeros(k, 1);
     betaini = zeros(k, 1);
-    % sufficient statistics of (kappa,beta), needed by restrKentFS
+    % sufficient statistics of (kappa,beta), needed by restrKent
     rini    = zeros(k, 1);
     dqini   = zeros(k, 1);
 
@@ -609,7 +609,7 @@ for i = 1:nselected
     end
 
     % Apply initial restriction
-    [kapini, betaini] = restrKentFS(kapini, betaini, rini, dqini, niini(1:k), restrfactor, tolrestr);
+    [kapini, betaini] = restrKent(kapini, betaini, rini, dqini, niini(1:k), restrfactor, tolrestr);
 
     iter = 0;
     mudiff = 1e+15;
@@ -629,7 +629,7 @@ for i = 1:nselected
             if isnan(kapini(j))
                 ll(:, j) = -Inf;
             else
-                lj = logKentpdfFS(Y, g1ini(j,:), g2ini(j,:), g3ini(j,:), kapini(j), betaini(j));
+                lj = logKentpdf(Y, g1ini(j,:), g2ini(j,:), g3ini(j,:), kapini(j), betaini(j));
                 if equalweights
                     ll(:, j) = lj;
                 else
@@ -703,7 +703,7 @@ for i = 1:nselected
         end
 
         % Apply concentration restriction
-        [kapini, betaini] = restrKentFS(kapini, betaini, rini, dqini, niini(1:k), restrfactor, tolrestr);
+        [kapini, betaini] = restrKent(kapini, betaini, rini, dqini, niini(1:k), restrfactor, tolrestr);
 
         % Compute objective function
         Ytri = Y(qq, :);
@@ -712,7 +712,7 @@ for i = 1:nselected
             log_lh = zeros(h, kn);
             for j = 1:k
                 if ~isnan(kapini(j))
-                    lj = logKentpdfFS(Ytri, g1ini(j,:), g2ini(j,:), g3ini(j,:), kapini(j), betaini(j));
+                    lj = logKentpdf(Ytri, g1ini(j,:), g2ini(j,:), g3ini(j,:), kapini(j), betaini(j));
                     log_lh(:, j) = log(niini(j)/h) + lj;
                 else
                     log_lh(:, j) = -Inf;
@@ -731,7 +731,7 @@ for i = 1:nselected
                 nj = niini(j);
                 if nj > 0 && ~isnan(kapini(j))
                     Ytri_j = Y(qq(groupind == j), :);
-                    lj = logKentpdfFS(Ytri_j, g1ini(j,:), g2ini(j,:), g3ini(j,:), kapini(j), betaini(j));
+                    lj = logKentpdf(Ytri_j, g1ini(j,:), g2ini(j,:), g3ini(j,:), kapini(j), betaini(j));
                     if equalweights
                         obj = obj + sum(lj);
                     else
@@ -791,11 +791,11 @@ end
 ll = zeros(n, kn);
 if equalweights
     for j = 1:k
-        ll(:, j) = logKentpdfFS(Y, gamma1opt(j,:), gamma2opt(j,:), gamma3opt(j,:), kappaopt(j), betaopt(j));
+        ll(:, j) = logKentpdf(Y, gamma1opt(j,:), gamma2opt(j,:), gamma3opt(j,:), kappaopt(j), betaopt(j));
     end
 else
     for j = 1:k
-        ll(:, j) = log(nopt(j)/h) + logKentpdfFS(Y, gamma1opt(j,:), gamma2opt(j,:), gamma3opt(j,:), kappaopt(j), betaopt(j));
+        ll(:, j) = log(nopt(j)/h) + logKentpdf(Y, gamma1opt(j,:), gamma2opt(j,:), gamma3opt(j,:), kappaopt(j), betaopt(j));
     end
 end
 if noise
@@ -907,4 +907,4 @@ if plots == 1
 end
 
 end
-%FScategory:CLUS-RobClaMULT
+%FScategory:CLUS-Sphere

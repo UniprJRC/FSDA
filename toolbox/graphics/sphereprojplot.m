@@ -495,4 +495,4 @@ G = (G + G')/2;
 V = E(:, ord(1:q));
 end
 
-%FScategory:VIS-Clu
+%FScategory:VIS-Sphere

@@ -1,9 +1,9 @@
-function logI = logBesseliFS(nu, x)
-%logBesseliFS computes the logarithm of the modified Bessel function of the first kind
+function logI = logBesseli(nu, x)
+%logBesseli computes the logarithm of the modified Bessel function of the first kind
 %
-%<a href="matlab: docsearchFS('logBesseliFS')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('logBesseli')">Link to the help page for this function</a>
 %
-%   logBesseliFS returns log(I_nu(x)), where I_nu is the modified Bessel
+%   logBesseli returns log(I_nu(x)), where I_nu is the modified Bessel
 %   function of the first kind of order nu>=0, for x>=0. The value is
 %   reliable also when I_nu(x) cannot be represented in double precision,
 %   that is when it overflows (large x) or underflows (large nu). The
@@ -14,7 +14,7 @@ function logI = logBesseliFS(nu, x)
 %   this quantity is smaller than the smallest positive double, so that
 %   besseli returns 0 and its logarithm is -Inf.
 %
-%   logBesseliFS is used by vMFlogC (normalizing constant) and by vMFkappa
+%   logBesseli is used by vMFlogC (normalizing constant) and by vMFkappa
 %   (ratio of Bessel functions A_p(kappa)).
 %
 %  Required input arguments:
@@ -59,12 +59,12 @@ function logI = logBesseliFS(nu, x)
 %   Abramowitz, M. and Stegun, I.A. (1964), Handbook of Mathematical
 %   Functions, National Bureau of Standards, Washington.
 %
-% See also: vMFlogC, vMFkappa, logvMFpdfFS
+% See also: vMFlogC, vMFkappa, logvMFpdf
 %
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('logBesseliFS')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('logBesseli')">Link to the help page for this function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %
@@ -74,16 +74,16 @@ function logI = logBesseliFS(nu, x)
     % Agreement with besseli when besseli can be computed.
     nu = 2.5;
     x = [0.1 1 10 100 500];
-    disp([log(besseli(nu,x)); logBesseliFS(nu,x)])
+    disp([log(besseli(nu,x)); logBesseli(nu,x)])
 %}
 %
 %{
-    %% Large order: besseli underflows, logBesseliFS does not.
+    %% Large order: besseli underflows, logBesseli does not.
     % Order nu=p/2-1 for embeddings of dimension p=1536, with kappa=300.
     p = 1536; kappa = 300;
     nu = p/2 - 1;
     fprintf('log(besseli)  = %g\n', log(besseli(nu,kappa,1)) + kappa);
-    fprintf('logBesseliFS  = %.6f\n', logBesseliFS(nu,kappa));
+    fprintf('logBesseli  = %.6f\n', logBesseli(nu,kappa));
 %}
 %
 %{
@@ -91,7 +91,7 @@ function logI = logBesseliFS(nu, x)
     nu = 0.5; x = 1e4;
     % exact value for nu=1/2: I(x)=sqrt(2/(pi*x))*sinh(x)
     exact = 0.5*log(2/(pi*x)) + x - log(2);
-    fprintf('logBesseliFS = %.8f, exact = %.8f\n', logBesseliFS(nu,x), exact);
+    fprintf('logBesseli = %.8f, exact = %.8f\n', logBesseli(nu,x), exact);
 %}
 
 %% Beginning of code
@@ -138,4 +138,4 @@ if any(bad(:))
 end
 
 end
-%FScategory:UTISTAT
+%FScategory:CLUS-Sphere

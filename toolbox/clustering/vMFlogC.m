@@ -11,7 +11,7 @@ function logCp = vMFlogC(kappa,p)
 %
 %   where I_nu denotes the modified Bessel function of the first kind of
 %   order nu. The logarithm of the Bessel function is computed by
-%   logBesseliFS, which uses the exponentially-scaled form besseli(...,1)
+%   logBesseli, which uses the exponentially-scaled form besseli(...,1)
 %   to avoid overflow for large kappa, and an asymptotic expansion when
 %   the Bessel function underflows, as it happens for large p (see the
 %   section "Overflow and underflow protection" below).
@@ -25,7 +25,7 @@ function logCp = vMFlogC(kappa,p)
 %       log C_p(0) = gammaln(p/2) - log(2) - (p/2)*log(pi)
 %
 %   This function factors out the normalizing-constant computation shared
-%   by logvMFpdfFS (which needs it once per group per E-step iteration)
+%   by logvMFpdf (which needs it once per group per E-step iteration)
 %   and restrKappa.m (which needs it to evaluate the vMF-consistent
 %   per-group profile-likelihood loss used to restrict the concentration
 %   parameters).
@@ -61,7 +61,7 @@ function logCp = vMFlogC(kappa,p)
 % For p=3 (spherical vMF), nu=1/2. Using I_{1/2}(k) = sqrt(2/(pi*k))*sinh(k):
 %   C_3(kappa) = kappa / (4*pi*sinh(kappa)).
 %
-% These can be verified against logvMFpdfFS output or computed directly.
+% These can be verified against logvMFpdf output or computed directly.
 %
 % OVERFLOW AND UNDERFLOW PROTECTION
 %
@@ -72,7 +72,7 @@ function logCp = vMFlogC(kappa,p)
 % and I_nu(kappa) is smaller than the smallest positive double unless
 % kappa is also large (for example for p=768 and kappa=50, or p=1536 and
 % kappa=300). In this case besseli returns 0, its logarithm is -Inf and
-% the normalizing constant would be +Inf. logBesseliFS detects this case
+% the normalizing constant would be +Inf. logBesseli detects this case
 % and uses the uniform asymptotic expansion for large order, so that
 % vMFlogC can be used with embeddings in hundreds or thousands of
 % dimensions.
@@ -87,7 +87,7 @@ function logCp = vMFlogC(kappa,p)
 %   Distributions, Journal of Machine Learning Research, Vol. 6,
 %   pp. 1345-1382. (log-space evaluation of C_p(kappa))
 %
-% See also: logvMFpdfFS, vMFkappa, restrKappa.m, logBesseliFS
+% See also: logvMFpdf, vMFkappa, restrKappa.m, logBesseli
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -167,7 +167,7 @@ if any(pos)
     kp = kappa(pos);
     % log(I_nu(kappa)): reliable also when I_nu(kappa) underflows (large
     % p) or overflows (large kappa)
-    logIbessel = logBesseliFS(nu, kp);
+    logIbessel = logBesseli(nu, kp);
     logCp(pos) = (p/2 - 1).*log(kp) - (p/2)*log(2*pi) - logIbessel;
 end
 if any(~pos)
@@ -175,4 +175,4 @@ if any(~pos)
 end
 
 end
-%FScategory:CLUS-RobClaMULT
+%FScategory:CLUS-Sphere

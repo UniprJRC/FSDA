@@ -441,7 +441,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %
 % For p in the hundreds or thousands the Bessel functions which appear
 % in the normalizing constant and in the equation for kappa cannot be
-% represented in double precision. vMFlogC and vMFkappa use logBesseliFS,
+% represented in double precision. vMFlogC and vMFkappa use logBesseli,
 % which returns their logarithm in all cases.
 %
 % References:
@@ -472,7 +472,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %   Mardia, K.V. and Jupp, P.E. (2000), Directional Statistics, Wiley,
 %   Chichester. (vMF distribution, mean resultant length, kappa estimation)
 %
-% See also: tclust, tkmeans, tclustkent, sphereplot, sphereprojplot, vMFrnd, logvMFpdfFS, vMFkappa, restrKappa, vMFlogC, vMFcap
+% See also: tclust, tkmeans, tclustkent, sphereplot, sphereprojplot, vMFrnd, logvMFpdf, vMFkappa, restrKappa, vMFlogC, vMFcap
 %
 % Copyright 2008-2025.
 % Written by FSDA team
@@ -1349,7 +1349,7 @@ function ll=logdiscvmf(Y,mu,kappa,ni,h,equalweights,noise,lognoiseconst)
 % equalweights is true. Empty groups (kappa=NaN) have -Inf. If noise is
 % true the last column refers to the uniform component.
 k=numel(kappa);
-ll=logvMFpdfFS(Y,mu,kappa);
+ll=logvMFpdf(Y,mu,kappa);
 if ~equalweights
     ll=ll+log(ni(1:k)'/h);
 end
@@ -1362,4 +1362,4 @@ if noise
     end
 end
 end
-%FScategory:CLUS-RobClaMULT
+%FScategory:CLUS-Sphere
