@@ -67,9 +67,27 @@ function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
 %               algorithm. The default is min(300, nchoosek). Each
 %               subsample contains 4 observations per cluster, which is
 %               the minimum needed to seed a non-degenerate Kent
-%               estimate in 3D.
+%               estimate in 3D. With init='kmeans++' it is the number of
+%               random starts (default 300), see init.
 %                 Example - 'nsamp',500
 %                 Data Types - double
+%        init : Initialisation of the starting solutions. Character, matrix,
+%               vector or cell array. 'auto' (default) uses 'subsets'
+%               unless 4*k is larger than n/2, in which case it uses
+%               'kmeans++'. 'subsets' starts each of the nsamp trials from
+%               an elemental subset of 4 random units per group.
+%               'kmeans++' starts each trial from k units chosen with the
+%               k-means++ rule on the cosine distance and from the
+%               partition obtained by assigning every unit to the closest
+%               of them. With 'kmeans++' nsamp must be positive and its
+%               default is 300. A user-guided start can be given as a
+%               k-by-3 matrix of starting mean directions, or as a vector
+%               of n labels (0 for units which are not used, 1,...,k for
+%               the groups, k+1 for the noise units if noise=true); a
+%               cell array contains several of them, one per trial. In
+%               this case nsamp is ignored. See More About.
+%                 Example - 'init','kmeans++'
+%                 Data Types - char | double | cell
 %     refsteps: Number of refining iterations. Scalar. Number of
 %               concentration steps applied to each subsample. The
 %               default is 15.
@@ -170,7 +188,9 @@ function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
 %           out.h  = number of untrimmed observations.
 %         out.obj  = maximised trimmed log-likelihood.
 %       out.NlogL  = -2 times classification log-likelihood of retained units.
-%          out.bs  = elemental subset that gave the best solution.
+%          out.bs  = indices of the elemental subset (init='subsets') or of
+%                    the k seed units (init='kmeans++') which gave the best
+%                    solution. It is empty for a user-guided start.
 %     out.fullsol  = nselected-by-1 vector of objective values per subsample.
 %    out.notconver = fraction of subsamples without convergence.
 % out.equalweights = logical, as input option.
@@ -199,12 +219,38 @@ function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
 %  (iv) Restriction: apply restrKent to enforce
 %       max(kappa_j)/min(kappa_j) <= restrfactor.
 %
-% SUBSAMPLE SEEDING
+% SUBSAMPLE SEEDING (init='subsets')
 %
 % Each elemental subset draws k*4 observations (4 per cluster). With 4
 % points on S^2 we can form a non-degenerate mean vector and second-moment
 % matrix, so KentMstep can produce a valid seed. Using fewer points
 % risks degenerate second-moment matrices with coincident eigenvalues.
+%
+% K-MEANS++ START (init='kmeans++')
+%
+% Each of the nsamp trials is started as in tclustvmf (see the help of
+% that function): k seeds are chosen with probability proportional to the
+% squared cosine distance from the closest seed already chosen, every unit
+% is assigned to the seed with the largest cosine (the seeds keep their own
+% group) and each group is then described by the Kent estimate computed by
+% KentMstep on its units. The initial weights are n_j*h/n; with noise=true
+% the noise component gets 10% of h and the groups share the other 90%.
+% A group with a single unit gets the largest allowed kappa and beta=0, as
+% it happens with the elemental subsets. 'auto' chooses this start when
+% 4*k>n/2, that is when elemental subsets are not a small random sample
+% any more. With few groups on S^2 the subsets are usually adequate: the
+% k-means++ start is useful when k is large or the groups have very
+% different sizes, because the seeds are spread over the sphere.
+%
+% USER-GUIDED START (init is a matrix, a vector or a cell array)
+%
+% A k-by-3 matrix contains the starting mean directions (they are
+% normalised): the units are assigned to the closest direction and the
+% group parameters are estimated as above; a direction which attracts no
+% unit starts with kappa=1, beta=0 and weight 1. A vector with n elements
+% defines the groups by labels (0=ignored, j=1,...,k group j, k+1 noise
+% unit if noise=true). A cell array contains several starts of these two
+% types, one per trial: nsamp is ignored and the best trial is kept.
 %
 % PARAMETER COUNT AND INFORMATION CRITERIA
 %
@@ -407,6 +453,41 @@ function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
         fprintf('Group %d: %.1f%% of the units inside the 50%% region\n', j, 100*mean(inside));
     end
 %}
+%
+%{
+    % Starting solutions: seeds chosen with the cosine distance.
+    % Five elliptical groups of different size and uniform noise. With
+    % init='subsets' each start is made of 4 random units per group; with
+    % init='kmeans++' the 5 seeds are spread over the sphere with the
+    % k-means++ rule. The objective values reached by the starts are in
+    % out.fullsol: the k-means++ starts are usually closer to the best one.
+    rng(1)
+    mu = [1 0 0; 0 1 0; 0 0 1; 1 1 1; -1 1 0];
+    g1 = [0 0 1; 1 0 0; 1 0 0; 1 -1 0; 0 0 1];
+    kappa = [100 60 80 50 70]; beta = [40 20 30 15 25]; ng = [150 100 80 60 40];
+    Y = vMFrnd(40, [0 0 1], 0);
+    for j = 1:5
+        Y = [Y; Kentrnd(ng(j), kappa(j), beta(j), mu(j,:), g1(j,:))]; %#ok<AGROW>
+    end
+    outS = tclustkent(Y, 5, 0.02, 20, 'noise', true, 'nsamp', 40, 'msg', 0, 'init', 'subsets');
+    outK = tclustkent(Y, 5, 0.02, 20, 'noise', true, 'nsamp', 40, 'msg', 0, 'init', 'kmeans++');
+    fprintf('Median objective of the starts: subsets %.1f, kmeans++ %.1f\n', ...
+        median(outS.fullsol), median(outK.fullsol));
+    fprintf('Best objective: subsets %.1f, kmeans++ %.1f\n', outS.obj, outK.obj);
+%}
+%
+%{
+    % User-guided start: starting directions and starting labels.
+    % init can be a k-by-3 matrix of starting mean directions or a vector
+    % with the n labels of an initial partition (0 for units which are not
+    % used). A cell array would contain several starts.
+    rng(2)
+    Y = [Kentrnd(200, 100, 40, [1 0 0], [0 0 1]); Kentrnd(200, 50, 15, [0 1 0], [1 0 0])];
+    out1 = tclustkent(Y, 2, 0.05, 20, 'init', [1 0 0; 0 1 0], 'msg', 0);
+    lab = zeros(400, 1); lab(1:20) = 1; lab(201:220) = 2;
+    out2 = tclustkent(Y, 2, 0.05, 20, 'init', lab, 'msg', 0);
+    fprintf('Objective: %.2f (directions), %.2f (labels)\n', out1.obj, out2.obj);
+%}
 
 %% Beginning of code
 
@@ -459,7 +540,7 @@ options = struct('nsamp', nsampdef, 'plots', 0, 'plottype', 'points', ...
     'nocheck', 0, 'msg', 1, 'Ysave', 0, ...
     'refsteps', refstepsdef, 'reftol', reftoldef, 'equalweights', false, ...
     'mixt', 0, 'normalize', false, 'conflev', 0.95, 'ellipsenpts', 200, ...
-    'markersize', 12, 'noise', false, 'mstepiter', 50);
+    'markersize', 12, 'noise', false, 'mstepiter', 50, 'init', 'auto');
 
 [varargin{:}] = convertStringsToChars(varargin{:});
 UserOptions = varargin(1:2:length(varargin));
@@ -481,12 +562,52 @@ if nargin > 4
     for i = 1:2:length(varargin)
         options.(varargin{i}) = varargin{i+1};
     end
-    if options.nsamp > ncomb
-        disp('Number of subsets to extract greater than nchoosek. It is set to that value.');
-        options.nsamp = 0;
-    elseif options.nsamp < 0
-        error('FSDA:tclustkent:WrongNsamp', ...
-            'Number of subsets to extract must be 0 (all) or a positive number');
+end
+
+% Initialisation: userinit is true if the starts are given by the user
+% (cell array startlist), kmpp is true if the starts are chosen with
+% k-means++, otherwise they are elemental subsets
+init = options.init;
+userinit = ~ischar(init);
+kmpp = false;
+if userinit
+    if ~iscell(init)
+        init = {init};
+    end
+    startlist = init(:);
+    for i = 1:numel(startlist)
+        kentcheckstart(startlist{i}, n, k, options.noise);
+    end
+    options.nsamp = numel(startlist);
+else
+    if ~any(strcmpi(init, {'auto','subsets','kmeans++'}))
+        error('FSDA:tclustkent:WrongInit', ...
+            'init must be ''auto'', ''subsets'', ''kmeans++'', a matrix, a vector or a cell array')
+    end
+    if strcmpi(init, 'auto')
+        kmpp = elemsize > n/2;
+        if kmpp && options.msg > 0
+            fprintf('init=''kmeans++'' chosen because 4*k=%d is larger than n/2=%g\n', elemsize, n/2);
+        end
+    else
+        kmpp = strcmpi(init, 'kmeans++');
+    end
+    if kmpp
+        % ncomb is not relevant: nsamp is the number of random starts
+        if ~any(strcmp(UserOptions, 'nsamp'))
+            options.nsamp = 300;
+        elseif ~(options.nsamp > 0 && options.nsamp == fix(options.nsamp))
+            error('FSDA:tclustkent:WrongNsamp', ...
+                'With init=''kmeans++'' nsamp must be a positive integer');
+        end
+    elseif nargin > 4
+        if options.nsamp > ncomb
+            disp('Number of subsets to extract greater than nchoosek. It is set to that value.');
+            options.nsamp = 0;
+        elseif options.nsamp < 0
+            error('FSDA:tclustkent:WrongNsamp', ...
+                'Number of subsets to extract must be 0 (all) or a positive number');
+        end
     end
 end
 
@@ -536,7 +657,14 @@ else
 end
 
 %% Combinatorial part
-[C, nselected] = subsets(nsamp, n, elemsize, ncomb, msg);
+if kmpp || userinit
+    % nsamp random starts or starts given by the user: no elemental
+    % subsets are needed
+    C = [];
+    nselected = nsamp;
+else
+    [C, nselected] = subsets(nsamp, n, elemsize, ncomb, msg);
+end
 
 vopt = -1e+30;
 fullsol = zeros(nselected, 1);
@@ -553,59 +681,71 @@ bs        = [];
 
 for i = 1:nselected
 
-    index = C(i, :);
+    if userinit
+        % starting groups given by the user (see kentseeduser)
+        [g1ini, g2ini, g3ini, kapini, betaini, rini, dqini, niini] = ...
+            kentseeduser(Y, startlist{i}, k, h, logical(noise), mstepiter);
+        index = [];
+    elseif kmpp
+        % k-means++ seeds on the cosine distance and partition of the
+        % units around them (see kentseedkmpp)
+        [g1ini, g2ini, g3ini, kapini, betaini, rini, dqini, niini, index] = ...
+            kentseedkmpp(Y, k, h, logical(noise), mstepiter);
+    else
+        index = C(i, :);
 
-    niini   = zeros(kn, 1);
-    g1ini   = zeros(k, 3);
-    g2ini   = zeros(k, 3);
-    g3ini   = zeros(k, 3);
-    kapini  = zeros(k, 1);
-    betaini = zeros(k, 1);
-    % sufficient statistics of (kappa,beta), needed by restrKent
-    rini    = zeros(k, 1);
-    dqini   = zeros(k, 1);
+        niini   = zeros(kn, 1);
+        g1ini   = zeros(k, 3);
+        g2ini   = zeros(k, 3);
+        g3ini   = zeros(k, 3);
+        kapini  = zeros(k, 1);
+        betaini = zeros(k, 1);
+        % sufficient statistics of (kappa,beta), needed by restrKent
+        rini    = zeros(k, 1);
+        dqini   = zeros(k, 1);
 
-    % --- Seed each group from an elemental subset of 4 points ---
-    for j = 1:k
-        ilow = (j-1)*4 + 1;
-        iup  = j*4;
-        selj = index(ilow:iup);
-        Yselj = Y(selj, :);
+        % --- Seed each group from an elemental subset of 4 points ---
+        for j = 1:k
+            ilow = (j-1)*4 + 1;
+            iup  = j*4;
+            selj = index(ilow:iup);
+            Yselj = Y(selj, :);
 
-        % Seed from elemental subset via KentMstep with unit weights
-        wj = ones(4, 1);
-        [g1j, g2j, g3j, kapj, betj, rj, dqj] = KentMstep(Yselj, wj, [], [], mstepiter);
+            % Seed from elemental subset via KentMstep with unit weights
+            wj = ones(4, 1);
+            [g1j, g2j, g3j, kapj, betj, rj, dqj] = KentMstep(Yselj, wj, [], [], mstepiter);
 
-        if isnan(kapj) || kapj <= 0
-            % Degenerate seed: use the resultant as pole, set beta=0
-            Rj = sum(Yselj, 1);
-            nRj = norm(Rj);
-            if nRj > 1e-12
-                g3j = Rj / nRj;
-            else
-                g3j = Yselj(1, :);
+            if isnan(kapj) || kapj <= 0
+                % Degenerate seed: use the resultant as pole, set beta=0
+                Rj = sum(Yselj, 1);
+                nRj = norm(Rj);
+                if nRj > 1e-12
+                    g3j = Rj / nRj;
+                else
+                    g3j = Yselj(1, :);
+                end
+                % Build an arbitrary orthonormal frame
+                [~, imin] = min(abs(g3j));
+                evec = zeros(1, 3); evec(imin) = 1;
+                g1j = evec - (evec * g3j') * g3j; g1j = g1j / norm(g1j);
+                g2j = cross(g3j, g1j);
+                kapj = 1; betj = 0;
+                rj = nRj/4; dqj = 0;
             end
-            % Build an arbitrary orthonormal frame
-            [~, imin] = min(abs(g3j));
-            evec = zeros(1, 3); evec(imin) = 1;
-            g1j = evec - (evec * g3j') * g3j; g1j = g1j / norm(g1j);
-            g2j = cross(g3j, g1j);
-            kapj = 1; betj = 0;
-            rj = nRj/4; dqj = 0;
+
+            niini(j) = 4;
+            g1ini(j, :) = g1j;
+            g2ini(j, :) = g2j;
+            g3ini(j, :) = g3j;
+            kapini(j)  = kapj;
+            betaini(j) = betj;
+            rini(j)    = rj;
+            dqini(j)   = dqj;
         end
 
-        niini(j) = 4;
-        g1ini(j, :) = g1j;
-        g2ini(j, :) = g2j;
-        g3ini(j, :) = g3j;
-        kapini(j)  = kapj;
-        betaini(j) = betj;
-        rini(j)    = rj;
-        dqini(j)   = dqj;
-    end
-
-    if noise
-        niini(k+1) = 4;
+        if noise
+            niini(k+1) = 4;
+        end
     end
 
     % Apply initial restriction
@@ -906,5 +1046,130 @@ if plots == 1
         ngroups, alpha, restrfactor, noisestr));
 end
 
+end
+
+function kentcheckstart(start, n, k, noise)
+%kentcheckstart checks one user-guided start (see init in tclustkent)
+if isnumeric(start) && isequal(size(start), [k 3])
+    if any(~isfinite(start(:))) || any(sum(start.^2, 2) == 0)
+        error('FSDA:tclustkent:WrongInit', ...
+            'A matrix of starting directions must contain finite rows which are not null')
+    end
+elseif isnumeric(start) && isvector(start) && numel(start) == n
+    kn = k + logical(noise);
+    lab = start(:);
+    if any(lab ~= fix(lab)) || any(lab < 0) || any(lab > kn)
+        error('FSDA:tclustkent:WrongInit', ...
+            'The labels of init must be integers between 0 and %d', kn)
+    end
+    cnt = accumarray(lab(lab > 0), 1, [kn 1]);
+    if any(cnt(1:k) == 0)
+        error('FSDA:tclustkent:WrongInit', ...
+            'Each of the groups 1,...,%d must contain at least one unit in init', k)
+    end
+else
+    error('FSDA:tclustkent:WrongInit', ...
+        'init must be a k-by-3 matrix (k=%d) or a vector with n=%d labels', k, n)
+end
+end
+
+function [g1, g2, g3, kap, bet, r, dq, niini] = kentseeduser(Y, start, k, h, noise, mstepiter)
+%kentseeduser starting values from a user-guided start (see init in
+%tclustkent): a k-by-3 matrix of directions or a vector of n labels
+if size(start, 1) == k && size(start, 2) == 3
+    % directions: assignment to the closest one (spherical k-means step)
+    pole0 = start./sqrt(sum(start.^2, 2));
+    [~, g] = max(Y*pole0', [], 2);
+    cnt = accumarray(g, 1, [k 1]);
+else
+    % labels
+    g = start(:);
+    cnt = accumarray(g(g > 0), 1, [k + double(noise) 1]);
+    pole0 = zeros(k, 3);
+    for j = 1:k
+        pole0(j, :) = Y(find(g == j, 1), :);
+    end
+end
+[g1, g2, g3, kap, bet, r, dq] = kentstartlabels(Y, g, k, pole0, mstepiter);
+% initial weights: a group which attracts no unit starts with weight 1
+sz = cnt(1:k);
+sz(sz == 0) = 1;
+if noise
+    if numel(cnt) == k + 1 && cnt(k+1) > 0
+        w = [sz; cnt(k+1)];
+        w = w/sum(w);
+    else
+        w = [0.9*sz/sum(sz); 0.1];
+    end
+else
+    w = sz/sum(sz);
+end
+niini = h*w;
+end
+
+function [g1, g2, g3, kap, bet, r, dq, niini, seedidx] = kentseedkmpp(Y, k, h, noise, mstepiter)
+%kentseedkmpp starting values by k-means++ on the cosine distance
+%
+%  Y: n-by-3 matrix of unit vectors; k: number of groups; h: number of
+%  untrimmed units; noise: true if there is a uniform noise component.
+%  The first 7 outputs are the k-by-3 (k-by-1) starting parameters, niini
+%  is the (k+noise)-by-1 vector of initial weights, seedidx the k seeds.
+%  The steps are those described in the help of tclustkent (More About,
+%  K-MEANS++ START).
+n = size(Y, 1);
+seedidx = zeros(k, 1);
+seedidx(1) = randi(n);
+% cosine distance of every unit from the closest seed, in [0,2]
+dmin = max(1 - Y*Y(seedidx(1), :)', 0);
+for j = 2:k
+    w = dmin.^2;
+    w(seedidx(1:j-1)) = 0;
+    if ~(sum(w) > 0)
+        % all the units coincide with the seeds: uniform choice among
+        % the remaining ones
+        w = ones(n, 1);
+        w(seedidx(1:j-1)) = 0;
+    end
+    cw = cumsum(w);
+    seedidx(j) = min(find(cw >= rand*cw(end), 1), n);
+    dmin = min(dmin, max(1 - Y*Y(seedidx(j), :)', 0));
+end
+% assignment to the seed with the largest cosine; seeds keep their own group
+[~, g] = max(Y*Y(seedidx, :)', [], 2);
+g(seedidx) = (1:k)';
+sz = accumarray(g, 1, [k 1]);
+[g1, g2, g3, kap, bet, r, dq] = kentstartlabels(Y, g, k, Y(seedidx, :), mstepiter);
+if noise
+    niini = [0.9*h*sz/n; 0.1*h];
+else
+    niini = h*sz/n;
+end
+end
+
+function [g1, g2, g3, kap, bet, r, dq] = kentstartlabels(Y, g, k, pole0, mstepiter)
+%kentstartlabels Kent estimates of the groups 1,...,k defined by the labels g
+% (the units with other labels are not used). If a group is empty or its
+% resultant is null, the group starts from the direction in the row of
+% pole0 with kappa=1 and beta=0.
+g1 = zeros(k, 3); g2 = zeros(k, 3); g3 = zeros(k, 3);
+kap = zeros(k, 1); bet = zeros(k, 1); r = zeros(k, 1); dq = zeros(k, 1);
+for j = 1:k
+    wj = double(g == j);
+    ok = false;
+    if any(wj > 0)
+        [a, b, c, kj, bj, rj, dj] = KentMstep(Y, wj, [], [], mstepiter);
+        ok = ~isnan(kj) && kj > 0;
+    end
+    if ~ok
+        c = pole0(j, :)/norm(pole0(j, :));
+        [~, imin] = min(abs(c));
+        e = zeros(1, 3); e(imin) = 1;
+        a = e - (e*c')*c; a = a/norm(a);
+        b = cross(c, a);
+        kj = 1; bj = 0; rj = 0; dj = 0;
+    end
+    g1(j, :) = a; g2(j, :) = b; g3(j, :) = c;
+    kap(j) = kj; bet(j) = bj; r(j) = rj; dq(j) = dj;
+end
 end
 %FScategory:CLUS-Sphere
