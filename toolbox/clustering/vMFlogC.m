@@ -1,7 +1,7 @@
 function logCp = vMFlogC(kappa,p)
 %vMFlogC computes the log of the von Mises-Fisher normalizing constant Cp(kappa)
 %
-%<a href="matlab: docsearchFS('vMFlogC')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('vMFlogC')">Link to the help function</a>
 %
 %   vMFlogC computes, elementwise and entirely in log-space, the
 %   log-normalizing constant of the von Mises-Fisher distribution on the
@@ -92,7 +92,7 @@ function logCp = vMFlogC(kappa,p)
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('vMFlogC')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('vMFlogC')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %

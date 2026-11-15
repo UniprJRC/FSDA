@@ -1,7 +1,7 @@
 function Y = vMFrnd(n, mu, kappa)
 %vMFrnd generates random unit vectors from the von Mises-Fisher distribution in any dimension
 %
-%<a href="matlab: docsearchFS('vMFrnd')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('vMFrnd')">Link to the help function</a>
 %
 %   vMFrnd returns an n-by-p matrix whose rows are independent draws from
 %   the von Mises-Fisher distribution vMF(mu,kappa) on the unit
@@ -82,7 +82,7 @@ function Y = vMFrnd(n, mu, kappa)
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('vMFrnd')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('vMFrnd')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %

@@ -1,7 +1,7 @@
 function hax = sphereplot(Y, varargin)
 %sphereplot plots directional data on the unit circle or on the unit sphere
 %
-%<a href="matlab: docsearchFS('sphereplot')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('sphereplot')">Link to the help function</a>
 %
 %   sphereplot displays the rows of the n-by-p matrix Y, which are unit
 %   vectors, on the unit circle (p=2) or on the unit sphere (p=3). The
@@ -55,7 +55,7 @@ function hax = sphereplot(Y, varargin)
 %                  p columns containing points of the boundary of region j
 %                  (ordered along the contour if p=3; the two end points
 %                  of the arc if p=2). See also options center and capgroup.
-
+%
 %                 Example - 'cap',struct('mu',[1 0 0],'kappa',20)
 %                 Data Types - struct | cell
 %      center : Centres of the regions. k-by-p matrix. Used only when cap
@@ -206,7 +206,7 @@ function hax = sphereplot(Y, varargin)
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('sphereplot')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('sphereplot')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %

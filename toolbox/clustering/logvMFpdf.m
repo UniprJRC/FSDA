@@ -1,7 +1,7 @@
 function logf = logvMFpdf(Y, mu, kappa)
 %logvMFpdf computes the log-density of the von Mises-Fisher distribution
 %
-%<a href="matlab: docsearchFS('logvMFpdf')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('logvMFpdf')">Link to the help function</a>
 %
 %   logvMFpdf computes, for an n-by-p matrix Y of unit vectors (rows are
 %   points on the unit hypersphere S^(p-1) in R^p), the log-density of a
@@ -83,7 +83,7 @@ function logf = logvMFpdf(Y, mu, kappa)
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('logvMFpdf')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('logvMFpdf')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %

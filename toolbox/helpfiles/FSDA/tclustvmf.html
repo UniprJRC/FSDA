@@ -11,7 +11,7 @@
 
      f(y; mu, kappa) = C_p(kappa) * exp(kappa * mu' * y),
 
-   where C_p(kappa) is the normalizing constant (see vMFlogC.m) and y is
+   where C_p(kappa) is the normalizing constant (see vMFlogC) and y is
    a unit vector. Robustness is achieved via the same impartial ("hard")
    trimming device used by tclust and tkmeans: at most n-h observations
    are left unassigned, where h = fix(n*(1-alpha)). A constraint on the

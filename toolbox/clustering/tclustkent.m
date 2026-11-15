@@ -1,7 +1,7 @@
 function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
 %tclustkent computes trimmed clustering for spherical data using mixtures of Kent distributions
 %
-%<a href="matlab: docsearchFS('tclustkent')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('tclustkent')">Link to the help function</a>
 %
 %   tclustkent partitions the points in the n-by-3 data matrix Y, where
 %   each row is assumed to be a unit vector on the unit sphere S^2 in R^3,
@@ -272,7 +272,7 @@ function [out] = tclustkent(Y, k, alpha, restrfactor, varargin)
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('tclustkent')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('tclustkent')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %

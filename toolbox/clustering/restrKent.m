@@ -1,9 +1,9 @@
 function [kappaout, betaout] = restrKent(kappa, beta, r, dq, ni, restrfactor, tol)
 %restrKent applies the concentration restriction to a set of Kent mixture components
 %
-%<a href="matlab: docsearchFS('restrKent')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('restrKent')">Link to the help function</a>
 %
-%   restrKent is the Kent-distribution analogue of restrKappa.m: it
+%   restrKent is the Kent-distribution analogue of restrKappa: it
 %   enforces the constraint
 %
 %       max_j(kappa_j) / min_j(kappa_j)  <=  restrfactor
@@ -18,7 +18,7 @@ function [kappaout, betaout] = restrKent(kappa, beta, r, dq, ni, restrfactor, to
 %   orientation untouched.
 %
 %   If the unrestricted estimates already satisfy the constraint they are
-%   returned unchanged. Otherwise, exactly as in restrKappa.m, the
+%   returned unchanged. Otherwise, exactly as in restrKappa, the
 %   restricted estimates are the unrestricted ones truncated to an
 %   interval [m, restrfactor*m], and the optimal m is found by a 1-D
 %   minimisation of the (minus) log-likelihood (see "More About").
@@ -103,12 +103,12 @@ function [kappaout, betaout] = restrKent(kappa, beta, r, dq, ni, restrfactor, to
 %   algorithm for robust constrained clustering, Computational Statistics
 %   and Data Analysis, Vol. 61, pp. 124-136.
 %
-% See also: tclustkent, KentMstep, KentlogC, restrKappa.m
+% See also: tclustkent, KentMstep, KentlogC, restrKappa
 %
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('restrKent')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('restrKent')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %
@@ -142,7 +142,7 @@ function [kappaout, betaout] = restrKent(kappa, beta, r, dq, ni, restrfactor, to
     [~,~,~,k1,b1,r1,dq1] = KentMstep(Y1, ones(n,1));
     [~,~,~,k2,b2,r2,dq2] = KentMstep(Y2, ones(n,1));
     [~,~,~,k3,b3,r3,dq3] = KentMstep(Y3, ones(n,1));
-    [ko, bo] = KentMstep([k1;k2;k3], [b1;b2;b3], [r1;r2;r3], [dq1;dq2;dq3], [n;n;n], 1);
+    [ko, bo] = restrKent([k1;k2;k3], [b1;b2;b3], [r1;r2;r3], [dq1;dq2;dq3], [n;n;n], 1);
     disp('Unrestricted kappa'); disp([k1 k2 k3])
     disp('Restricted kappa (restrfactor=1)'); disp(ko')
 %}

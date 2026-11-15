@@ -1,7 +1,7 @@
 function logI = logBesseli(nu, x)
 %logBesseli computes the logarithm of the modified Bessel function of the first kind
 %
-%<a href="matlab: docsearchFS('logBesseli')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('logBesseli')">Link to the help function</a>
 %
 %   logBesseli returns log(I_nu(x)), where I_nu is the modified Bessel
 %   function of the first kind of order nu>=0, for x>=0. The value is
@@ -64,7 +64,7 @@ function logI = logBesseli(nu, x)
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('logBesseli')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('logBesseli')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %

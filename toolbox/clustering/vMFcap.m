@@ -1,7 +1,7 @@
 function [P, talpha] = vMFcap(mu,kappa,conflev,npts)
 %vMFcap computes the boundary of a von Mises-Fisher confidence cap in any dimension
 %
-%<a href="matlab: docsearchFS('vMFcap')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('vMFcap')">Link to the help function</a>
 %
 %   vMFcap is the directional-data counterpart of a Gaussian confidence
 %   ellipse: because the vMF(mu,kappa) density depends on y only through
@@ -131,7 +131,7 @@ function [P, talpha] = vMFcap(mu,kappa,conflev,npts)
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('vMFcap')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('vMFcap')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %

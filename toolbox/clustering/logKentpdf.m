@@ -1,7 +1,7 @@
 function logf = logKentpdf(Y, gamma1, gamma2, gamma3, kappa, beta)
 %logKentpdf computes the log-density of the Kent distribution on S^2
 %
-%<a href="matlab: docsearchFS('logKentpdf')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('logKentpdf')">Link to the help function</a>
 %
 %   logKentpdf evaluates, for an n-by-3 matrix Y of unit vectors on S^2,
 %   the log-density of a single Kent (Fisher-Bingham FB5) component:
@@ -101,7 +101,7 @@ function logf = logKentpdf(Y, gamma1, gamma2, gamma3, kappa, beta)
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('logKentpdf')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('logKentpdf')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %

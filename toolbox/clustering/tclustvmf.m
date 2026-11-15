@@ -1,7 +1,7 @@
 function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %tclustvmf computes trimmed clustering for directional data using mixtures of von Mises-Fisher distributions
 %
-%<a href="matlab: docsearchFS('tclustvmf')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('tclustvmf')">Link to the help function</a>
 %
 %   tclustvmf partitions the points in the n-by-p data matrix Y, where
 %   each row is assumed to be a unit vector on the hypersphere S^(p-1) in
@@ -16,7 +16,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %
 %     f(y; mu, kappa) = C_p(kappa) * exp(kappa * mu' * y),
 %
-%   where C_p(kappa) is the normalizing constant (see vMFlogC.m) and y is
+%   where C_p(kappa) is the normalizing constant (see vMFlogC) and y is
 %   a unit vector. Robustness is achieved via the same impartial ("hard")
 %   trimming device used by tclust and tkmeans: at most n-h observations
 %   are left unassigned, where h = fix(n*(1-alpha)). A constraint on the
@@ -315,7 +315,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 %       max(kappa_j)/min(kappa_j) <= restrfactor.
 %
 % INITIALISATION (OPTION init)
-
+%
 % With init='auto' the choice is made on the number of units needed by an
 % elemental subset: if k*(p+1)>n/2 init='kmeans++' is used, because such
 % subsets are not a small random sample any more (and for k*(p+1)>n they
@@ -477,7 +477,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('tclustvmf')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('tclustvmf')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %

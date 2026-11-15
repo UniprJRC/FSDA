@@ -70,9 +70,12 @@ function kappa = vMFkappa(r, p, newtonsteps)
 %
 %   kappa <- kappa - (A_p(kappa) - r) / A_p'(kappa)
 %
-% where the derivative is (Watson 1944; Sra 2012, eq. 3)
+% where the derivative is 
 %
-%   A_p'(kappa) = 1 - A_p(kappa)^2 - ((p-1)/kappa)*A_p(kappa).
+%   A_p'(kappa) = 1 - A_p(kappa)^2 - ((p-1)/kappa)*A_p(kappa)
+%
+% (derivative of A_p is in Watson (1983); the original result is attributed
+% to Watson (1944) by Sra (2012), eq. 3).
 %
 % The ratio A_p is computed as exp(log I_{p/2}(kappa)-log I_{p/2-1}(kappa))
 % with the two logarithms given by logBesseli. In this way the ratio is
@@ -88,9 +91,9 @@ function kappa = vMFkappa(r, p, newtonsteps)
 % Values of r very close to 1 (near-degenerate groups) are clipped to
 % 1-1e-10 before inversion. This keeps kappa large but finite, which is
 % required for the subsequent concentration-parameter restriction step
-% restrKappa.m to operate correctly (a kappa of Inf would make the ratio
+% restrKappa to operate correctly (a kappa of Inf would make the ratio
 % max/min kappa undefined and the numerical minimisation inside
-% restrKappa.m fail).
+% restrKappa fail).
 %
 % References:
 %
@@ -105,9 +108,8 @@ function kappa = vMFkappa(r, p, newtonsteps)
 %   doi:10.1007/s00180-011-0232-x
 %
 %   Watson, G.S. (1983), Statistics on Spheres, Wiley, New York.
-%   (derivative of A_p; original result attributed to Watson 1944)
 %
-% See also: tclustvmf, restrKappa.m, vMFlogC, logBesseli, vMFrnd
+% See also: tclustvmf, restrKappa, vMFlogC, logBesseli, vMFrnd
 %
 % Copyright 2008-2025.
 % Written by FSDA team

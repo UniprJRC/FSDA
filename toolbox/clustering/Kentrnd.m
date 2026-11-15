@@ -1,7 +1,7 @@
 function [Y, Gamma] = Kentrnd(n, kappa, beta, gamma3, gamma1)
 %Kentrnd generates random unit vectors from the Kent distribution on S^2
 %
-%<a href="matlab: docsearchFS('Kentrnd')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('Kentrnd')">Link to the help function</a>
 %
 %   Kentrnd returns an n-by-3 matrix whose rows are independent draws from
 %   the Kent (Fisher-Bingham FB5) distribution Kent(kappa,beta,Gamma) on
@@ -88,7 +88,7 @@ function [Y, Gamma] = Kentrnd(n, kappa, beta, gamma3, gamma1)
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('Kentrnd')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('Kentrnd')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %

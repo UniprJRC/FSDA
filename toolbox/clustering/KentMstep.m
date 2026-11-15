@@ -1,7 +1,7 @@
 function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstep(Y, w, kappa0, beta0, maxiter, tol)
 %KentMstep estimates the parameters of a Kent distribution from a (weighted) sample
 %
-%<a href="matlab: docsearchFS('KentMstep')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('KentMstep')">Link to the help function</a>
 %
 %   KentMstep estimates the parameters of a Kent(kappa,beta,Gamma)
 %   distribution from a weighted sample of unit vectors on S^2. It is
@@ -125,7 +125,7 @@ function [gamma1, gamma2, gamma3, kappa, beta, r, dq] = KentMstep(Y, w, kappa0, 
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('KentMstep')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('KentMstep')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %

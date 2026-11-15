@@ -1,7 +1,7 @@
 function [P, thresh] = Kentcap(gamma1, gamma2, gamma3, kappa, beta, conflev, npts)
 %Kentcap computes the boundary of the confidence region of a Kent distribution on S^2
 %
-%<a href="matlab: docsearchFS('Kentcap')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('Kentcap')">Link to the help function</a>
 %
 %   Kentcap is the Kent counterpart of vMFcap. The contours of constant
 %   density of the von Mises-Fisher distribution are circles around the
@@ -81,7 +81,7 @@ function [P, thresh] = Kentcap(gamma1, gamma2, gamma3, kappa, beta, conflev, npt
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('Kentcap')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('Kentcap')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %

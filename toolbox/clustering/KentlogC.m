@@ -1,7 +1,7 @@
 function logc = KentlogC(kappa, beta, mterms)
 %KentlogC computes the log of the Kent distribution normalizing constant log c(kappa,beta)
 %
-%<a href="matlab: docsearchFS('KentlogC')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('KentlogC')">Link to the help function</a>
 %
 %   KentlogC evaluates, in log-space, the normalizing constant of the Kent
 %   (Fisher-Bingham FB5) distribution on S^2 (the unit sphere in R^3):
@@ -89,7 +89,7 @@ function logc = KentlogC(kappa, beta, mterms)
 % Copyright 2008-2025.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('KentlogC')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('KentlogC')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 %

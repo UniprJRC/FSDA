@@ -74,26 +74,12 @@ function kappa = restrKappa(kappaHat, r, niini, p, restrfactor, tol)
 %<a href="matlab: docsearchFS('restrKappa')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
-
+%
 % Examples:
-
+%
 %{
     % A tight, spurious near-singleton group (kappa artificially huge)
     % gets pulled back towards the other groups.
-% publishToday.m
-rootFolder = pwd;   % change this if needed
-
-files = dir(fullfile(rootFolder, '*.m'));
-today0 = dateshift(datetime('today'), 'start', 'day');
-
-for k = 1:numel(files)
-    fileDate = dateshift(datetime(files(k).datenum, 'ConvertFrom', 'datenum'), 'start', 'day');
-    if fileDate == today0
-        filePath = fullfile(rootFolder, files(k).name);
-        fprintf('Publishing %s\n', files(k).name);
-        publishFS(filePath);
-    end
-end
     kappaHat = [8000; 25; 30];
     r        = [0.9999; 0.85; 0.87];
     niini    = [3; 140; 150];
