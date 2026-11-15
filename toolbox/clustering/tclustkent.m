@@ -915,7 +915,7 @@ for i = 1:nselected
 
 end % subsample loop
 
-if isempty(bs) || any(isnan(kappaopt))
+if any(isnan(kappaopt))
     error('FSDA:tclustkent:NoConvergence', ...
         ['None of the %d subsamples produced a valid solution; ' ...
          'try increasing nsamp or refsteps, or reducing k'], nselected)

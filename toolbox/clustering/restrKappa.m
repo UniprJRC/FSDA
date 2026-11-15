@@ -97,7 +97,7 @@ end
 
 kappa = kappaHat;
 
-ok = ~isnan(kappaHat) & niini>0;
+ok = isfinite(kappaHat) & isfinite(r) & niini>0;
 if sum(ok) <= 1
     if any(~ok) && any(ok)
         kappa(~ok) = kappa(ok);
@@ -105,7 +105,7 @@ if sum(ok) <= 1
     return
 end
 
-kok = kappaHat(ok);
+kok = max(kappaHat(ok),1e-8);   % kappa=0 (r=0) would give log(0)=-Inf
 rok = r(ok);
 nok = niini(ok);
 w   = nok / sum(nok);

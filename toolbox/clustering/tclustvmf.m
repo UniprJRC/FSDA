@@ -710,6 +710,7 @@ function [out] = tclustvmf(Y,k,alpha,restrfactor,varargin)
 nnargin=nargin;
 vvarargin=varargin;
 Y = aux.chkinputM(Y,nnargin,vvarargin);
+Y = double(Y);  % in case user passes single-precision data, which is common with embeddings
 [n, p]=size(Y);
 
 if nargin<3 || isempty(alpha)
