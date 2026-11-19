@@ -18,6 +18,7 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     strategy:
+      fail-fast: false
       matrix:
         platform: [ubuntu-latest]
         release: [latest]
