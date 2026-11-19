@@ -85,9 +85,8 @@ function [U, Lambda_vk, info] = restrcommonpc(Sigmaini, niini, ncomp, varargin)
 %               Example - 1
 %               Data Types - double
 %
-% The following are given as name-value pairs (varargin):
 %
-% 'majoraxis' : enforce the shared axis to be each group's own major
+%  majoraxis : enforce the shared axis to be each group's own major
 %            (dominant) direction. Logical scalar, default false. Only
 %            allowed together with ncomp=1 (an error is raised
 %            otherwise: "the major axis" only has meaning for a single
@@ -96,13 +95,13 @@ function [U, Lambda_vk, info] = restrcommonpc(Sigmaini, niini, ncomp, varargin)
 %               Example - 'majoraxis',true
 %               Data Types - logical
 %
-% 'ngrid'  : number of grid points used to scan the circle when v=2 and
+%  ngrid  : number of grid points used to scan the circle when v=2 and
 %            majoraxis=true. Default 4000 (angular resolution about
 %            0.045 degrees). Unused otherwise.
 %               Example - 'ngrid',4000
 %               Data Types - double
 %
-% 'niter'  : number of refinement rounds of the general-v heuristic
+%  niter   : number of refinement rounds of the general-v heuristic
 %            local search used when v>2 and majoraxis=true. Default 200.
 %            Unused otherwise (v=2 uses the exact grid search; when
 %            majoraxis=false no search is needed at all).
@@ -124,14 +123,14 @@ function [U, Lambda_vk, info] = restrcommonpc(Sigmaini, niini, ncomp, varargin)
 %            restreigen/restrdeter exactly as in the unconstrained case.
 %
 %     info : diagnostic structure with fields:
-%            info.feasible : logical.
+%            info.feasible = logical.
 %                 majoraxis=false: always true (a shared eigenvector
 %                    always exists by construction).
 %                 majoraxis=true: true if a direction was found that is
 %                    simultaneously the dominant direction of every
 %                    group; false if the returned axis is only the best
 %                    achievable worst-case compromise (see "More About").
-%            info.margin   : k-by-1 vector, computed whenever ncomp=1
+%            info.margin   = k-by-1 vector, computed whenever ncomp=1
 %                 (empty otherwise). margin(j) = (variance of group j
 %                 along the returned shared axis) minus (its largest
 %                 variance among directions orthogonal to the shared
@@ -143,7 +142,7 @@ function [U, Lambda_vk, info] = restrcommonpc(Sigmaini, niini, ncomp, varargin)
 %                 whether the default (majoraxis=false) mode happened to
 %                 produce a shared axis that is every group's major axis
 %                 or not.
-%            info.u        : the returned shared unit vector, v-by-1
+%            info.u        = the returned shared unit vector, v-by-1
 %                 (only when ncomp=1; empty otherwise).
 %
 %

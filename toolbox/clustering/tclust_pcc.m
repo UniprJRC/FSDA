@@ -152,7 +152,7 @@ function [out , varargout]  = tclust_pcc(Y,k,alpha,restrfactor,varargin)
 %               direction(s) are chosen as the leading eigenvector(s) of
 %               the (trimming-weighted) pooled scatter matrix, so trimmed
 %               units never contribute to determining the common axes.
-%               NOTE: with the default cpcmajor=false, cpc=1 guarantees
+%               NOTE that with the default cpcmajor=false, cpc=1 guarantees
 %               that the k groups share ONE eigenvector, but NOT that
 %               this shared direction is the major (largest-eigenvalue)
 %               axis of every group: for a group whose own covariance
