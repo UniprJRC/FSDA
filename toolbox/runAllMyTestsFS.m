@@ -178,7 +178,8 @@ for i=1:nfiles
     try
         Ex=OUT{i,1}.Ex;
     catch ME
-        error(['Error: ' ME, 'File ' FilesIncluded{i,1} ' could not be processed by publishFS.'])
+        error('FSDA:runAllMyTestsFS:NotParsed', ...
+            'File %s could not be processed by publishFS.', FilesIncluded{i,1})
     end
     
     
