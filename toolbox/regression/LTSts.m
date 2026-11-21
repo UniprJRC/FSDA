@@ -1373,6 +1373,69 @@ function [out, varargout] = LTSts(y,varargin)
         'plots','components','msg',0);
 %}
 
+
+%{
+    % Comparing penalized seasonal components for two values of lambda.
+    % Both fits use the same data and random subsamples. The table prints
+    % estimated monthly profiles for selected years; the plot compares the
+    % full estimated components with the simulated seasonal signal.
+    rng(11001)
+    s=12;
+    nYears=15;
+    T=s*nYears;
+    t=(1:T)';
+    year=floor((t-1)/s);
+    yearCoordinate=(year-mean(year))/(max(year)-min(year));
+
+    seasonalTrue=(2+0.5*yearCoordinate).*cos(2*pi*t/s)+ ...
+        (1-0.25*yearCoordinate).*sin(2*pi*t/s)+ ...
+        0.5*cos(4*pi*t/s);
+    y=5+0.04*t+seasonalTrue+0.35*randn(T,1);
+    bad=[50 145]';
+    y(bad)=y(bad)+[5 -6]';
+
+    model=struct('trend',1,'s',s,'seasonal',1,'lshift',0);
+    model.seasonality=struct('type','dummy','evolution','penalized', ...
+        'lambda',5,'differenceOrder',2);
+    fitOptions={'nsamp',300,'h',150,'msg',0,'plots',0};
+
+    rng(11002)
+    out=LTSts(y,'model',model,fitOptions{:});
+    model.seasonality.lambda=100;
+    rng(11002)
+    outLambda100=LTSts(y,'model',model,fitOptions{:});
+
+    seasonalEstimateLambda5=out.components.seasonal;
+    seasonalEstimateLambda100=outLambda100.components.seasonal;
+
+    selectedYears=[1 8 15];
+    profileLambda5=reshape(seasonalEstimateLambda5,s,nYears);
+    profileLambda100=reshape(seasonalEstimateLambda100,s,nYears);
+    seasonalComparison=table((1:s)', ...
+        profileLambda5(:,selectedYears(1)), ...
+        profileLambda5(:,selectedYears(2)), ...
+        profileLambda5(:,selectedYears(3)), ...
+        profileLambda100(:,selectedYears(1)), ...
+        profileLambda100(:,selectedYears(2)), ...
+        profileLambda100(:,selectedYears(3)), ...
+        'VariableNames',{'month','lambda5Year1','lambda5Year8', ...
+        'lambda5Year15','lambda100Year1','lambda100Year8', ...
+        'lambda100Year15'});
+    disp(seasonalComparison)
+
+    figure
+    plot(t,seasonalTrue,'k--','LineWidth',1.4)
+    hold on
+    plot(t,seasonalEstimateLambda5,'b-','LineWidth',1.1)
+    plot(t,seasonalEstimateLambda100,'r-','LineWidth',1.1)
+    xlabel('Time index')
+    ylabel('Seasonal component')
+    legend({'True seasonal signal','Estimated, lambda=5', ...
+        'Estimated, lambda=100'},'Location','best')
+    title('Penalized dummy seasonality: effect of lambda')
+%}
+
+
 %% Beginning of code
 
 % Input parameters checking
