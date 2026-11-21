@@ -235,6 +235,11 @@ nrep=repmat(n,1,length(seqa));
 % Check input parameter values
 % if isempty(n) || min(n) < 0  ||  min(nc) < 0
 if  min(n) < 0  ||  min(nc) < 0
+    qfval=NaN; 
+    ifault=3;
+    varargout{1}=tracert;
+    varargout{2}=ifault;
+    % the initialized trace, and ifault=3.
     return
 end
 
@@ -248,6 +253,8 @@ if lmin == 0.0 && lmax == 0.0 && sigma == 0.0
     else
         qfval =0;
     end
+    varargout{1}=tracert;
+    varargout{2}=ifault;
     return
 end
 
@@ -286,6 +293,8 @@ if sd == 0.0
     else
         qfval =0;
     end
+    varargout{1}=tracert;
+    varargout{2}=ifault;
     return
 end
 
@@ -328,6 +337,8 @@ while l1
     
     if (d1 < 0.0)
         qfval = 1.0;
+        varargout{1}=tracert;
+        varargout{2}=ifault;
         return
     end
     
@@ -335,6 +346,8 @@ while l1
     d2 = c - d2tmp;
     
     if (d2 < 0.0)
+        varargout{1}=tracert;
+        varargout{2}=ifault;
         qfval = 0.0;
         return
     end
@@ -359,6 +372,7 @@ while l1
             % than required accuracy cannot be achieved
             ifault = 1;
             qfval=NaN;
+            varargout{1}=tracert;
             varargout{2}=ifault;
             return
         end
@@ -411,6 +425,7 @@ if (xnt > xlim)
     disp('Please increase optional input parameter lim or relax the tolerance tol')
     qfval=nan;
     ifault = 1;
+    varargout{1}=tracert;
     varargout{2}=ifault;
     return
 end
