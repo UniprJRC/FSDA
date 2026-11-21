@@ -587,13 +587,12 @@ else
     end
     Lc=Y.Properties.VariableNames;
 
-    % Transform categorical variables into numeric
-    Tc = Y;  % copy to avoid modifying original
-    catNames = Lc(varfun(@iscategorical, Y, 'OutputFormat','uniform'));
-    for k = catNames
-        Tc.(k{1}) = double(Tc.(k{1}));    % categorical -> integer codes (NaN for undefined)
-    end
-    Yd=table2array(Tc);
+    % Replace non-numeric/logical/categorical variables (e.g., string, cellstr,
+    % datetime) with NaN columns in a temporary table copy so table2array does
+    % not fail, while keeping original Y intact for ismissing(Y).
+    Tc = convertvars(Y, @(x) ~(isnumeric(x)||islogical(x)||iscategorical(x)), @(x) NaN(size(x)));
+    % Convert categorical variables to double codes (NaN for undefined)
+    Yd = table2array(convertvars(Tc, @iscategorical, @double));
 end
 
 
@@ -636,7 +635,9 @@ for j=1:p
     medianj=median(Yj,'omitnan');
     sigmaj=std(Yj,'omitnan');
     madj= 1.4826*mad(Yj,1);
-    countMissingj=sum(isnan(Yj));
+    % Count missing entries from misY rather than isnan(Yd) so non-numeric
+    % table variables (mapped to NaN in Yd) report their true missing count.
+    countMissingj=sum(misY(:,j));
     percMissingj=100*countMissingj/n;
     Yjnomiss=Yj(~isnan(Yj));
     quart=quantile(Yjnomiss,quant);
